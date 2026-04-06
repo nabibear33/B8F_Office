@@ -3,11 +3,15 @@
 #include "Props/BaseProp.h"
 #include "GameManager/StageManager.h"
 #include "Kismet/GameplayStatics.h"
+#include "Components/InteractComponent.h"
 
 ABaseProp::ABaseProp()
 {
 	RootSceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootSceneComponent"));
 	RootComponent = RootSceneComponent;
+
+	InteractComponent = CreateDefaultSubobject<UInteractComponent>(TEXT("InteractComponent"));
+	InteractComponent->SetupAttachment(RootComponent);
 }
 
 void ABaseProp::BeginPlay()
@@ -19,7 +23,8 @@ void ABaseProp::BeginPlay()
 	{
 		StageManager->OnStageStart.AddDynamic(this, &ABaseProp::OnStageStart);
 	}
-	
+
+	InteractComponent->SetInteractEnabled(bIsInteractable);
 }
 
 void ABaseProp::OnStageStart(EAnomalyType AnomalyType)

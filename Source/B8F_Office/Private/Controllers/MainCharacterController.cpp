@@ -3,6 +3,8 @@
 
 #include "Controllers/MainCharacterController.h"
 #include "Kismet/GameplayStatics.h"
+#include "Interfaces/Interactable.h"
+#include "HUD/MainHUD.h"
 
 
 void AMainCharacterController::BeginPlay()

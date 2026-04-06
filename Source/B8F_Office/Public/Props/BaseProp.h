@@ -5,10 +5,13 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "GameLogics/Types.h"
+#include "Interfaces/Interactable.h"
 #include "BaseProp.generated.h"
 
+class UInteractComponent;
+
 UCLASS()
-class B8F_OFFICE_API ABaseProp : public AActor
+class B8F_OFFICE_API ABaseProp : public AActor, public IInteractable
 {
 	GENERATED_BODY()
 	
@@ -26,4 +29,10 @@ protected:
 private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USceneComponent> RootSceneComponent;
+	
+	UPROPERTY(EditAnywhere)
+	bool bIsInteractable = false;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UInteractComponent> InteractComponent;
 };

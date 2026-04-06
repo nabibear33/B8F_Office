@@ -16,7 +16,7 @@ void ANotKommy::BeginPlay()
 	Super::BeginPlay();
 
 	Controller = Cast<AAIController>(GetController());
-	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ANotKommy::OnOverlapBegin);
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ANotKommy::OnBeginOverlap);
 	InitialLocation = GetActorLocation();
 	
 	SetNormal();
@@ -25,7 +25,7 @@ void ANotKommy::BeginPlay()
 void ANotKommy::SetNormal()
 {
 	GetMesh()->SetVisibility(false);
-	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	SetActorLocation(InitialLocation);
 }
@@ -42,8 +42,13 @@ void ANotKommy::Tick(float DeltaTime)
 
 }
 
-void ANotKommy::OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void ANotKommy::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	UE_LOG(LogTemp, Warning, TEXT("[NotKommy] Overlap! OtherActor: %s | OtherComp: %s"),
+		OtherActor ? *OtherActor->GetName() : TEXT("NULL"),
+		OtherComp ? *OtherComp->GetName() : TEXT("NULL"));
+	if (!(OtherActor->IsA<AMainCharacter>() && OtherComp->IsA<UCapsuleComponent>())) return;
+
 	OnPlayDeathScene.Broadcast(EDeathSceneType::EDS_NotKommy);
 }
 

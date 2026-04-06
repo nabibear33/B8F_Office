@@ -19,4 +19,5 @@ protected:
 
 public:
 	virtual void SetControlRotation(const FRotator& NewRotation) override;
+
 };
