@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Characters/BaseCharacter.h"
+#include "Characters/InteractableCharacter.h"
 #include "GameLogics/Types.h"
 #include "GameLogics/Delegates.h"
 #include "NotKommy.generated.h"
@@ -14,7 +14,7 @@ class AAIController;
  * 
  */
 UCLASS()
-class B8F_OFFICE_API ANotKommy : public ABaseCharacter
+class B8F_OFFICE_API ANotKommy : public AInteractableCharacter
 {
 	GENERATED_BODY()
 
@@ -31,6 +31,8 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	virtual void SetNormal() override;
+
 
 private:
 
@@ -44,8 +46,6 @@ private:
 
 	virtual void OnStageStart(EAnomalyType AnomalyType) override;
 	
-	virtual void SetNormal() override;
-
 	UPROPERTY()
 	FVector InitialLocation;
 };

@@ -50,8 +50,8 @@ void UInteractComponent::OnRegister()
 	// A work-around...
 	//     - Use SetupAttachment(), per usual in the constructor to establish the parent-child relationship for CDOs.
 	//     - Use AttachToComponent() to override those errant CDO references with instance references, in your USceneComponent::OnRegister() override.
-	this->InteractableArea->AttachToComponent(this->GetAttachmentRoot(), FAttachmentTransformRules::KeepRelativeTransform);
-	this->InteractWidgetComponent->AttachToComponent(this->GetAttachmentRoot(), FAttachmentTransformRules::KeepRelativeTransform);
+	this->InteractableArea->AttachToComponent(this, FAttachmentTransformRules::KeepRelativeTransform);
+	this->InteractWidgetComponent->AttachToComponent(this, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 void UInteractComponent::BeginPlay()
@@ -66,7 +66,12 @@ void UInteractComponent::BeginPlay()
 		InteractWidgetComponent->SetWidgetClass(InteractWidgetClass);
 	}
 
+	IInteractable* Interactable = Cast<IInteractable>(GetOwner());
 	InteractWidget = Cast<UInteractWidget>(InteractWidgetComponent->GetWidget());
+	if (InteractWidget && Interactable)
+	{
+		InteractWidget->SetInteractContentText(Interactable->GetInteractHintText());
+	}
 
 
 	InteractableArea->OnComponentBeginOverlap.AddDynamic(this, &UInteractComponent::OnBeginOverlap);
@@ -85,25 +90,18 @@ void UInteractComponent::OnBeginOverlap(class UPrimitiveComponent* OverlappedCom
 
 	UE_LOG(LogTemp, Warning, TEXT("[%s] Player detected: %s"), *GetOwner()->GetName(), *Player->GetName());
 
-	if (IInteractable* Interactable = Cast<IInteractable>(GetOwner()))
-	{
-		if (InteractWidget)
-		{
-			InteractWidget->SetInteractContentText(Interactable->GetInteractHintText());
-		}
-	}
-
 	InteractWidgetComponent->SetVisibility(true);
 
 	OnInteractableEntered.Broadcast(GetOwner(), Player);
+
 }
 
 void UInteractComponent::OnEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	AMainCharacter* MainChar = Cast<AMainCharacter>(OtherActor);
-	if (!MainChar) return;
+	AMainCharacter* Player = Cast<AMainCharacter>(OtherActor);
+	if (!Player) return;
 
 	InteractWidgetComponent->SetVisibility(false);
 
-	OnInteractableLeft.Broadcast();
+	OnInteractableLeft.Broadcast(GetOwner(), Player);
 }

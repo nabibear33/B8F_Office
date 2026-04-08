@@ -3,38 +3,49 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
-#include "GameLogics/Types.h"
+#include "Characters/BaseCharacter.h"
 #include "Interfaces/Interactable.h"
-#include "BaseProp.generated.h"
+#include "InteractableCharacter.generated.h"
 
 class UInteractComponent;
+class AMainCharacter;
 
+/**
+ * 
+ */
 UCLASS()
-class B8F_OFFICE_API ABaseProp : public AActor, public IInteractable
+class B8F_OFFICE_API AInteractableCharacter : public ABaseCharacter, public IInteractable
 {
 	GENERATED_BODY()
-	
-public:	
-	ABaseProp();
+
+public:
+	AInteractableCharacter();
+
+	virtual FText GetInteractHintText() override;
 
 	virtual UInteractComponent* GetInteractComponent() override;
 
 protected:
 	virtual void BeginPlay() override;
 
+	virtual void SetNormal();
+
 	UFUNCTION()
 	virtual void OnStageStart(EAnomalyType AnomalyType);
 
-	virtual void SetNormal();
-
 private:
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<USceneComponent> RootSceneComponent;
-	
+
+
+	UFUNCTION()
+	void OnInteractableEntered(AActor* InteractableActor, AMainCharacter* MainCharacter);
+
+	UFUNCTION()
+	void OnInteractableLeft();
+
 	UPROPERTY(EditAnywhere)
 	bool bIsInteractable = false;
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UInteractComponent> InteractComponent;
+	
 };

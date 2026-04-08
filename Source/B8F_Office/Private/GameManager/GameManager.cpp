@@ -38,11 +38,6 @@ void AGameManager::BeginPlay()
 		TeleportAreaDown->OnAreaTriggered.AddDynamic(this, &AGameManager::OnTeleportAreaTriggered);
 	}
 
-	if (NotKommyTriggerArea)
-	{
-		NotKommyTriggerArea->OnAreaTriggered.AddDynamic(NotKommy, &ANotKommy::OnNotKommyTriggerAreaTriggered);
-	}
-
 	if (NotKommy)
 	{
 		NotKommy->OnPlayDeathScene.AddDynamic(this, &AGameManager::OnPlayDeathScene);
@@ -80,6 +75,10 @@ void AGameManager::OnStageStartAreaTriggered(AActor* TriggeringArea, AActor* Oth
 		// lock the door
 		
 	}
+
+	Player->ResetInteractableCount();
+
+
 
 	UE_LOG(LogTemp, Warning, TEXT("Now New Stage Start"));
 

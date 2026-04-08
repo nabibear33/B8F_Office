@@ -14,6 +14,11 @@ ABaseProp::ABaseProp()
 	InteractComponent->SetupAttachment(RootComponent);
 }
 
+UInteractComponent* ABaseProp::GetInteractComponent()
+{
+	return InteractComponent;
+}
+
 void ABaseProp::BeginPlay()
 {
 	Super::BeginPlay();

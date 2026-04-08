@@ -6,6 +6,8 @@
 #include "GameLogics/BaseArea.h"
 #include "NotKommyTriggerArea.generated.h"
 
+class ANotKommy;
+
 /**
  * 
  */
@@ -26,4 +28,7 @@ private:
 	virtual void OnStageStart(EAnomalyType AnomalyType) override;
 
 	virtual void SetNormal() override;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<ANotKommy> LinkedKommy;
 };

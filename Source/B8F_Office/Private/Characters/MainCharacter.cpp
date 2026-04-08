@@ -36,7 +36,6 @@ void AMainCharacter::BeginPlay()
 			Subsystem->AddMappingContext(InputMappingContext, 0);
 		}
 	}
-	
 }
 
 void AMainCharacter::Tick(float DeltaTime)
@@ -50,7 +49,7 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AMainCharacter::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AMainCharacter::Look);
-		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &AMainCharacter::Interact);
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &AMainCharacter::TryInteract);
 		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Started, this, &AMainCharacter::SprintStart);
 		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &AMainCharacter::SprintStop);
 	}
@@ -96,12 +95,13 @@ void AMainCharacter::Look(const FInputActionValue& Value)
 	}
 }
 
-void AMainCharacter::Interact()
+void AMainCharacter::TryInteract()
 {
-	if (Controller)
-	{
+	UE_LOG(LogTemp, Warning, TEXT("Try Interact Function Executed"));
 
-	}
+	if (InteractableCount == 0) return;
+
+	CurrentInteractTarget->Interact_Implementation();
 }
 
 void AMainCharacter::SprintStart()
@@ -120,3 +120,23 @@ void AMainCharacter::SprintStop()
 	}
 }
 
+void AMainCharacter::OnInteractableEntered(AActor* InteractableActor, AMainCharacter* MainCharacter)
+{
+	TScriptInterface<IInteractable> Interactable = InteractableActor;
+	if (Interactable)
+	{
+		CurrentInteractTarget = Interactable;
+		InteractableCount++;
+	}
+}
+
+void AMainCharacter::OnInteractableLeft(AActor* InteractableActor, AMainCharacter* MainCharacter)
+{
+	CurrentInteractTarget = nullptr;
+	InteractableCount--;
+}
+
+void AMainCharacter::ResetInteractableCount()
+{
+	InteractableCount = 0;
+}

@@ -1,6 +1,8 @@
 
 #include "GameManager/StageManager.h"
 #include "GameLogics/NotKommyTriggerArea.h"
+#include "Components/InteractComponent.h"
+#include "Characters/MainCharacter.h"
 #include "Characters/NotKommy.h"
 
 AStageManager::AStageManager()
@@ -30,6 +32,19 @@ void AStageManager::ResetStage()
 	else
 	{
 		SetNormalStage();
+	}
+
+	FInteractableList* Found = AnomalyInteractableMap.Find(AnomalyType);
+	if (Found)
+	{
+		for (TScriptInterface<IInteractable>& Interactable : Found->Interactables)
+		{
+			CurrentStageInteractableList.Interactables.Add(Interactable);
+			Interactable->GetInteractComponent()->OnInteractableEntered.RemoveDynamic(Player, &AMainCharacter::OnInteractableEntered);
+			Interactable->GetInteractComponent()->OnInteractableLeft.RemoveDynamic(Player, &AMainCharacter::OnInteractableLeft);
+			Interactable->GetInteractComponent()->OnInteractableEntered.AddDynamic(Player, &AMainCharacter::OnInteractableEntered);
+			Interactable->GetInteractComponent()->OnInteractableLeft.AddDynamic(Player, &AMainCharacter::OnInteractableLeft);
+		}
 	}
 }
 

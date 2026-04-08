@@ -1,6 +1,7 @@
 
 
 #include "GameLogics/NotKommyTriggerArea.h"
+#include "Characters/NotKommy.h"
 #include "GameLogics/Types.h"
 
 ANotKommyTriggerArea::ANotKommyTriggerArea()
@@ -23,9 +24,18 @@ void ANotKommyTriggerArea::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, A
 
 void ANotKommyTriggerArea::OnStageStart(EAnomalyType AnomalyType)
 {
-	if (AnomalyType == EAnomalyType::EAT_NotKommyChase)
+	OnAreaTriggered.RemoveDynamic(LinkedKommy, &ANotKommy::OnNotKommyTriggerAreaTriggered);
+
+	switch(AnomalyType)
 	{
-		EnableArea();
+		case EAnomalyType::EAT_NotKommyChase:
+			OnAreaTriggered.AddDynamic(LinkedKommy, &ANotKommy::OnNotKommyTriggerAreaTriggered);
+			EnableArea();
+			break;
+
+		default:
+			break;
+
 	}
 }
 

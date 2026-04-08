@@ -11,6 +11,16 @@
 
 class ANotKommy;
 class ANotKommyTriggerArea;
+class IInteractable;
+
+USTRUCT()
+struct FInteractableList
+{
+	GENERATED_BODY()
+
+	UPROPERTY(VisibleAnywhere)
+	TArray<TScriptInterface<IInteractable>> Interactables;
+};
 
 UCLASS()
 class B8F_OFFICE_API AStageManager : public AActor
@@ -39,6 +49,8 @@ protected:
 	EAnomalyStatus AnomalyStatus;
 
 private:
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<AMainCharacter> Player;
 
 	UPROPERTY(EditAnywhere)
 	float AnomalyProbability = 0.5f;
@@ -48,6 +60,12 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	EAnomalyType TestAnomalyType;
+
+	UPROPERTY(VisibleAnywhere)
+	FInteractableList CurrentStageInteractableList;
+
+	UPROPERTY(EditAnywhere)
+	TMap<EAnomalyType, FInteractableList> AnomalyInteractableMap;
 
 public:
 	FORCEINLINE EStageState GetStageState() { return StageState; }

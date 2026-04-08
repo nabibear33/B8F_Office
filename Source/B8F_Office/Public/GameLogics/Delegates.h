@@ -6,7 +6,7 @@
 #include "Delegates.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerDeathAndReset);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInteractableLeft);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInteractableLeft, AActor*, InteractableActor, AMainCharacter*, MainCharacter);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInteractableEntered, AActor*, InteractableActor, AMainCharacter*, MainCharacter);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDialogueUpdated, const FDialogueRow&, Row);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayDeathScene, EDeathSceneType, DeathSceneType);

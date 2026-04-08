@@ -6,6 +6,8 @@
 #include "UObject/Interface.h"
 #include "Interactable.generated.h"
 
+class UInteractComponent;
+
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI)
 class UInteractable : public UInterface
@@ -26,4 +28,8 @@ public:
 	void Interact();
 
 	virtual FText GetInteractHintText() { return FText::GetEmpty(); }
+
+	virtual UInteractComponent* GetInteractComponent() = 0;
+
+protected:
 };

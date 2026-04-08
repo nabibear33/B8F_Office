@@ -27,6 +27,14 @@ public:
 	void OnDeath();
 	void OnRevive();
 
+	UFUNCTION()
+	void OnInteractableEntered(AActor* InteractableActor, AMainCharacter* MainCharacter);
+
+	UFUNCTION()
+	void OnInteractableLeft(AActor* InteractableActor, AMainCharacter* MainCharacter);
+
+	void ResetInteractableCount();
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -54,7 +62,7 @@ private:
 	// Input Actions
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
-	void Interact();
+	void TryInteract();
 	void SprintStart();
 	void SprintStop();
 	
@@ -73,4 +81,10 @@ private:
 
 	UPROPERTY()
 	FRotator InitialRotation;
+
+	UPROPERTY(VisibleAnywhere)
+	int32 InteractableCount = 0;
+
+	UPROPERTY(VisibleAnywhere)
+	TScriptInterface<IInteractable> CurrentInteractTarget;
 };

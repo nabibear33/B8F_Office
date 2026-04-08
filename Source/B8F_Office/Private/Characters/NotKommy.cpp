@@ -24,8 +24,7 @@ void ANotKommy::BeginPlay()
 
 void ANotKommy::SetNormal()
 {
-	GetMesh()->SetVisibility(false);
-	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	Super::SetNormal();
 
 	SetActorLocation(InitialLocation);
 }
@@ -55,7 +54,7 @@ void ANotKommy::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* Othe
 void ANotKommy::OnNotKommyTriggerAreaTriggered(AActor* TriggeringArea, AActor* OtherActor)
 {
 	GetMesh()->SetVisibility(true);
-	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	ChasePlayer(OtherActor);
 }
 
