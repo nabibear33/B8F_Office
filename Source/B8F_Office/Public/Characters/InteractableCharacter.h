@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Characters/BaseCharacter.h"
 #include "Interfaces/Interactable.h"
+#include "GameLogics/Types.h"
 #include "InteractableCharacter.generated.h"
 
 class UInteractComponent;
@@ -29,6 +30,10 @@ protected:
 	virtual void BeginPlay() override;
 
 	virtual void SetNormal();
+
+	void DisableCharacterMesh();
+
+	void EnableCharacterMesh();
 
 	UFUNCTION()
 	virtual void OnStageStart(EAnomalyType AnomalyType);

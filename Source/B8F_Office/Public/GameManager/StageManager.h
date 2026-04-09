@@ -13,13 +13,13 @@ class ANotKommy;
 class ANotKommyTriggerArea;
 class IInteractable;
 
-USTRUCT()
+USTRUCT(BlueprintType)
 struct FInteractableList
 {
 	GENERATED_BODY()
 
-	UPROPERTY(VisibleAnywhere)
-	TArray<TScriptInterface<IInteractable>> Interactables;
+	UPROPERTY(EditAnywhere)
+	TArray<TObjectPtr<AActor>> Interactables;
 };
 
 UCLASS()

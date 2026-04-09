@@ -51,7 +51,18 @@ void AInteractableCharacter::OnInteractableLeft()
 
 void AInteractableCharacter::SetNormal()
 {
+	DisableCharacterMesh();
+}
+
+void AInteractableCharacter::DisableCharacterMesh()
+{
 	GetMesh()->SetVisibility(false);
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+}
+
+void AInteractableCharacter::EnableCharacterMesh()
+{
+	GetMesh()->SetVisibility(true);
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 }
 

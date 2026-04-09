@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Characters/InteractableCharacter.h"
-#include "GameLogics/Types.h"
 #include "GameLogics/Delegates.h"
 #include "NotKommy.generated.h"
 

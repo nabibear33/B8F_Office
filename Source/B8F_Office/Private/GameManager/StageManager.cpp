@@ -37,13 +37,18 @@ void AStageManager::ResetStage()
 	FInteractableList* Found = AnomalyInteractableMap.Find(AnomalyType);
 	if (Found)
 	{
-		for (TScriptInterface<IInteractable>& Interactable : Found->Interactables)
+		for (AActor* Actor : Found->Interactables)
 		{
-			CurrentStageInteractableList.Interactables.Add(Interactable);
-			Interactable->GetInteractComponent()->OnInteractableEntered.RemoveDynamic(Player, &AMainCharacter::OnInteractableEntered);
-			Interactable->GetInteractComponent()->OnInteractableLeft.RemoveDynamic(Player, &AMainCharacter::OnInteractableLeft);
-			Interactable->GetInteractComponent()->OnInteractableEntered.AddDynamic(Player, &AMainCharacter::OnInteractableEntered);
-			Interactable->GetInteractComponent()->OnInteractableLeft.AddDynamic(Player, &AMainCharacter::OnInteractableLeft);
+			CurrentStageInteractableList.Interactables.Add(Actor);
+
+			IInteractable* Interactable = Cast<IInteractable>(Actor);
+			if (Interactable)
+			{
+				Interactable->GetInteractComponent()->OnInteractableEntered.RemoveDynamic(Player, &AMainCharacter::OnInteractableEntered);
+				Interactable->GetInteractComponent()->OnInteractableLeft.RemoveDynamic(Player, &AMainCharacter::OnInteractableLeft);
+				Interactable->GetInteractComponent()->OnInteractableEntered.AddDynamic(Player, &AMainCharacter::OnInteractableEntered);
+				Interactable->GetInteractComponent()->OnInteractableLeft.AddDynamic(Player, &AMainCharacter::OnInteractableLeft);
+			}
 		}
 	}
 }

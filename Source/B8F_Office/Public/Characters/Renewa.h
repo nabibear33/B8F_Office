@@ -19,5 +19,5 @@ public:
 private:
 	virtual void Interact_Implementation() override;
 
-	
+	virtual void OnStageStart(EAnomalyType AnomalyType) override;
 };

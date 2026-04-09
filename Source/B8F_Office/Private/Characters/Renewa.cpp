@@ -7,3 +7,16 @@ void ARenewa::Interact_Implementation()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Renewa Interaction"));
 }
+
+void ARenewa::OnStageStart(EAnomalyType AnomalyType)
+{
+	switch (AnomalyType)
+	{
+		case EAnomalyType::EAT_RenewaQuiz:
+			EnableCharacterMesh();
+			break;
+		default:
+			DisableCharacterMesh();
+			break;
+	}
+}

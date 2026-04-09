@@ -53,8 +53,7 @@ void ANotKommy::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* Othe
 
 void ANotKommy::OnNotKommyTriggerAreaTriggered(AActor* TriggeringArea, AActor* OtherActor)
 {
-	GetMesh()->SetVisibility(true);
-	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	EnableCharacterMesh();
 	ChasePlayer(OtherActor);
 }
 
