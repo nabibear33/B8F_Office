@@ -12,18 +12,11 @@ UInteractComponent::UInteractComponent()
 	PrimaryComponentTick.bCanEverTick = false;
 
 	InteractableArea = CreateDefaultSubobject<USphereComponent>(TEXT("InteractableArea"));
-	UE_LOG(LogTemp, Warning, TEXT("[InteractComponent] this: %s"), *GetName());
-	UE_LOG(LogTemp, Warning, TEXT("[InteractComponent] InteractableArea outer: %s"), *InteractableArea->GetOuter()->GetName());
-
-	InteractableArea->SetupAttachment(this);
-	UE_LOG(LogTemp, Warning, TEXT("[InteractComponent] InteractableArea attach parent: %s"),
-		InteractableArea->GetAttachParent() ? *InteractableArea->GetAttachParent()->GetName() : TEXT("NULL"));
-
 	InteractWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("InteractWidgetComponent"));
-	InteractWidgetComponent->SetupAttachment(this);
-	InteractWidgetComponent->SetWidgetSpace(EWidgetSpace::World);
-	InteractWidgetComponent->SetVisibility(false);
-	InteractWidgetComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	// UE_LOG(LogTemp, Warning, TEXT("[InteractComponent] this: %s"), *GetName());
+	// UE_LOG(LogTemp, Warning, TEXT("[InteractComponent] InteractableArea outer: %s"), *InteractableArea->GetOuter()->GetName());
+	// UE_LOG(LogTemp, Warning, TEXT("[InteractComponent] InteractableArea attach parent: %s"),InteractableArea->GetAttachParent() ? *InteractableArea->GetAttachParent()->GetName() : TEXT("NULL"));
+
 }
 
 void UInteractComponent::SetInteractEnabled(bool bEnable)
@@ -50,8 +43,14 @@ void UInteractComponent::OnRegister()
 	// A work-around...
 	//     - Use SetupAttachment(), per usual in the constructor to establish the parent-child relationship for CDOs.
 	//     - Use AttachToComponent() to override those errant CDO references with instance references, in your USceneComponent::OnRegister() override.
-	this->InteractableArea->AttachToComponent(this, FAttachmentTransformRules::KeepRelativeTransform);
-	this->InteractWidgetComponent->AttachToComponent(this, FAttachmentTransformRules::KeepRelativeTransform);
+	InteractableArea->AttachToComponent(this, FAttachmentTransformRules::KeepRelativeTransform);
+	InteractWidgetComponent->AttachToComponent(this, FAttachmentTransformRules::KeepRelativeTransform);
+	InteractWidgetComponent->SetVisibility(false);
+	InteractWidgetComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	InteractWidgetComponent->SetTwoSided(true);
+	InteractWidgetComponent->SetDrawSize(FVector2D(100.f, 100.f));
+	InteractWidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
+
 }
 
 void UInteractComponent::BeginPlay()

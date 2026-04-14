@@ -26,24 +26,34 @@ void UDialogueComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 
 }
 
-void UDialogueComponent::StartDialogue(APlayerController* Instigator)
+void UDialogueComponent::StartDialogue()
 {
-    AMainHUD* HUD = Cast<AMainHUD>(Instigator->GetHUD());
-    if (HUD)
+    UE_LOG(LogTemp, Warning, TEXT("StartDialogue"));
+    APlayerController* PC = GetWorld()->GetFirstPlayerController();
+    if (PC)
     {
-        HUD->ShowDialogueWidget(this);
+        AMainHUD* HUD = Cast<AMainHUD>(PC->GetHUD());
+        if (HUD)
+        {
+            HUD->ShowDialogueWidget(this);
+        }
     }
 
-    Instigator->SetInputMode(FInputModeUIOnly());
-    Instigator->SetShowMouseCursor(true);
-
-    AdvanceDialogue();
+    AdvanceDialogue(CurrentRowID);
 }
 
 void UDialogueComponent::AdvanceDialogue(FName ChoiceRowID)
 {
     FName TargetRow = ChoiceRowID.IsNone() ? CurrentRowID : ChoiceRowID;
-    FDialogueRow* Row = DialogueTable->FindRow<FDialogueRow>(TargetRow, TEXT(""));
+    UE_LOG(LogTemp, Warning, TEXT("ChoiceRowID: %s"), *ChoiceRowID.ToString());
+    UE_LOG(LogTemp, Warning, TEXT("TargetRow: %s"), *TargetRow.ToString());
+
+    if(!DialogueDataTable)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("No DataTable linked."));
+        return;
+    }
+    FDialogueRow* Row = DialogueDataTable->FindRow<FDialogueRow>(TargetRow, TEXT(""));
 
     if (!Row || Row->NextRowID.IsNone() && Row->Choices.IsEmpty())
     {
@@ -53,17 +63,17 @@ void UDialogueComponent::AdvanceDialogue(FName ChoiceRowID)
 
     CurrentRowID = Row->NextRowID;
     OnDialogueUpdated.Broadcast(*Row);
+    AdvanceDialogue(CurrentRowID);
 }
 
 void UDialogueComponent::EndDialogue()
 {
+    UE_LOG(LogTemp, Warning, TEXT("EndDialogue"));
     APlayerController* PC = GetWorld()->GetFirstPlayerController();
     if (AMainHUD* HUD = Cast<AMainHUD>(PC->GetHUD()))
     {
         HUD->HideDialogueWidget();
     }
 
-    PC->SetInputMode(FInputModeGameOnly());
-    PC->SetShowMouseCursor(false);
 }
 

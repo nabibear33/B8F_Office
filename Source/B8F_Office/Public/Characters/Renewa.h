@@ -4,7 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Characters/InteractableCharacter.h"
+#include "DataTables/DialogueRow.h"
 #include "Renewa.generated.h"
+
+class UDataTable;
 
 /**
  * 
@@ -20,4 +23,7 @@ private:
 	virtual void Interact_Implementation() override;
 
 	virtual void OnStageStart(EAnomalyType AnomalyType) override;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UDataTable> DialogueDataTable;
 };

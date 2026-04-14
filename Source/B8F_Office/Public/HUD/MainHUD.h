@@ -22,6 +22,8 @@ public:
 	void HideDialogueWidget();
 
 private:
+	virtual void BeginPlay() override;
+
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UUserWidget> DialogueWidgetClass;
 

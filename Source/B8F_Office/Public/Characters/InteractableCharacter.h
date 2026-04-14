@@ -45,7 +45,7 @@ private:
 	void OnInteractableEntered(AActor* InteractableActor, AMainCharacter* MainCharacter);
 
 	UFUNCTION()
-	void OnInteractableLeft();
+	void OnInteractableLeft(AActor* InteractableActor, AMainCharacter* MainCharacter);
 
 	UPROPERTY(EditAnywhere)
 	bool bIsInteractable = false;
@@ -53,4 +53,6 @@ private:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UInteractComponent> InteractComponent;
 	
+public:
+	FORCEINLINE bool GetIsInteractable() { return bIsInteractable; }
 };

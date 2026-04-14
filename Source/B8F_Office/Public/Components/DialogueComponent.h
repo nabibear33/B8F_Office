@@ -17,7 +17,7 @@ public:
 	UDialogueComponent();
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	void StartDialogue(APlayerController* Instigator);
+	void StartDialogue();
 	void AdvanceDialogue(FName ChoiceRowID = NAME_None);
 	void EndDialogue();
 
@@ -29,11 +29,12 @@ protected:
 
 private:
 	UPROPERTY(EditAnywhere)
-	TObjectPtr<UDataTable> DialogueTable;
+	TObjectPtr<UDataTable> DialogueDataTable;
 
-	UPROPERTY(EditAnywhere)
-	FName StartRowID;
-
+	UPROPERTY(VisibleAnywhere)
 	FName CurrentRowID;
 
+public:
+	FORCEINLINE void SetDialogueDataTable(UDataTable* DataTable) { DialogueDataTable = DataTable; }
+	FORCEINLINE void SetCurrentRowID(FName ID) { CurrentRowID = ID; }
 };

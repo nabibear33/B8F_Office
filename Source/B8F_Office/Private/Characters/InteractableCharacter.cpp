@@ -28,6 +28,12 @@ void AInteractableCharacter::BeginPlay()
 	{
 		StageManager->OnStageStart.AddDynamic(this, &AInteractableCharacter::OnStageStart);
 	}
+
+	if (InteractComponent)
+	{
+		InteractComponent->OnInteractableEntered.AddDynamic(this, &AInteractableCharacter::OnInteractableEntered);
+		InteractComponent->OnInteractableLeft.AddDynamic(this, &AInteractableCharacter::OnInteractableLeft);
+	}
 }
 
 void AInteractableCharacter::OnStageStart(EAnomalyType AnomalyType)
@@ -44,7 +50,7 @@ void AInteractableCharacter::OnInteractableEntered(AActor* InteractableActor, AM
 	bIsInteractable = true;
 }
 
-void AInteractableCharacter::OnInteractableLeft()
+void AInteractableCharacter::OnInteractableLeft(AActor* InteractableActor, AMainCharacter* MainCharacter)
 {
 	bIsInteractable = false;
 }

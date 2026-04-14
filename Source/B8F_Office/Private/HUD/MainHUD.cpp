@@ -5,23 +5,38 @@
 #include "Components/DialogueComponent.h"
 #include "Widgets/DialogueWidget.h"
 
+void AMainHUD::BeginPlay()
+{
+    Super::BeginPlay();
+
+    if (DialogueWidgetClass)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("DialogueWidgetClass Checked"));
+        DialogueWidget = CreateWidget<UDialogueWidget>(GetWorld(), DialogueWidgetClass);
+        if (DialogueWidget)
+        {
+            UE_LOG(LogTemp, Warning, TEXT("Initialize Dialogue Widget"));
+            DialogueWidget->AddToViewport();
+            DialogueWidget->SetVisibility(ESlateVisibility::Hidden);
+        }
+    }
+}
+
 void AMainHUD::ShowDialogueWidget(UDialogueComponent* DialogueComponent)
 {
-	if (!DialogueWidget)
-	{
-		DialogueWidget = CreateWidget<UDialogueWidget>(GetOwningPlayerController());
-	}
+    if (!DialogueWidget || !DialogueComponent) return;
 
-	DialogueComponent->OnDialogueUpdated.RemoveDynamic(DialogueWidget, &UDialogueWidget::OnDialogueUpdated);
-	DialogueComponent->OnDialogueUpdated.AddDynamic(DialogueWidget, &UDialogueWidget::OnDialogueUpdated);
+    DialogueComponent->OnDialogueUpdated.RemoveDynamic(DialogueWidget, &UDialogueWidget::OnDialogueUpdated);
+    DialogueComponent->OnDialogueUpdated.AddDynamic(DialogueWidget, &UDialogueWidget::OnDialogueUpdated);
 
-	DialogueWidget->AddToViewport();
+    UE_LOG(LogTemp, Warning, TEXT("Show Dialogue Widget"));
+    DialogueWidget->SetVisibility(ESlateVisibility::Visible);
 }
 
 void AMainHUD::HideDialogueWidget()
 {
-	if (DialogueWidget)
-	{
-		DialogueWidget->RemoveFromParent();
-	}
+	if (!DialogueWidget) return;
+
+    UE_LOG(LogTemp, Warning, TEXT("Hide Dialogue Widget"));
+	DialogueWidget->SetVisibility(ESlateVisibility::Hidden);
 }
