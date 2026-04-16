@@ -4,6 +4,7 @@
 #include "Components/DialogueComponent.h"
 #include "HUD/MainHUD.h"
 #include "DataTables/DialogueRow.h"
+#include "Controllers/MainCharacterController.h"
 
 UDialogueComponent::UDialogueComponent()
 {
@@ -26,54 +27,92 @@ void UDialogueComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 
 }
 
-void UDialogueComponent::StartDialogue()
+void UDialogueComponent::StartDialogue(UDataTable* DialogueRows, FName ID)
 {
+	SetDialogueDataTable(DialogueRows);
+	SetCurrentRowID(ID);
     UE_LOG(LogTemp, Warning, TEXT("StartDialogue"));
-    APlayerController* PC = GetWorld()->GetFirstPlayerController();
-    if (PC)
-    {
-        AMainHUD* HUD = Cast<AMainHUD>(PC->GetHUD());
-        if (HUD)
-        {
-            HUD->ShowDialogueWidget(this);
-        }
-    }
-
-    AdvanceDialogue(CurrentRowID);
+    AdvanceDialogue();
 }
 
 void UDialogueComponent::AdvanceDialogue(FName ChoiceRowID)
 {
-    FName TargetRow = ChoiceRowID.IsNone() ? CurrentRowID : ChoiceRowID;
-    UE_LOG(LogTemp, Warning, TEXT("ChoiceRowID: %s"), *ChoiceRowID.ToString());
-    UE_LOG(LogTemp, Warning, TEXT("TargetRow: %s"), *TargetRow.ToString());
+    // For Row that requires choice
+    if (bIsWaitingForChoice) return;
 
-    if(!DialogueDataTable)
-    {
-        UE_LOG(LogTemp, Warning, TEXT("No DataTable linked."));
-        return;
-    }
+    FName TargetRow = ChoiceRowID.IsNone() ? CurrentRowID : ChoiceRowID;
+
     FDialogueRow* Row = DialogueDataTable->FindRow<FDialogueRow>(TargetRow, TEXT(""));
 
-    if (!Row || Row->NextRowID.IsNone() && Row->Choices.IsEmpty())
+    if (Row)
     {
+		CurrentRow = *Row;
+    }
+    else
+    {
+        CurrentRow.Reset();
         EndDialogue();
         return;
     }
 
-    CurrentRowID = Row->NextRowID;
     OnDialogueUpdated.Broadcast(*Row);
-    AdvanceDialogue(CurrentRowID);
+
+    if (IsLastRow(Row))
+    {   
+		SetCurrentRowID(NAME_None);
+        return;
+    }
+
+    if (IsRowRequiresChoice(Row))
+    {
+		CurrentChoiceIdx = 0;
+		bIsWaitingForChoice = true;
+        return;
+    }
+
+    // update current row id in advance in normal case
+    SetCurrentRowID(Row->NextRowID);
+}
+
+bool UDialogueComponent::IsRowRequiresChoice(FDialogueRow* Row)
+{
+    return Row->NextRowID.IsNone() && !Row->Choices.IsEmpty();
+}
+
+bool UDialogueComponent::IsLastRow(FDialogueRow* Row)
+{
+    return Row->NextRowID.IsNone() && Row->Choices.IsEmpty();
 }
 
 void UDialogueComponent::EndDialogue()
 {
     UE_LOG(LogTemp, Warning, TEXT("EndDialogue"));
-    APlayerController* PC = GetWorld()->GetFirstPlayerController();
-    if (AMainHUD* HUD = Cast<AMainHUD>(PC->GetHUD()))
+    AMainCharacterController* PC = Cast<AMainCharacterController>(GetWorld()->GetFirstPlayerController());
+    if (PC)
     {
-        HUD->HideDialogueWidget();
+        PC->EndDialogue();
     }
-
+    SetDialogueDataTable(nullptr);
+    SetCurrentRowID(NAME_None);
+    CurrentRow.Reset();
 }
+
+void UDialogueComponent::NavigateCurrentChoiceIdx(float Value)
+{
+	if (CurrentRow.IsSet() && !IsCurrentRowHasChoices()) return;
+
+    int32 Delta = Value > 0.f ? -1 : 1;
+	CurrentChoiceIdx = FMath::Clamp(CurrentChoiceIdx + Delta, 0, GetCurrentChoiceNum() - 1);
+}
+
+void UDialogueComponent::OnSelectCurrentChoice()
+{
+    if (!CurrentRow.IsSet() || !IsCurrentRowHasChoices()) return;
+    FName SelectedChoiceRowID = CurrentRow->Choices[CurrentChoiceIdx].NextRowID;
+    CurrentChoiceIdx = -1;
+	bIsWaitingForChoice = false;
+    AdvanceDialogue(SelectedChoiceRowID);
+}
+
+
 

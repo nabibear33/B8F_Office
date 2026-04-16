@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "GameLogics/Delegates.h"
+#include "DataTables/DialogueRow.h"
 #include "DialogueComponent.generated.h"
 
 
@@ -17,9 +18,12 @@ public:
 	UDialogueComponent();
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	void StartDialogue();
+	void StartDialogue(UDataTable* DialogueRows, FName ID);
 	void AdvanceDialogue(FName ChoiceRowID = NAME_None);
 	void EndDialogue();
+
+	void NavigateCurrentChoiceIdx(float Value);
+	void OnSelectCurrentChoice();
 
 	UPROPERTY()
 	FOnDialogueUpdated OnDialogueUpdated;
@@ -34,7 +38,19 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	FName CurrentRowID;
 
+	TOptional<FDialogueRow> CurrentRow;
+
+	UPROPERTY(VisibleAnywhere)
+	int32 CurrentChoiceIdx = -1;
+
+	UPROPERTY(VisibleAnywhere)
+	bool bIsWaitingForChoice = false;
+
+	bool IsRowRequiresChoice(FDialogueRow* Row);
+	bool IsLastRow(FDialogueRow* Row);
 public:
 	FORCEINLINE void SetDialogueDataTable(UDataTable* DataTable) { DialogueDataTable = DataTable; }
 	FORCEINLINE void SetCurrentRowID(FName ID) { CurrentRowID = ID; }
+	FORCEINLINE bool IsCurrentRowHasChoices() const { return CurrentRow.IsSet() && !CurrentRow->Choices.IsEmpty(); }
+	FORCEINLINE int32 GetCurrentChoiceNum() const { return CurrentRow.IsSet() ? CurrentRow->Choices.Num() : 0; }
 };

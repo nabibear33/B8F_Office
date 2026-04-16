@@ -10,10 +10,14 @@ void ARenewa::Interact_Implementation()
 	if (!GetIsInteractable()) return;
 	UE_LOG(LogTemp, Warning, TEXT("Renewa Interaction"));
 	
-	// call playercontroller and 
 	AMainCharacterController* PC = Cast<AMainCharacterController>(GetWorld()->GetFirstPlayerController());
 	if (PC)
 	{
+		if (!DialogueDataTable)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("No DataTable linked."));
+			return;
+		}
 		PC->StartDialogue(DialogueDataTable, FName(TEXT("Test_001")));
 	}
 }
