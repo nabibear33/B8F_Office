@@ -8,6 +8,7 @@
 #include "HUD/MainHUD.h"
 #include "EnhancedInputSubsystems.h"
 #include "Components/DialogueComponent.h"
+#include "Widgets/DialogueWidget.h"
 #include "EnhancedInputComponent.h"
 
 AMainCharacterController::AMainCharacterController()
@@ -26,6 +27,12 @@ void AMainCharacterController::BeginPlay()
     if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(this->GetLocalPlayer()))
     {
         Subsystem->AddMappingContext(IMC_Default, 0);
+    }
+
+    AMainHUD* HUD = Cast<AMainHUD>(GetHUD());
+    if (DialogueComponent && HUD)
+    {
+        DialogueComponent->OnDialogueUpdated.AddDynamic(HUD->GetDialogueWidget(), &UDialogueWidget::OnDialogueUpdated);
     }
 
 }
@@ -69,8 +76,6 @@ void AMainCharacterController::SetControlRotation(const FRotator& NewRotation)
 
 void AMainCharacterController::StartDialogue(UDataTable* DialogueDataTable, FName ID)
 {
-    DialogueComponent->StartDialogue(DialogueDataTable, ID);
-
     SetDialogueIMC();
 
     AMainHUD* HUD = Cast<AMainHUD>(GetHUD());
@@ -78,6 +83,9 @@ void AMainCharacterController::StartDialogue(UDataTable* DialogueDataTable, FNam
     {
         HUD->ShowDialogueWidget(DialogueComponent);
     }
+
+    DialogueComponent->StartDialogue(DialogueDataTable, ID);
+
 }
 
 void AMainCharacterController::SetDialogueIMC()

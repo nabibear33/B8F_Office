@@ -29,4 +29,7 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<UDialogueWidget> DialogueWidget;
+
+public:
+	FORCEINLINE UDialogueWidget* GetDialogueWidget() { return DialogueWidget; }
 };

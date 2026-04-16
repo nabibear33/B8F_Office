@@ -26,9 +26,6 @@ void AMainHUD::ShowDialogueWidget(UDialogueComponent* DialogueComponent)
 {
     if (!DialogueWidget || !DialogueComponent) return;
 
-    DialogueComponent->OnDialogueUpdated.RemoveDynamic(DialogueWidget, &UDialogueWidget::OnDialogueUpdated);
-    DialogueComponent->OnDialogueUpdated.AddDynamic(DialogueWidget, &UDialogueWidget::OnDialogueUpdated);
-
     UE_LOG(LogTemp, Warning, TEXT("Show Dialogue Widget"));
     DialogueWidget->SetVisibility(ESlateVisibility::Visible);
 }

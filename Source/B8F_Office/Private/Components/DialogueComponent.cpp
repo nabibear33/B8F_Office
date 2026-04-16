@@ -50,6 +50,7 @@ void UDialogueComponent::AdvanceDialogue(FName ChoiceRowID)
     }
     else
     {
+        UE_LOG(LogTemp, Warning, TEXT("Invalid Row. End Dialogue."));
         CurrentRow.Reset();
         EndDialogue();
         return;
