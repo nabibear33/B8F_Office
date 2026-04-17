@@ -4,6 +4,7 @@
 #include "HUD/MainHUD.h"
 #include "Components/DialogueComponent.h"
 #include "Widgets/DialogueWidget.h"
+#include "Controllers/MainCharacterController.h"
 
 void AMainHUD::BeginPlay()
 {
@@ -20,6 +21,12 @@ void AMainHUD::BeginPlay()
             DialogueWidget->SetVisibility(ESlateVisibility::Hidden);
         }
     }
+
+	// call OnDialogueWidgetReady to bind delegate in controller after widget is created
+    if (AMainCharacterController* Controller = Cast<AMainCharacterController>(GetOwningPlayerController()))
+    {
+        Controller->OnDialogueWidgetReady();
+	}
 }
 
 void AMainHUD::ShowDialogueWidget(UDialogueComponent* DialogueComponent)

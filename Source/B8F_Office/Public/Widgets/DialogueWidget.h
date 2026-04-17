@@ -8,6 +8,7 @@
 #include "DialogueWidget.generated.h"
 
 class UTextBlock;
+class UChoiceList;
 
 /**
  * 
@@ -27,4 +28,7 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> SpeakerIDText;
+
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UChoiceList> ChoiceList;
 };

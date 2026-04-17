@@ -29,12 +29,15 @@ void AMainCharacterController::BeginPlay()
         Subsystem->AddMappingContext(IMC_Default, 0);
     }
 
+}
+
+void AMainCharacterController::OnDialogueWidgetReady()
+{
     AMainHUD* HUD = Cast<AMainHUD>(GetHUD());
     if (DialogueComponent && HUD)
     {
         DialogueComponent->OnDialogueUpdated.AddDynamic(HUD->GetDialogueWidget(), &UDialogueWidget::OnDialogueUpdated);
     }
-
 }
 
 void AMainCharacterController::SetupInputComponent()
@@ -65,7 +68,8 @@ void AMainCharacterController::OnNavigateChoice(const FInputActionValue& Value)
 
 void AMainCharacterController::OnSelectChoice()
 {
-
+	UE_LOG(LogTemp, Warning, TEXT("Select Choice"));
+	DialogueComponent->OnSelectCurrentChoice();
 }
 
 

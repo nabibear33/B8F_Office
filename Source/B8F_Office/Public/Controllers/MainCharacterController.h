@@ -33,6 +33,8 @@ public:
 
 	void SetDefaultIMC();
 	
+	void OnDialogueWidgetReady();
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;

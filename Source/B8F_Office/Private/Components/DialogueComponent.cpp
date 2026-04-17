@@ -109,6 +109,7 @@ void UDialogueComponent::NavigateCurrentChoiceIdx(float Value)
 void UDialogueComponent::OnSelectCurrentChoice()
 {
     if (!CurrentRow.IsSet() || !IsCurrentRowHasChoices()) return;
+	UE_LOG(LogTemp, Warning, TEXT("Select Choice: %d"), CurrentChoiceIdx);
     FName SelectedChoiceRowID = CurrentRow->Choices[CurrentChoiceIdx].NextRowID;
     CurrentChoiceIdx = -1;
 	bIsWaitingForChoice = false;
