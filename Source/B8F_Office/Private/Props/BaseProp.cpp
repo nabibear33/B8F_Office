@@ -28,8 +28,6 @@ void ABaseProp::BeginPlay()
 	{
 		StageManager->OnStageStart.AddDynamic(this, &ABaseProp::OnStageStart);
 	}
-
-	InteractComponent->SetInteractEnabled(bIsInteractable);
 }
 
 void ABaseProp::OnStageStart(EAnomalyType AnomalyType)
@@ -38,5 +36,6 @@ void ABaseProp::OnStageStart(EAnomalyType AnomalyType)
 
 void ABaseProp::SetNormal()
 {
+	InteractComponent->SetInteractDisabled();
 }
 

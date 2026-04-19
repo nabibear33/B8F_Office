@@ -47,16 +47,17 @@ UInteractComponent* AInteractableCharacter::GetInteractComponent()
 
 void AInteractableCharacter::OnInteractableEntered(AActor* InteractableActor, AMainCharacter* MainCharacter)
 {
-	bIsInteractable = true;
+	bIsInInteractRange = true;
 }
 
 void AInteractableCharacter::OnInteractableLeft(AActor* InteractableActor, AMainCharacter* MainCharacter)
 {
-	bIsInteractable = false;
+	bIsInInteractRange = false;
 }
 
 void AInteractableCharacter::SetNormal()
 {
+	InteractComponent->SetInteractDisabled();
 	DisableCharacterMesh();
 }
 

@@ -19,18 +19,21 @@ UInteractComponent::UInteractComponent()
 
 }
 
-void UInteractComponent::SetInteractEnabled(bool bEnable)
+void UInteractComponent::SetInteractEnabled()
 {
-	
+	bIsOwnerInteractable = true;
 
-	InteractableArea->SetCollisionEnabled(
-		bEnable ? ECollisionEnabled::QueryOnly : ECollisionEnabled::NoCollision
-	);
+	InteractableArea->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+}
 
-	if (!bEnable)
-	{
-		InteractWidgetComponent->SetVisibility(false);
-	}
+void UInteractComponent::SetInteractDisabled()
+{
+	bIsOwnerInteractable = false;
+
+	InteractableArea->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	// For the case when calling SetInteractDisabled() while player is still in the interactable area, we need to hide the widget as well.
+	InteractWidgetComponent->SetVisibility(false);
 }
 
 void UInteractComponent::OnRegister()
@@ -63,6 +66,7 @@ void UInteractComponent::BeginPlay()
 	if (InteractWidgetClass)
 	{
 		InteractWidgetComponent->SetWidgetClass(InteractWidgetClass);
+		InteractWidgetComponent->SetVisibility(false);
 	}
 
 	IInteractable* Interactable = Cast<IInteractable>(GetOwner());
@@ -84,6 +88,8 @@ void UInteractComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 
 void UInteractComponent::OnBeginOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	if (!IsOwnerInteractable()) return;
+	
 	AMainCharacter* Player = Cast<AMainCharacter>(OtherActor);
 	if (!Player) return;
 
@@ -97,6 +103,8 @@ void UInteractComponent::OnBeginOverlap(class UPrimitiveComponent* OverlappedCom
 
 void UInteractComponent::OnEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
+	if (!IsOwnerInteractable()) return;
+
 	AMainCharacter* Player = Cast<AMainCharacter>(OtherActor);
 	if (!Player) return;
 

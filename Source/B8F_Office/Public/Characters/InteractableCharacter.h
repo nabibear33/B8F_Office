@@ -42,6 +42,8 @@ protected:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<ATriggerArea> LinkedArea;
 
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UInteractComponent> InteractComponent;
 private:
 
 
@@ -52,11 +54,9 @@ private:
 	void OnInteractableLeft(AActor* InteractableActor, AMainCharacter* MainCharacter);
 
 	UPROPERTY(EditAnywhere)
-	bool bIsInteractable = false;
+	bool bIsInInteractRange = false;
 
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<UInteractComponent> InteractComponent;
 	
 public:
-	FORCEINLINE bool GetIsInteractable() { return bIsInteractable; }
+	FORCEINLINE bool GetIsInteractable() { return bIsInInteractRange; }
 };

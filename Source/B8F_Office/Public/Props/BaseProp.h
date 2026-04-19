@@ -37,7 +37,7 @@ private:
 	TObjectPtr<USceneComponent> RootSceneComponent;
 	
 	UPROPERTY(EditAnywhere)
-	bool bIsInteractable = false;
+	bool bIsInInteractRange = false;
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UInteractComponent> InteractComponent;

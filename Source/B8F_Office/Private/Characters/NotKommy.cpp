@@ -55,7 +55,12 @@ void ANotKommy::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* Othe
 void ANotKommy::OnAreaTriggered(AActor* TriggeringArea, AActor* OtherActor)
 {
 	EnableCharacterMesh();
-	ChasePlayer(OtherActor);
+
+	AMainCharacter* MainCharacter = Cast<AMainCharacter>(OtherActor);
+	if (MainCharacter)
+	{
+		ChasePlayer(MainCharacter);
+	}
 }
 
 void ANotKommy::OnStageStart(EAnomalyType AnomalyType)

@@ -38,7 +38,9 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UWidgetComponent> InteractWidgetComponent;
 
-	void SetInteractEnabled(bool bEnable);
+	void SetInteractEnabled();
+
+	void SetInteractDisabled();
 
 
 protected:
@@ -51,5 +53,11 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<UInteractWidget> InteractWidget;
+
+	UPROPERTY()
+	bool bIsOwnerInteractable = false;
+
+public:
+	FORCEINLINE bool IsOwnerInteractable() { return bIsOwnerInteractable; }
 		
 };

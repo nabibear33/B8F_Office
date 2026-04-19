@@ -40,8 +40,8 @@ void ASongPyeonSpawner::SpawnSingleSongPyeon()
 	}
 
 	FVector SpawnLocation = GetActorLocation() + FVector(
-		FMath::RandRange(-100.f, 100.f),
-		FMath::RandRange(-100.f, 100.f),
+		FMath::RandRange(-2.f * SpawnDivergence, 2.f * SpawnDivergence),
+		FMath::RandRange(-2.f * SpawnDivergence, 2.f * SpawnDivergence),
 		0.f
 	);
 
@@ -59,10 +59,11 @@ void ASongPyeonSpawner::SpawnSingleSongPyeon()
 		MeshComp->SetStaticMesh(SongPyeonMesh);
 		MeshComp->SetSimulatePhysics(true);
 		MeshComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		MeshComp->SetCollisionResponseToChannel(ECC_Pawn, ECollisionResponse::ECR_Overlap);
 		MeshComp->AddImpulse(FVector(
-			FMath::RandRange(-50.f, 50.f),
-			FMath::RandRange(-50.f, 50.f),
-			FMath::RandRange(50.f, 150.f)
+			FMath::RandRange(-SpawnDivergence, SpawnDivergence),
+			FMath::RandRange(-SpawnDivergence, SpawnDivergence),
+			FMath::RandRange(-SpawnVelocity, -0.7f * SpawnVelocity)
 		));
 	}
 

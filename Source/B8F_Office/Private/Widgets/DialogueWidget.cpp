@@ -11,6 +11,11 @@ void UDialogueWidget::OnDialogueUpdated(const FDialogueRow& Row)
 	SpeakerIDText->SetText(FText::FromName(Row.SpeakerID));
 	if(!Row.Choices.IsEmpty())
 	{
+		ChoiceList->SetVisibility(ESlateVisibility::Visible);
 		ChoiceList->SetChoiceItems(Row);
+	}
+	else
+	{
+		ChoiceList->SetVisibility(ESlateVisibility::Collapsed);
 	}
 }

@@ -37,6 +37,12 @@ private:
 	UPROPERTY(EditAnywhere)
 	int32 MaxSpawnCount = 100;
 
+	UPROPERTY(EditAnywhere)
+	float SpawnDivergence = 50.f;
+
+	UPROPERTY(EditAnywhere)
+	float SpawnVelocity = 200.f;
+
 	UPROPERTY(VisibleAnywhere)
 	int32 CurrentSpawnCount = 0;
 

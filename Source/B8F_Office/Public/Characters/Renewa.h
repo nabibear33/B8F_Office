@@ -26,4 +26,6 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UDataTable> DialogueDataTable;
+
+	bool bHasEverInteracted = false;
 };
