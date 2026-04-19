@@ -16,6 +16,8 @@ void ASongPyeonSpawner::BeginPlay()
 
 void ASongPyeonSpawner::OnStageStart(EAnomalyType AnomalyType)
 {
+	ClearSongPyeons();
+
 	switch (AnomalyType)
 	{
 		case EAnomalyType::EAT_SongPyeon:
@@ -30,6 +32,7 @@ void ASongPyeonSpawner::OnStageStart(EAnomalyType AnomalyType)
 
 void ASongPyeonSpawner::SetNormal()
 {
+	
 }
 
 void ASongPyeonSpawner::SpawnSingleSongPyeon()
@@ -51,6 +54,7 @@ void ASongPyeonSpawner::SpawnSingleSongPyeon()
 	AStaticMeshActor* SongPyeon = GetWorld()->SpawnActor<AStaticMeshActor>(
 		AStaticMeshActor::StaticClass(), SpawnLocation, FRotator::ZeroRotator
 	);
+	SpawnedSongpyeons.Add(SongPyeon);
 
 	if (SongPyeon && SongPyeonMesh)
 	{
@@ -81,6 +85,21 @@ void ASongPyeonSpawner::SpawnSongPyeon(AActor* TriggeringActor, AActor* Triggere
 		1.f / SpawnRate,
 		true
 	);
+}
+
+void ASongPyeonSpawner::ClearSongPyeons()
+{
+	GetWorldTimerManager().ClearTimer(SpawnTimerHandle);
+
+	for(AActor* SongPyeon : SpawnedSongpyeons)
+	{
+		if (SongPyeon)
+		{
+			SongPyeon->Destroy();
+		}
+	}
+	SpawnedSongpyeons.Empty();
+	CurrentSpawnCount = 0;
 }
 
 

@@ -28,6 +28,8 @@ private:
 	UFUNCTION()
 	void SpawnSongPyeon(AActor* TriggeringActor, AActor* TriggeredCharacter);
 
+	void ClearSongPyeons();
+
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UStaticMesh> SongPyeonMesh;
 
@@ -47,4 +49,7 @@ private:
 	int32 CurrentSpawnCount = 0;
 
 	FTimerHandle SpawnTimerHandle;
+
+	UPROPERTY()
+	TArray<TObjectPtr<AActor>> SpawnedSongpyeons;
 };
