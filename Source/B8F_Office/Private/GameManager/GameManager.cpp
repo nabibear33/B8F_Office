@@ -7,7 +7,6 @@
 #include "GameLogics/TeleportArea.h"
 #include "Characters/MainCharacter.h"
 #include "Characters/NotKommy.h"
-#include "GameLogics/NotKommyTriggerArea.h"
 #include "GameLogics/Types.h"
 #include "GameInstances/SaveGameInstanceSubsystem.h"
 #include "Save/MainSaveGame.h"

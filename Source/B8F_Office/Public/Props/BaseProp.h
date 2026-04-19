@@ -8,6 +8,7 @@
 #include "Interfaces/Interactable.h"
 #include "BaseProp.generated.h"
 
+class ATriggerArea;
 class UInteractComponent;
 
 UCLASS()
@@ -28,6 +29,9 @@ protected:
 
 	virtual void SetNormal();
 
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<ATriggerArea> LinkedArea;
+
 private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USceneComponent> RootSceneComponent;
@@ -37,4 +41,5 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UInteractComponent> InteractComponent;
+
 };

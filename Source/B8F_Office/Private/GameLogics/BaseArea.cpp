@@ -3,6 +3,7 @@
 #include "GameLogics/BaseArea.h"
 #include "Components/BoxComponent.h"
 #include "GameManager/StageManager.h"
+#include "GameLogics/TriggerArea.h"
 #include "Kismet/GameplayStatics.h"
 
 ABaseArea::ABaseArea()

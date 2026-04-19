@@ -26,7 +26,7 @@ public:
 	FOnPlayDeathScene OnPlayDeathScene;
 
 	UFUNCTION()
-	void OnNotKommyTriggerAreaTriggered(AActor* TriggeringArea, AActor* OtherActor);
+	void OnAreaTriggered(AActor* TriggeringArea, AActor* OtherActor);
 protected:
 	virtual void BeginPlay() override;
 

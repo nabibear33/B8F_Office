@@ -12,7 +12,7 @@
 class AStageStartArea;
 class ATeleportArea;
 class AStageManager;
-class ANotKommyTriggerArea;
+class ATriggerArea;
 class AMainCharacter;
 class ACutsceneManager;
 class ANotKommy;
@@ -46,7 +46,7 @@ private:
 	TObjectPtr<ANotKommy> NotKommy;
 
 	UPROPERTY(EditAnywhere)
-	TObjectPtr<ANotKommyTriggerArea> NotKommyTriggerArea;
+	TObjectPtr<ATriggerArea> NotKommyTriggerArea;
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<AMainCharacter> Player;

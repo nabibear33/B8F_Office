@@ -34,7 +34,6 @@ void ABaseProp::BeginPlay()
 
 void ABaseProp::OnStageStart(EAnomalyType AnomalyType)
 {
-
 }
 
 void ABaseProp::SetNormal()

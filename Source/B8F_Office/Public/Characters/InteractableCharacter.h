@@ -10,6 +10,7 @@
 
 class UInteractComponent;
 class AMainCharacter;
+class ATriggerArea;
 
 /**
  * 
@@ -37,6 +38,9 @@ protected:
 
 	UFUNCTION()
 	virtual void OnStageStart(EAnomalyType AnomalyType);
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<ATriggerArea> LinkedArea;
 
 private:
 

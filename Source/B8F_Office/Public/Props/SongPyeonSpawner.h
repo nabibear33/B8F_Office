@@ -14,4 +14,31 @@ class B8F_OFFICE_API ASongPyeonSpawner : public ABaseProp
 {
 	GENERATED_BODY()
 	
+public:
+	ASongPyeonSpawner();
+
+protected:
+	virtual void BeginPlay() override;
+	virtual void OnStageStart(EAnomalyType AnomalyType) override;
+	virtual void SetNormal() override;
+
+private:
+	void SpawnSingleSongPyeon();
+
+	UFUNCTION()
+	void SpawnSongPyeon(AActor* TriggeringActor, AActor* TriggeredCharacter);
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UStaticMesh> SongPyeonMesh;
+
+	UPROPERTY(EditAnywhere)
+	int32 SpawnRate = 50;
+
+	UPROPERTY(EditAnywhere)
+	int32 MaxSpawnCount = 100;
+
+	UPROPERTY(VisibleAnywhere)
+	int32 CurrentSpawnCount = 0;
+
+	FTimerHandle SpawnTimerHandle;
 };

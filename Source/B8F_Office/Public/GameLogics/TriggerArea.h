@@ -4,20 +4,19 @@
 
 #include "CoreMinimal.h"
 #include "GameLogics/BaseArea.h"
-#include "NotKommyTriggerArea.generated.h"
-
-class ANotKommy;
+#include "GameLogics/Types.h"
+#include "TriggerArea.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class B8F_OFFICE_API ANotKommyTriggerArea : public ABaseArea
+class B8F_OFFICE_API ATriggerArea : public ABaseArea
 {
 	GENERATED_BODY()
 
 public:
-	ANotKommyTriggerArea();
+	ATriggerArea();
 
 protected:
 	virtual void BeginPlay() override;
@@ -30,5 +29,5 @@ private:
 	virtual void SetNormal() override;
 
 	UPROPERTY(EditAnywhere)
-	TObjectPtr<ANotKommy> LinkedKommy;
+	EAnomalyType LinkedAnomalyType;
 };

@@ -1,6 +1,6 @@
 
 #include "GameManager/StageManager.h"
-#include "GameLogics/NotKommyTriggerArea.h"
+#include "GameLogics/TriggerArea.h"
 #include "Components/InteractComponent.h"
 #include "Characters/MainCharacter.h"
 #include "Characters/NotKommy.h"

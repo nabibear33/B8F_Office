@@ -20,7 +20,7 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> StandeeMesh;
 
 	UPROPERTY(EditAnywhere)

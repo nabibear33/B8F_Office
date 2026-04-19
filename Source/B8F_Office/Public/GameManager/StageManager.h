@@ -10,7 +10,7 @@
 
 
 class ANotKommy;
-class ANotKommyTriggerArea;
+class ATriggerArea;
 class IInteractable;
 
 USTRUCT(BlueprintType)

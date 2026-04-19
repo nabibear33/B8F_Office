@@ -4,6 +4,7 @@
 #include "AIController.h"
 #include "AITypes.h"
 #include "Navigation/PathFollowingComponent.h"
+#include "GameLogics/TriggerArea.h"
 #include "Components/CapsuleComponent.h"
 
 ANotKommy::ANotKommy()
@@ -51,7 +52,7 @@ void ANotKommy::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* Othe
 	OnPlayDeathScene.Broadcast(EDeathSceneType::EDS_NotKommy);
 }
 
-void ANotKommy::OnNotKommyTriggerAreaTriggered(AActor* TriggeringArea, AActor* OtherActor)
+void ANotKommy::OnAreaTriggered(AActor* TriggeringArea, AActor* OtherActor)
 {
 	EnableCharacterMesh();
 	ChasePlayer(OtherActor);
@@ -63,6 +64,8 @@ void ANotKommy::OnStageStart(EAnomalyType AnomalyType)
 	switch (AnomalyType)
 	{
 		case EAnomalyType::EAT_NotKommyChase:
+			LinkedArea->OnAreaTriggered.RemoveDynamic(this, &ANotKommy::OnAreaTriggered);
+			LinkedArea->OnAreaTriggered.AddDynamic(this, &ANotKommy::OnAreaTriggered);
 			// Actual action will begin when player enters the trigger area
 			SetNormal();
 			break;
