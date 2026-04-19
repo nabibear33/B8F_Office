@@ -8,7 +8,7 @@
 #include "ChoiceList.generated.h"
 
 class UChoiceItem;
-class UWrapBox;
+class UVerticalBox;
 
 /**
  * 
@@ -21,11 +21,16 @@ class B8F_OFFICE_API UChoiceList : public UUserWidget
 public:
 	void SetChoiceItems(const FDialogueRow& Row);
 
+	UFUNCTION()
+	void OnCurrentHighlightedChoiceUpdated(int32 CurrentHighlightedChoiceIndex);
 	
 private:
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UWrapBox> ChoiceItemWrapper;
+	TObjectPtr<UVerticalBox> ChoiceItemWrapper;
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UChoiceItem> ChoiceItemClass;
+
+	UPROPERTY()
+	TArray<TObjectPtr<UChoiceItem>> ChoiceItems;
 };

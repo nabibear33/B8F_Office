@@ -68,6 +68,7 @@ void UDialogueComponent::AdvanceDialogue(FName ChoiceRowID)
     {
 		CurrentChoiceIdx = 0;
 		bIsWaitingForChoice = true;
+        OnCurrentHighlightedChoiceUpdated.Broadcast(CurrentChoiceIdx);
         return;
     }
 
@@ -104,6 +105,8 @@ void UDialogueComponent::NavigateCurrentChoiceIdx(float Value)
 
     int32 Delta = Value > 0.f ? -1 : 1;
 	CurrentChoiceIdx = FMath::Clamp(CurrentChoiceIdx + Delta, 0, GetCurrentChoiceNum() - 1);
+
+	OnCurrentHighlightedChoiceUpdated.Broadcast(CurrentChoiceIdx);
 }
 
 void UDialogueComponent::OnSelectCurrentChoice()

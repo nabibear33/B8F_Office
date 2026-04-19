@@ -28,6 +28,9 @@ public:
 	UPROPERTY()
 	FOnDialogueUpdated OnDialogueUpdated;
 
+	UPROPERTY()
+	FOnCurrentHighlightedChoiceUpdated OnCurrentHighlightedChoiceUpdated;
+
 protected:
 	virtual void BeginPlay() override;
 

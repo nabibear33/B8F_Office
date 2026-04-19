@@ -7,6 +7,7 @@
 #include "ChoiceItem.generated.h"
 
 class UTextBlock;
+class UImage;
 
 /**
  * 
@@ -19,8 +20,13 @@ class B8F_OFFICE_API UChoiceItem : public UUserWidget
 public:
 	void SetChoiceText(const FText& Text);
 
+	void HighlightChoice(bool bHighlight);
+
 private:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> ChoiceText;
+
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UImage> TextBackground;
 	
 };

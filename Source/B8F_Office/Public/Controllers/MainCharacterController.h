@@ -63,5 +63,4 @@ private:
 	void OnNavigateChoice(const FInputActionValue& Value);
 
 	void OnSelectChoice();
-
 };

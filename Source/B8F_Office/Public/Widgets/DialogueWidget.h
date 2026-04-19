@@ -31,4 +31,7 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UChoiceList> ChoiceList;
+
+public:
+	FORCEINLINE UChoiceList* GetChoiceList() const { return ChoiceList; }
 };

@@ -9,6 +9,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "Components/DialogueComponent.h"
 #include "Widgets/DialogueWidget.h"
+#include "Widgets/ChoiceList.h"
 #include "EnhancedInputComponent.h"
 
 AMainCharacterController::AMainCharacterController()
@@ -37,6 +38,7 @@ void AMainCharacterController::OnDialogueWidgetReady()
     if (DialogueComponent && HUD)
     {
         DialogueComponent->OnDialogueUpdated.AddDynamic(HUD->GetDialogueWidget(), &UDialogueWidget::OnDialogueUpdated);
+        DialogueComponent->OnCurrentHighlightedChoiceUpdated.AddDynamic(HUD->GetDialogueWidget()->GetChoiceList(), &UChoiceList::OnCurrentHighlightedChoiceUpdated);
     }
 }
 
@@ -64,6 +66,7 @@ void AMainCharacterController::OnNavigateChoice(const FInputActionValue& Value)
 {
     float InputValue = Value.Get<float>();
 	DialogueComponent->NavigateCurrentChoiceIdx(InputValue);
+    
 }
 
 void AMainCharacterController::OnSelectChoice()
