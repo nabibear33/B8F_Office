@@ -15,7 +15,7 @@ void AAppearOnAnomalyProp::BeginPlay()
 	Super::BeginPlay();
 
 	MeshComponent->SetStaticMesh(MeshToAppear);
-	MeshComponent->SetVisibility(false);
+	
 }
 
 void AAppearOnAnomalyProp::OnStageStart(EAnomalyType AnomalyType)
@@ -24,4 +24,14 @@ void AAppearOnAnomalyProp::OnStageStart(EAnomalyType AnomalyType)
 	{
 		MeshComponent->SetVisibility(true);
 	}
+	else
+	{
+		SetNormal();
+	}
+}
+
+void AAppearOnAnomalyProp::SetNormal()
+{
+	MeshComponent->SetVisibility(false);
+	MeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }

@@ -22,6 +22,7 @@ protected:
 
 private:
 	virtual void OnStageStart(EAnomalyType AnomalyType) override;
+	virtual void SetNormal() override;
 
 	UPROPERTY()
 	TObjectPtr<UStaticMeshComponent> MeshComponent;

@@ -24,6 +24,7 @@ enum class EAnomalyType : uint8
 	EAT_ChangeStandee UMETA(Displayname = "Change Standee"),
 	EAT_SongPyeon UMETA(Displayname = "Songpyeon"),
 	EAT_BurningTree UMETA(Displayname = "Burning Tree"),
+	EAT_LightOff UMETA(Displayname = "Light Off"),
 	EAT_MAX UMETA(Hidden)
 };
 
@@ -42,6 +43,7 @@ struct FAnomalyTypeHelper
 			case EAnomalyType::EAT_ChangeStandee:
 			case EAnomalyType::EAT_SongPyeon:
 			case EAnomalyType::EAT_BurningTree:
+			case EAnomalyType::EAT_LightOff:
 			default:
 				return false;
 		}

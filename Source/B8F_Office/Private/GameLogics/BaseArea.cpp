@@ -4,6 +4,7 @@
 #include "Components/BoxComponent.h"
 #include "GameManager/StageManager.h"
 #include "GameLogics/TriggerArea.h"
+#include "Characters/MainCharacter.h"
 #include "Kismet/GameplayStatics.h"
 
 ABaseArea::ABaseArea()
@@ -41,6 +42,11 @@ void ABaseArea::DisableArea()
 
 void ABaseArea::OnBeginOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	AMainCharacter* MainCharacter = Cast<AMainCharacter>(OtherActor);
+	if (!MainCharacter) return;
+
+	UE_LOG(LogTemp, Warning, TEXT("TriggerArea : %s"), *OverlappedComp->GetOwner()->GetActorLabel());
+
 	DisableArea();
 
 	OnAreaTriggered.Broadcast(OverlappedComp->GetOwner(), OtherActor);
