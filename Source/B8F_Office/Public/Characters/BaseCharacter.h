@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Interfaces/Interactable.h"
+#include "GameLogics/Types.h"
 #include "BaseCharacter.generated.h"
 
 
@@ -21,7 +22,10 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-private:	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	ECharacterState CharacterState;
+
+private:
 
 
 };

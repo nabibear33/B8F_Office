@@ -10,6 +10,8 @@ ABaseCharacter::ABaseCharacter()
 void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	CharacterState = ECharacterState::ECS_Idle;
 }
 
 void ABaseCharacter::Tick(float DeltaTime)

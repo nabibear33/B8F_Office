@@ -28,6 +28,7 @@ void ANotKommy::SetNormal()
 	Super::SetNormal();
 
 	SetActorLocation(InitialLocation);
+	CharacterState = ECharacterState::ECS_Idle;
 }
 
 void ANotKommy::ChasePlayer(AActor* Player)

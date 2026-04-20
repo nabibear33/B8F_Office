@@ -37,9 +37,6 @@ private:
 
 	TObjectPtr<AAIController> Controller;
 
-	UPROPERTY(VisibleAnywhere)
-	ECharacterState CharacterState;
-
 	UFUNCTION()
 	virtual void OnBeginOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
