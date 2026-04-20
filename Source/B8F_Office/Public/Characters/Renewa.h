@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Characters/InteractableCharacter.h"
+#include "GameLogics/Delegates.h"
 #include "DataTables/DialogueRow.h"
 #include "Renewa.generated.h"
 
@@ -18,6 +19,8 @@ class B8F_OFFICE_API ARenewa : public AInteractableCharacter
 	GENERATED_BODY()
 
 public:
+	UPROPERTY()
+	FOnPlayDeathScene OnPlayDeathScene;
 
 private:
 	virtual void Interact_Implementation() override;

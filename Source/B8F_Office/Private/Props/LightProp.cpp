@@ -61,5 +61,8 @@ void ALightProp::SetNormal()
 	RectLightComponent->SetVisibility(true);
 	// RectLightComponent->SetIntensity(3000.f);
 	RectLightComponent->SetLightColor(FLinearColor::White);
-	LinkedArea->OnAreaTriggered.RemoveDynamic(this, &ALightProp::AnomalyLightOff);
+	if (LinkedArea)
+	{
+		LinkedArea->OnAreaTriggered.RemoveDynamic(this, &ALightProp::AnomalyLightOff);
+	}
 }
