@@ -4,15 +4,15 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Props/BaseProp.h"
-#include "FrameProp.generated.h"
+#include "TextureChangeableProp.generated.h"
 
 UCLASS()
-class B8F_OFFICE_API AFrameProp : public ABaseProp
+class B8F_OFFICE_API ATextureChangeableProp : public ABaseProp
 {
 	GENERATED_BODY()
 	
 public:	
-	AFrameProp();
+	ATextureChangeableProp();
 
 protected:
 	virtual void BeginPlay() override;
@@ -21,10 +21,10 @@ protected:
 
 private:	
 	UPROPERTY(EditAnywhere)
-	TObjectPtr<UStaticMeshComponent> FrameMesh;
+	TObjectPtr<UStaticMeshComponent> MeshComponent;
 
 	UPROPERTY(EditAnywhere)
-	TArray<TObjectPtr<UTexture2D>> ImageList;
+	TArray<TObjectPtr<UTexture2D>> TextureList;
 
 	TObjectPtr<UMaterialInstanceDynamic> DynamicMaterialInstance;
 

@@ -32,7 +32,10 @@ protected:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<ATriggerArea> LinkedArea;
 
+	UPROPERTY(EditAnywhere)
+	EAnomalyType CorrespondingAnomalyType;
 private:
+
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USceneComponent> RootSceneComponent;
 	

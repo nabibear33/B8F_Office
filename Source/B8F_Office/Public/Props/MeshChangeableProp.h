@@ -4,33 +4,33 @@
 
 #include "CoreMinimal.h"
 #include "Props/BaseProp.h"
-#include "Standee.generated.h"
+#include "MeshChangeableProp.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class B8F_OFFICE_API AStandee : public ABaseProp
+class B8F_OFFICE_API AMeshChangeableProp : public ABaseProp
 {
 	GENERATED_BODY()
 
-	AStandee();
+	AMeshChangeableProp();
 
 protected:
 	virtual void BeginPlay() override;
 
 private:
 	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UStaticMeshComponent> StandeeMesh;
+	TObjectPtr<UStaticMeshComponent> ChangeableMeshComponent;
 
 	UPROPERTY(EditAnywhere)
-	TObjectPtr<UStaticMesh> ButterMesh;
+	TObjectPtr<UStaticMesh> NormalMesh;
 
 	UPROPERTY(EditAnywhere)
-	TObjectPtr<UStaticMesh> RanMesh;
+	TObjectPtr<UStaticMesh> AnomalyMesh;
 
 	virtual void OnStageStart(EAnomalyType AnomalyType) override;
-	void SetRanMesh();
+	void SetAnomalyMesh();
 
 	virtual void SetNormal() override;
 	
