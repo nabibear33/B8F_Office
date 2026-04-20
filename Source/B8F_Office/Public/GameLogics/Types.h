@@ -23,6 +23,7 @@ enum class EAnomalyType : uint8
 	EAT_RenewaQuiz UMETA(Displayname = "Renewa Quiz"),
 	EAT_ChangeStandee UMETA(Displayname = "Change Standee"),
 	EAT_SongPyeon UMETA(Displayname = "Songpyeon"),
+	EAT_BurningTree UMETA(Displayname = "Burning Tree"),
 	EAT_MAX UMETA(Hidden)
 };
 
@@ -40,6 +41,7 @@ struct FAnomalyTypeHelper
 			case EAnomalyType::EAT_RenewaFrame:
 			case EAnomalyType::EAT_ChangeStandee:
 			case EAnomalyType::EAT_SongPyeon:
+			case EAnomalyType::EAT_BurningTree:
 			default:
 				return false;
 		}
