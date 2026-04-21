@@ -18,6 +18,7 @@ class ACutsceneManager;
 class ANotKommy;
 class USaveGameInstanceSubsystem;
 class UMainSaveGame;
+class ARenewa;
 
 UCLASS()
 class B8F_OFFICE_API AGameManager : public AActor
@@ -46,7 +47,7 @@ private:
 	TObjectPtr<ANotKommy> NotKommy;
 
 	UPROPERTY(EditAnywhere)
-	TObjectPtr<ATriggerArea> NotKommyTriggerArea;
+	TObjectPtr<ARenewa> Renewa;
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<AMainCharacter> Player;

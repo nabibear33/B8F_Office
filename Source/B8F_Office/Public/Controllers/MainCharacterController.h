@@ -11,6 +11,7 @@ class UDialogueComponent;
 class UDataTable;
 class UInputMappingContext;
 class UInputAction;
+class AInteractableCharacter;
 
 /**
  * 
@@ -25,7 +26,7 @@ public:
 
 	virtual void SetControlRotation(const FRotator& NewRotation) override;
 
-	void StartDialogue(UDataTable* DialogueRows, FName ID);
+	void StartDialogue(AInteractableCharacter* DialogueTarget_, UDataTable* DialogueRows, FName ID);
 
 	void SetDialogueIMC();
 
@@ -58,9 +59,15 @@ private:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UDialogueComponent> DialogueComponent;
 
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<AInteractableCharacter> DialogueTarget;
+
 	void OnAdvanceDialogue();
 
 	void OnNavigateChoice(const FInputActionValue& Value);
 
 	void OnSelectChoice();
+
+public:
+	FORCEINLINE UDialogueComponent* GetDialogueComponent() const { return DialogueComponent; }
 };

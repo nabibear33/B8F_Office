@@ -22,6 +22,8 @@ public:
 	UFUNCTION()
 	void OnDialogueUpdated(const FDialogueRow& Row);
 
+	void ResetDialogueWidget();
+
 private:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> DialogueText;

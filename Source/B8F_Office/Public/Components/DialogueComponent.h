@@ -31,6 +31,11 @@ public:
 	UPROPERTY()
 	FOnCurrentHighlightedChoiceUpdated OnCurrentHighlightedChoiceUpdated;
 
+	UPROPERTY()
+	FOnDeathSceneChoiceSelected OnDeathSceneChoiceSelected;
+
+	void ResetDialogueComponent();
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -51,6 +56,10 @@ private:
 
 	bool IsRowRequiresChoice(FDialogueRow* Row);
 	bool IsLastRow(FDialogueRow* Row);
+
+	UPROPERTY(VisibleAnywhere)
+	bool bDeathSceneChoiceTriggered = false;
+
 public:
 	FORCEINLINE void SetDialogueDataTable(UDataTable* DataTable) { DialogueDataTable = DataTable; }
 	FORCEINLINE void SetCurrentRowID(FName ID) { CurrentRowID = ID; }

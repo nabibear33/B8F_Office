@@ -40,11 +40,6 @@ void AInteractableCharacter::OnStageStart(EAnomalyType AnomalyType)
 {
 }
 
-UInteractComponent* AInteractableCharacter::GetInteractComponent()
-{
-	return InteractComponent;
-}
-
 void AInteractableCharacter::OnInteractableEntered(AActor* InteractableActor, AMainCharacter* MainCharacter)
 {
 	bIsInInteractRange = true;

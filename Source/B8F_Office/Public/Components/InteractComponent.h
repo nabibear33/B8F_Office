@@ -54,7 +54,7 @@ private:
 	UPROPERTY()
 	TObjectPtr<UInteractWidget> InteractWidget;
 
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 	bool bIsOwnerInteractable = false;
 
 public:

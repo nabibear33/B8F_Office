@@ -60,6 +60,7 @@ void AMainCharacter::OnRevive()
 	SetActorRotation(InitialRotation);
 	GetMesh()->SetVisibility(true);
 	EnableInput(GetController<APlayerController>());
+	ResetInteractableCount();
 }
 
 void AMainCharacter::Move(const FInputActionValue& Value)
@@ -89,7 +90,7 @@ void AMainCharacter::Look(const FInputActionValue& Value)
 
 void AMainCharacter::TryInteract()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Try Interact Function Executed"));
+	// UE_LOG(LogTemp, Warning, TEXT("Try Interact Function Executed"));
 
 	if (InteractableCount == 0) return;
 
@@ -130,5 +131,6 @@ void AMainCharacter::OnInteractableLeft(AActor* InteractableActor, AMainCharacte
 
 void AMainCharacter::ResetInteractableCount()
 {
+	CurrentInteractTarget = nullptr;
 	InteractableCount = 0;
 }

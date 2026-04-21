@@ -13,6 +13,16 @@ UDialogueComponent::UDialogueComponent()
 }
 
 
+void UDialogueComponent::ResetDialogueComponent()
+{
+	//DialogueDataTable = nullptr;
+ //   CurrentRowID = NAME_None;
+	//CurrentRow.Reset();
+	//CurrentChoiceIdx = -1;
+	//bIsWaitingForChoice = false;
+ //   bDeathSceneChoiceTriggered = false;
+}
+
 void UDialogueComponent::BeginPlay()
 {
 	Super::BeginPlay();
@@ -97,6 +107,12 @@ void UDialogueComponent::EndDialogue()
     SetDialogueDataTable(nullptr);
     SetCurrentRowID(NAME_None);
     CurrentRow.Reset();
+
+    if (bDeathSceneChoiceTriggered)
+    {
+        OnDeathSceneChoiceSelected.Broadcast();
+        bDeathSceneChoiceTriggered = false;
+	}
 }
 
 void UDialogueComponent::NavigateCurrentChoiceIdx(float Value)
@@ -114,6 +130,12 @@ void UDialogueComponent::OnSelectCurrentChoice()
     if (!CurrentRow.IsSet() || !IsCurrentRowHasChoices()) return;
 	UE_LOG(LogTemp, Warning, TEXT("Select Choice: %d"), CurrentChoiceIdx);
     FName SelectedChoiceRowID = CurrentRow->Choices[CurrentChoiceIdx].NextRowID;
+    
+    if(CurrentRow->Choices[CurrentChoiceIdx].bTriggersDeathScene)
+    {
+        bDeathSceneChoiceTriggered = true;
+	}
+
     CurrentChoiceIdx = -1;
 	bIsWaitingForChoice = false;
     AdvanceDialogue(SelectedChoiceRowID);

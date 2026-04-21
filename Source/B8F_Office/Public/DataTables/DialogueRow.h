@@ -16,6 +16,9 @@ struct FDialogueChoice
 
     UPROPERTY(EditAnywhere)
     FName NextRowID;
+
+    UPROPERTY(EditAnywhere)
+	bool bTriggersDeathScene = false;
 };
 
 

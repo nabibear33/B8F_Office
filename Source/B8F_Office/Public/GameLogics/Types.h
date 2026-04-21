@@ -61,7 +61,8 @@ UENUM(BlueprintType)
 enum class EDeathSceneType : uint8
 {
 	EDS_None UMETA(DisplayName = "None"),
-	EDS_NotKommy UMETA(DisplayName = "NotKommy")
+	EDS_NotKommy UMETA(DisplayName = "NotKommy"),
+	EDS_RenewaQuiz UMETA(DisplayName = "Renewa Quiz")
 };
 
 UENUM(BlueprintType)

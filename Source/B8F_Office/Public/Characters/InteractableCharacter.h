@@ -25,8 +25,6 @@ public:
 
 	virtual FText GetInteractHintText() override;
 
-	virtual UInteractComponent* GetInteractComponent() override;
-
 protected:
 	virtual void BeginPlay() override;
 
@@ -59,4 +57,5 @@ private:
 	
 public:
 	FORCEINLINE bool GetIsInteractable() { return bIsInInteractRange; }
+	FORCEINLINE UInteractComponent* GetInteractComponent() { return InteractComponent; }
 };

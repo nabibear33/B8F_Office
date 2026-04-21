@@ -60,8 +60,7 @@ void UInteractComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UE_LOG(LogTemp, Warning, TEXT("[InteractComponent] BeginPlay - InteractableArea attach parent: %s"),
-		InteractableArea->GetAttachParent() ? *InteractableArea->GetAttachParent()->GetName() : TEXT("NULL"));
+	// UE_LOG(LogTemp, Warning, TEXT("[InteractComponent] BeginPlay - InteractableArea attach parent: %s"), InteractableArea->GetAttachParent() ? *InteractableArea->GetAttachParent()->GetName() : TEXT("NULL"));
 
 	if (InteractWidgetClass)
 	{

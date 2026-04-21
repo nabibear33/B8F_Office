@@ -23,6 +23,8 @@ public:
 
 	UFUNCTION()
 	void OnCurrentHighlightedChoiceUpdated(int32 CurrentHighlightedChoiceIndex);
+
+	void ResetChoiceList();
 	
 private:
 	UPROPERTY(meta = (BindWidget))

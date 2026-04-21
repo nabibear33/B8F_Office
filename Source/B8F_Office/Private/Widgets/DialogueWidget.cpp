@@ -19,3 +19,10 @@ void UDialogueWidget::OnDialogueUpdated(const FDialogueRow& Row)
 		ChoiceList->SetVisibility(ESlateVisibility::Collapsed);
 	}
 }
+
+void UDialogueWidget::ResetDialogueWidget()
+{
+	DialogueText->SetText(FText::GetEmpty());
+	SpeakerIDText->SetText(FText::GetEmpty());
+	ChoiceList->ResetChoiceList();
+}

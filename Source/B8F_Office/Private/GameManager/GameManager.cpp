@@ -11,6 +11,7 @@
 #include "GameInstances/SaveGameInstanceSubsystem.h"
 #include "Save/MainSaveGame.h"
 #include "Kismet/GameplayStatics.h"
+#include "Characters/Renewa.h"
 
 AGameManager::AGameManager()
 {
@@ -40,6 +41,11 @@ void AGameManager::BeginPlay()
 	if (NotKommy)
 	{
 		NotKommy->OnPlayDeathScene.AddDynamic(this, &AGameManager::OnPlayDeathScene);
+	}
+	
+	if (Renewa)
+	{
+		Renewa->OnPlayDeathScene.AddDynamic(this, &AGameManager::OnPlayDeathScene);
 	}
 
 	if (CutsceneManager)
@@ -182,9 +188,14 @@ void AGameManager::UpdateInfoPanel(int32 Floor, EAnomalyType AnomalyType, EAnoma
 
 void AGameManager::OnPlayerDeathAndReset()
 {
+	SaveGame->SetCurrentFloor(-8);
 	EAnomalyType AnomalyType = GetStageManager()->GetAnomalyType();
 	EAnomalyStatus AnomalyStatus = GetStageManager()->GetAnomalyStatus();
+	SaveGame->SetAnomalyRecord(AnomalyType, AnomalyStatus);
+	SaveData();
+	
 	UpdateInfoPanel(-8, AnomalyType, AnomalyStatus);
+	
 	StageManager->ResetStage();
 	Player->OnRevive();
 }

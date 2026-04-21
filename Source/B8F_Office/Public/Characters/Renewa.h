@@ -22,13 +22,20 @@ public:
 	UPROPERTY()
 	FOnPlayDeathScene OnPlayDeathScene;
 
+protected:
+	virtual void BeginPlay() override;
+
 private:
 	virtual void Interact_Implementation() override;
 
 	virtual void OnStageStart(EAnomalyType AnomalyType) override;
 
+	UFUNCTION()
+	void KillPlayer();
+
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UDataTable> DialogueDataTable;
 
-	bool bHasEverInteracted = false;
+	UPROPERTY(VisibleAnywhere)
+	bool bHasTalkedToPlayerOnCurrentStage = false;
 };

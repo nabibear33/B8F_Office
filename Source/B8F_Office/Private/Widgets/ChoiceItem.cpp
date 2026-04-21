@@ -7,7 +7,7 @@
 
 void UChoiceItem::SetChoiceText(const FText& Text)
 {
-    UE_LOG(LogTemp, Warning, TEXT("SetChoiceText called"));
+    // UE_LOG(LogTemp, Warning, TEXT("SetChoiceText called"));
 
     if (!ChoiceText)
     {
@@ -15,7 +15,7 @@ void UChoiceItem::SetChoiceText(const FText& Text)
         return;
     }
 
-    UE_LOG(LogTemp, Warning, TEXT("Setting text: %s"), *Text.ToString());
+    // UE_LOG(LogTemp, Warning, TEXT("Setting text: %s"), *Text.ToString());
     ChoiceText->SetText(Text);
 }
 

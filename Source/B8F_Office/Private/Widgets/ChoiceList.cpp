@@ -31,3 +31,9 @@ void UChoiceList::OnCurrentHighlightedChoiceUpdated(int32 CurrentHighlightedChoi
 		}
 	}
 }
+
+void UChoiceList::ResetChoiceList()
+{
+	ChoiceItems.Empty();
+	ChoiceItemWrapper->ClearChildren();
+}
