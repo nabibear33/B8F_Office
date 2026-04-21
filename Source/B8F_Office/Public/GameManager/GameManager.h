@@ -19,6 +19,7 @@ class ANotKommy;
 class USaveGameInstanceSubsystem;
 class UMainSaveGame;
 class ARenewa;
+class AMadeleine;
 
 UCLASS()
 class B8F_OFFICE_API AGameManager : public AActor
@@ -48,6 +49,9 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<ARenewa> Renewa;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<AMadeleine> Madeleine;
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<AMainCharacter> Player;

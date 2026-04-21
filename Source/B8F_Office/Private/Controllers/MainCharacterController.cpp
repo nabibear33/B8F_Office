@@ -41,6 +41,7 @@ void AMainCharacterController::OnDialogueWidgetReady()
     {
         DialogueComponent->OnDialogueUpdated.AddDynamic(HUD->GetDialogueWidget(), &UDialogueWidget::OnDialogueUpdated);
         DialogueComponent->OnCurrentHighlightedChoiceUpdated.AddDynamic(HUD->GetDialogueWidget()->GetChoiceList(), &UChoiceList::OnCurrentHighlightedChoiceUpdated);
+        DialogueComponent->OnDialogueEnded.AddDynamic(this, &AMainCharacterController::EndDialogue);
     }
 }
 
@@ -61,6 +62,7 @@ void AMainCharacterController::SetupInputComponent()
 
 void AMainCharacterController::OnAdvanceDialogue()
 {
+    if (!bOnDialogue) return;
 	DialogueComponent->AdvanceDialogue();
 }
 
@@ -95,6 +97,7 @@ void AMainCharacterController::StartDialogue(AInteractableCharacter* DialogueTar
         HUD->ShowDialogueWidget(DialogueComponent);
     }
 
+    bOnDialogue = true;
     DialogueComponent->StartDialogue(DialogueDataTable, ID);
 
 }
@@ -121,6 +124,7 @@ void AMainCharacterController::SetDefaultIMC()
 
 void AMainCharacterController::EndDialogue()
 {
+    bOnDialogue = false;
 
     DialogueTarget->GetInteractComponent()->SetInteractEnabled();
     DialogueTarget = nullptr;

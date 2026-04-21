@@ -25,6 +25,7 @@ enum class EAnomalyType : uint8
 	EAT_SongPyeon UMETA(Displayname = "Songpyeon"),
 	EAT_BurningTree UMETA(Displayname = "Burning Tree"),
 	EAT_LightOff UMETA(Displayname = "Light Off"),
+	EAT_RedLight UMETA(Displayname = "Red Light"),
 	EAT_MAX UMETA(Hidden)
 };
 
@@ -35,6 +36,7 @@ struct FAnomalyTypeHelper
 		switch (Type)
 		{
 			case EAnomalyType::EAT_RenewaQuiz:
+			case EAnomalyType::EAT_RedLight:
 				return true;
 
 			case EAnomalyType::EAT_NotKommyChase:
@@ -54,7 +56,9 @@ UENUM(BlueprintType)
 enum class ECharacterState : uint8
 {
 	ECS_Idle UMETA(Displayname = "Idle"),
-	ECS_Chasing UMETA(Displayname = "Chasing")
+	ECS_Chasing UMETA(Displayname = "Chasing"),
+	ECS_Dialogue UMETA(Displayname = "Dialogue"),
+	ECS_Dying UMETA(Displayname = "Dying")
 };
 
 UENUM(BlueprintType)
@@ -62,7 +66,8 @@ enum class EDeathSceneType : uint8
 {
 	EDS_None UMETA(DisplayName = "None"),
 	EDS_NotKommy UMETA(DisplayName = "NotKommy"),
-	EDS_RenewaQuiz UMETA(DisplayName = "Renewa Quiz")
+	EDS_RenewaQuiz UMETA(DisplayName = "Renewa Quiz"),
+	EDS_RedLight UMETA(DisplayName = "Red Light")
 };
 
 UENUM(BlueprintType)

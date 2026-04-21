@@ -34,6 +34,9 @@ public:
 	UPROPERTY()
 	FOnDeathSceneChoiceSelected OnDeathSceneChoiceSelected;
 
+	UPROPERTY()
+	FOnDialogueEnded OnDialogueEnded;
+
 	void ResetDialogueComponent();
 
 protected:

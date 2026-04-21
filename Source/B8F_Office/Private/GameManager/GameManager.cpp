@@ -12,6 +12,7 @@
 #include "Save/MainSaveGame.h"
 #include "Kismet/GameplayStatics.h"
 #include "Characters/Renewa.h"
+#include "Characters/Madeleine.h"
 
 AGameManager::AGameManager()
 {
@@ -46,6 +47,11 @@ void AGameManager::BeginPlay()
 	if (Renewa)
 	{
 		Renewa->OnPlayDeathScene.AddDynamic(this, &AGameManager::OnPlayDeathScene);
+	}
+
+	if (Madeleine)
+	{
+		Madeleine->OnPlayDeathScene.AddDynamic(this, &AGameManager::OnPlayDeathScene);
 	}
 
 	if (CutsceneManager)

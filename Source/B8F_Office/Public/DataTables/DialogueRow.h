@@ -5,6 +5,7 @@
 #include "Engine/DataTable.h"
 #include "DialogueRow.generated.h"
 
+class UAnimMontage;
 
 USTRUCT(BlueprintType)
 struct FDialogueChoice
@@ -38,4 +39,7 @@ struct FDialogueRow : public FTableRowBase
 
     UPROPERTY(EditAnywhere)
     TArray<FDialogueChoice> Choices;
+
+    UPROPERTY(EditAnywhere)
+    TObjectPtr<UAnimMontage> AnimMontage;
 };

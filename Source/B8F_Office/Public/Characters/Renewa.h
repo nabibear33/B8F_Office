@@ -33,9 +33,6 @@ private:
 	UFUNCTION()
 	void KillPlayer();
 
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<UDataTable> DialogueDataTable;
-
 	UPROPERTY(VisibleAnywhere)
 	bool bHasTalkedToPlayerOnCurrentStage = false;
 };

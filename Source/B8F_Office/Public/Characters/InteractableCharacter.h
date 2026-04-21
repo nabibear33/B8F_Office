@@ -42,8 +42,10 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UInteractComponent> InteractComponent;
-private:
 
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UDataTable> DialogueDataTable;
+private:
 
 	UFUNCTION()
 	void OnInteractableEntered(AActor* InteractableActor, AMainCharacter* MainCharacter);
@@ -51,7 +53,7 @@ private:
 	UFUNCTION()
 	void OnInteractableLeft(AActor* InteractableActor, AMainCharacter* MainCharacter);
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(VisibleAnywhere)
 	bool bIsInInteractRange = false;
 
 	

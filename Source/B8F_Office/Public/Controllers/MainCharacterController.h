@@ -30,6 +30,7 @@ public:
 
 	void SetDialogueIMC();
 
+	UFUNCTION()
 	void EndDialogue();
 
 	void SetDefaultIMC();
@@ -67,6 +68,9 @@ private:
 	void OnNavigateChoice(const FInputActionValue& Value);
 
 	void OnSelectChoice();
+
+	UPROPERTY(VisibleAnywhere)
+	bool bOnDialogue = false;
 
 public:
 	FORCEINLINE UDialogueComponent* GetDialogueComponent() const { return DialogueComponent; }

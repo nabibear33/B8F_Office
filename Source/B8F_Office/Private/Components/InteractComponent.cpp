@@ -17,6 +17,7 @@ UInteractComponent::UInteractComponent()
 	// UE_LOG(LogTemp, Warning, TEXT("[InteractComponent] InteractableArea outer: %s"), *InteractableArea->GetOuter()->GetName());
 	// UE_LOG(LogTemp, Warning, TEXT("[InteractComponent] InteractableArea attach parent: %s"),InteractableArea->GetAttachParent() ? *InteractableArea->GetAttachParent()->GetName() : TEXT("NULL"));
 
+	InteractableArea->SetSphereRadius(150.f);
 }
 
 void UInteractComponent::SetInteractEnabled()

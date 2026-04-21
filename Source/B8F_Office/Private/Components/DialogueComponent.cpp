@@ -5,6 +5,7 @@
 #include "HUD/MainHUD.h"
 #include "DataTables/DialogueRow.h"
 #include "Controllers/MainCharacterController.h"
+#include "Characters/InteractableCharacter.h"
 
 UDialogueComponent::UDialogueComponent()
 {
@@ -57,6 +58,16 @@ void UDialogueComponent::AdvanceDialogue(FName ChoiceRowID)
     if (Row)
     {
 		CurrentRow = *Row;
+
+        // Play Anim Montage if it is valid
+        if (CurrentRow->AnimMontage)
+        {
+            AInteractableCharacter* OwnerCharacter = Cast<AInteractableCharacter>(GetOwner());
+            if (OwnerCharacter)
+            {
+                OwnerCharacter->PlayAnimMontage(CurrentRow->AnimMontage);
+            }
+        }
     }
     else
     {
@@ -99,14 +110,12 @@ bool UDialogueComponent::IsLastRow(FDialogueRow* Row)
 void UDialogueComponent::EndDialogue()
 {
     UE_LOG(LogTemp, Warning, TEXT("EndDialogue"));
-    AMainCharacterController* PC = Cast<AMainCharacterController>(GetWorld()->GetFirstPlayerController());
-    if (PC)
-    {
-        PC->EndDialogue();
-    }
+    OnDialogueEnded.Broadcast();
+
     SetDialogueDataTable(nullptr);
     SetCurrentRowID(NAME_None);
     CurrentRow.Reset();
+
 
     if (bDeathSceneChoiceTriggered)
     {
