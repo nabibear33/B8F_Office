@@ -8,6 +8,7 @@
 #include "DataTables/DialogueRow.h"
 #include "DialogueComponent.generated.h"
 
+class ADialogueSpeakerMappingHelper;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class B8F_OFFICE_API UDialogueComponent : public UActorComponent
@@ -39,8 +40,8 @@ public:
 
 	void ResetDialogueComponent();
 
+	void Initialize();
 protected:
-	virtual void BeginPlay() override;
 
 private:
 	UPROPERTY(EditAnywhere)
@@ -62,6 +63,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	bool bDeathSceneChoiceTriggered = false;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<ADialogueSpeakerMappingHelper> DialogueSpeakerMappingHelper;
 
 public:
 	FORCEINLINE void SetDialogueDataTable(UDataTable* DataTable) { DialogueDataTable = DataTable; }

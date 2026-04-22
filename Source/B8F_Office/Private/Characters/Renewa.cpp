@@ -40,11 +40,11 @@ void ARenewa::Interact_Implementation()
 		
 		if(bHasTalkedToPlayerOnCurrentStage)
 		{
-			PC->StartDialogue(this, DialogueDataTable, FName(TEXT("Test_AlreadyTalked")));
+			PC->StartDialogue(this, DialogueDataTable, FName(TEXT("Renewa_AlreadyTalked")));
 		}
 		else
 		{
-			PC->StartDialogue(this, DialogueDataTable, FName(TEXT("Test_001")));
+			PC->StartDialogue(this, DialogueDataTable, FName(TEXT("Renewa_001")));
 			bHasTalkedToPlayerOnCurrentStage = true;
 		}
 	}

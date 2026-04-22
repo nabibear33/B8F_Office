@@ -34,6 +34,8 @@ private:
 	UFUNCTION()
 	void StartGame(AActor* TriggeringArea, AActor* OtherActor);
 
+	void SetViewTargetChanged();
+
 	UFUNCTION()
 	void OnDialogueEnded();
 
@@ -50,4 +52,7 @@ private:
 
 	UFUNCTION()
 	void PlayerWinRedLight(AActor* TriggeringArea, AActor* OtherActor);
+
+	UPROPERTY(VisibleAnywhere)
+	bool bIsViewTargetChanged = false;
 };

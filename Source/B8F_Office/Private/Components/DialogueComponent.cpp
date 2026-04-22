@@ -6,6 +6,8 @@
 #include "DataTables/DialogueRow.h"
 #include "Controllers/MainCharacterController.h"
 #include "Characters/InteractableCharacter.h"
+#include "Helper/DialogueSpeakerMappingHelper.h"
+#include "Kismet/GameplayStatics.h"
 
 UDialogueComponent::UDialogueComponent()
 {
@@ -24,11 +26,15 @@ void UDialogueComponent::ResetDialogueComponent()
  //   bDeathSceneChoiceTriggered = false;
 }
 
-void UDialogueComponent::BeginPlay()
+void UDialogueComponent::Initialize()
 {
-	Super::BeginPlay();
+    DialogueSpeakerMappingHelper = Cast<ADialogueSpeakerMappingHelper>(
+        UGameplayStatics::GetActorOfClass(GetWorld(), ADialogueSpeakerMappingHelper::StaticClass()));
 
-	
+    if (!DialogueSpeakerMappingHelper)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("DialogueActorRegistry not found in level"));
+    }
 }
 
 
@@ -62,10 +68,16 @@ void UDialogueComponent::AdvanceDialogue(FName ChoiceRowID)
         // Play Anim Montage if it is valid
         if (CurrentRow->AnimMontage)
         {
-            AInteractableCharacter* OwnerCharacter = Cast<AInteractableCharacter>(GetOwner());
-            if (OwnerCharacter)
+            AActor* Found = DialogueSpeakerMappingHelper->GetActorFromName(CurrentRow->SpeakerID);
+            if (Found)
             {
-                OwnerCharacter->PlayAnimMontage(CurrentRow->AnimMontage);
+                ACharacter* Speaker = Cast<ACharacter>(Found);
+                if (Speaker)
+                {
+                
+                    UE_LOG(LogTemp, Warning, TEXT("Play Animation Montage."));
+                    Speaker->PlayAnimMontage(CurrentRow->AnimMontage);
+                }
             }
         }
     }

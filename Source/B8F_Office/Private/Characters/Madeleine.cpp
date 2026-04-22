@@ -68,18 +68,8 @@ void AMadeleine::OnStageStart(EAnomalyType AnomalyType)
 void AMadeleine::StartGame(AActor* TriggeringArea, AActor* OtherActor)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Madeleine StartGame Triggered"));
-	// Camera Control
-	AMainCharacterController* PC = Cast<AMainCharacterController>(GetWorld()->GetFirstPlayerController());
-	if (PC)
-	{
-		PC->SetViewTargetWithBlend(
-			this,
-			1.5f,
-			EViewTargetBlendFunction::VTBlend_Cubic,
-			0.0f,
-			false
-		);
-	}
+	
+	SetViewTargetChanged();
 
 	// Start Dialogue
 	FTimerHandle TimerHandle;
@@ -95,8 +85,26 @@ void AMadeleine::StartGame(AActor* TriggeringArea, AActor* OtherActor)
 
 }
 
+void AMadeleine::SetViewTargetChanged()
+{
+	bIsViewTargetChanged = true;
+	AMainCharacterController* PC = Cast<AMainCharacterController>(GetWorld()->GetFirstPlayerController());
+	if (PC)
+	{
+		PC->SetViewTargetWithBlend(
+			this,
+			1.5f,
+			EViewTargetBlendFunction::VTBlend_Cubic,
+			0.0f,
+			false
+		);
+	}
+}
+
 void AMadeleine::OnDialogueEnded()
 {
+	if (!bIsViewTargetChanged) return;
+
 	AMainCharacterController* PC = Cast<AMainCharacterController>(GetWorld()->GetFirstPlayerController());
 	if (PC)
 	{
@@ -112,6 +120,7 @@ void AMadeleine::OnDialogueEnded()
 			);
 		}
 	}
+	bIsViewTargetChanged = false;
 }
 
 void AMadeleine::StartDialogue(FName ID)

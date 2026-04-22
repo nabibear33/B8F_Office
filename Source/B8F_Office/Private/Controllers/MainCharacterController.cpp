@@ -32,6 +32,7 @@ void AMainCharacterController::BeginPlay()
         Subsystem->AddMappingContext(IMC_Default, 0);
     }
 
+    DialogueComponent->Initialize();
 }
 
 void AMainCharacterController::OnDialogueWidgetReady()
