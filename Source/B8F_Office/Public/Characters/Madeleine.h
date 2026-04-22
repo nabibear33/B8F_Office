@@ -22,15 +22,17 @@ class B8F_OFFICE_API AMadeleine : public AInteractableCharacter
 {
 	GENERATED_BODY()
 
-	AMadeleine();
 	
 public:
+	AMadeleine();
+
 	FOnPlayDeathScene OnPlayDeathScene;
 
 protected:
 	virtual void BeginPlay() override;
 	virtual void Interact_Implementation() override;
 	virtual void Tick(float DeltaTime) override;
+	void BroadcastToWidget();
 	void CheckMovement();
 	void CheckLeftTime(float DeltaTime);
 	virtual void OnStageStart(EAnomalyType AnomalyType) override;
@@ -76,13 +78,22 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	bool bIsRedLight = false;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(EditAnywhere)
 	float TimeLeft = 10.f;
+
+	UPROPERTY(EditAnywhere)
+	float FlipInterval = 2.f;
 
 	UPROPERTY()
 	TObjectPtr<AMainCharacter> CachedPlayer;
 
 	void LoseGame(FName RowName);
+
+	void MoveToPlayer();
+
+	void PlayDeathScene();
+
+	FVector InitialLocation;
 
 	FORCEINLINE void SetPhase(ERedLightStageStatus Status) { StageStatus = Status; }
 };

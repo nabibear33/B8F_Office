@@ -95,7 +95,7 @@ void AMainCharacterController::StartDialogue(AInteractableCharacter* DialogueTar
     AMainHUD* HUD = Cast<AMainHUD>(GetHUD());
     if (HUD)
     {
-        HUD->ShowDialogueWidget(DialogueComponent);
+        HUD->ShowDialogueWidget();
     }
 
     bOnDialogue = true;

@@ -4,6 +4,8 @@
 #include "HUD/MainHUD.h"
 #include "Components/DialogueComponent.h"
 #include "Widgets/DialogueWidget.h"
+#include "Widgets/LeftTimeWidget.h"
+#include "GameInstances/EventBusSubsystem.h"
 #include "Controllers/MainCharacterController.h"
 
 void AMainHUD::BeginPlay()
@@ -12,14 +14,28 @@ void AMainHUD::BeginPlay()
 
     if (DialogueWidgetClass)
     {
-        UE_LOG(LogTemp, Warning, TEXT("DialogueWidgetClass Checked"));
         DialogueWidget = CreateWidget<UDialogueWidget>(GetWorld(), DialogueWidgetClass);
         if (DialogueWidget)
         {
-            UE_LOG(LogTemp, Warning, TEXT("Initialize Dialogue Widget"));
             DialogueWidget->AddToViewport();
             DialogueWidget->SetVisibility(ESlateVisibility::Hidden);
         }
+    }
+
+    if (LeftTimeWidgetClass)
+    {
+        LeftTimeWidget = CreateWidget<ULeftTimeWidget>(GetWorld(), LeftTimeWidgetClass);
+        if (LeftTimeWidget)
+        {
+            LeftTimeWidget->AddToViewport();
+            LeftTimeWidget->SetVisibility(ESlateVisibility::Hidden);
+        }
+    }
+
+    UEventBusSubsystem* Subsystem = GetGameInstance()->GetSubsystem<UEventBusSubsystem>();
+    if (Subsystem)
+    {
+        Subsystem->OnLeftTimeUpdated.AddDynamic(LeftTimeWidget, &ULeftTimeWidget::OnLeftTimeUpdated);
     }
 
 	// call OnDialogueWidgetReady to bind delegate in controller after widget is created
@@ -29,18 +45,26 @@ void AMainHUD::BeginPlay()
 	}
 }
 
-void AMainHUD::ShowDialogueWidget(UDialogueComponent* DialogueComponent)
+void AMainHUD::ShowDialogueWidget()
 {
-    if (!DialogueWidget || !DialogueComponent) return;
-
-    UE_LOG(LogTemp, Warning, TEXT("Show Dialogue Widget"));
+    if (!DialogueWidget) return;
     DialogueWidget->SetVisibility(ESlateVisibility::Visible);
 }
 
 void AMainHUD::HideDialogueWidget()
 {
 	if (!DialogueWidget) return;
-
-    UE_LOG(LogTemp, Warning, TEXT("Hide Dialogue Widget"));
 	DialogueWidget->SetVisibility(ESlateVisibility::Hidden);
+}
+
+void AMainHUD::ShowLeftTimeWidget()
+{
+    if (!LeftTimeWidget) return;
+    LeftTimeWidget->SetVisibility(ESlateVisibility::Visible);
+}
+
+void AMainHUD::HideLeftTimeWidget()
+{
+    if (!LeftTimeWidget) return;
+    LeftTimeWidget->SetVisibility(ESlateVisibility::Hidden);
 }

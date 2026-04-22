@@ -9,7 +9,9 @@
 #include "Characters/MainCharacter.h"
 #include "Components/InteractComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GameInstances/EventBusSubsystem.h"
 #include "AIController.h"
+#include "HUD/MainHUD.h"
 
 
 AMadeleine::AMadeleine()
@@ -30,6 +32,8 @@ void AMadeleine::BeginPlay()
 	{
 		CachedPlayer = Cast<AMainCharacter>(PC->GetPawn());
 	}
+
+	InitialLocation = GetActorLocation();
 }
 
 void AMadeleine::Interact_Implementation()
@@ -55,6 +59,16 @@ void AMadeleine::Tick(float DeltaTime)
 
 	CheckLeftTime(DeltaTime);
 	CheckMovement();
+	BroadcastToWidget();
+}
+
+void AMadeleine::BroadcastToWidget()
+{
+	UEventBusSubsystem* Subsystem = GetGameInstance()->GetSubsystem<UEventBusSubsystem>();
+	if (Subsystem)
+	{
+		Subsystem->OnLeftTimeUpdated.Broadcast(TimeLeft);
+	}
 }
 
 void AMadeleine::CheckMovement()
@@ -80,9 +94,9 @@ void AMadeleine::CheckLeftTime(float DeltaTime)
 
 void AMadeleine::OnStageStart(EAnomalyType AnomalyType)
 {
+	SetActorLocation(InitialLocation);
 	if(AnomalyType == EAnomalyType::EAT_RedLight)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Delegate Binding Redlight"));
 		LinkedArea->OnAreaTriggered.RemoveDynamic(this, &AMadeleine::OnAreaTriggered);
 		LinkedArea->OnAreaTriggered.AddDynamic(this, &AMadeleine::OnAreaTriggered);
 		if (FinishArea)
@@ -95,6 +109,8 @@ void AMadeleine::OnStageStart(EAnomalyType AnomalyType)
 		{
 			PC->GetDialogueComponent()->OnDialogueEnded.AddDynamic(this, &AMadeleine::OnDialogueEnded);
 		}
+
+
 		EnableCharacterMesh();
 		InteractComponent->SetInteractEnabled();
 	}
@@ -129,28 +145,35 @@ void AMadeleine::SetViewTargetChanged()
 
 void AMadeleine::OnDialogueEnded(FName DialogueID)
 {
-	if (!bIsViewTargetChanged) return;
-
-	AMainCharacterController* PC = Cast<AMainCharacterController>(GetWorld()->GetFirstPlayerController());
-	if (PC)
+	if (bIsViewTargetChanged)
 	{
-		AMainCharacter* Player = Cast<AMainCharacter>(PC->GetPawn());
-		if (Player)
+		AMainCharacterController* PC = Cast<AMainCharacterController>(GetWorld()->GetFirstPlayerController());
+		if (PC)
 		{
-			PC->SetViewTargetWithBlend(
-				Player,
-				1.5f,
-				EViewTargetBlendFunction::VTBlend_Cubic,
-				0.0f,
-				false
-			);
+			AMainCharacter* Player = Cast<AMainCharacter>(PC->GetPawn());
+			if (Player)
+			{
+				PC->SetViewTargetWithBlend(
+					Player,
+					1.5f,
+					EViewTargetBlendFunction::VTBlend_Cubic,
+					0.0f,
+					false
+				);
+			}
 		}
+		bIsViewTargetChanged = false;
 	}
-	bIsViewTargetChanged = false;
+
 	
 	if (DialogueID == FName(TEXT("Madeleine_StartGame")))
 	{
 		OnPhaseTransition(ERedLightStageStatus::ERSS_OnPlaying);
+	}
+
+	if (DialogueID == FName(TEXT("Madeleine_TimeOut")) || DialogueID == FName(TEXT("Madeleine_RedLightMoved")))
+	{
+		OnPhaseTransition(ERedLightStageStatus::ERSS_PlayDeathScene);
 	}
 }
 
@@ -183,6 +206,13 @@ void AMadeleine::OnPassedGame()
 	AMainCharacterController* PC = Cast<AMainCharacterController>(GetWorld()->GetFirstPlayerController());
 	if (PC)
 	{
+		AMainHUD* HUD = Cast<AMainHUD>(PC->GetHUD());
+		if (HUD)
+		{
+			HUD->HideLeftTimeWidget();
+		}
+		
+		bIsViewTargetChanged = true;
 		PC->SetViewTargetWithBlend(
 			this,
 			0.5f,
@@ -216,6 +246,9 @@ void AMadeleine::OnPhaseTransition(ERedLightStageStatus Status)
 		case ERedLightStageStatus::ERSS_RedLightMoved:
 			LoseGame(FName(TEXT("Madeleine_RedLightMoved")));
 			break;
+		case ERedLightStageStatus::ERSS_PlayDeathScene:
+			PlayDeathScene();
+			break;
 		case ERedLightStageStatus::ERSS_Pass:
 			OnPassedGame();
 			break;
@@ -243,6 +276,17 @@ void AMadeleine::MainGame()
 {
 	// Tick function checks the lose condition
 	SetActorTickEnabled(true);
+
+	// show left time widget
+	AMainCharacterController* PC = Cast<AMainCharacterController>(GetWorld()->GetFirstPlayerController());
+	if (PC)
+	{
+		AMainHUD* HUD = Cast<AMainHUD>(PC->GetHUD());
+		if (HUD)
+		{
+			HUD->ShowLeftTimeWidget();
+		}
+	}
 	
 	// Reverse the light per 1 sec (temp)
 	FTimerHandle TimerHandle;
@@ -252,20 +296,36 @@ void AMadeleine::MainGame()
 		{
 			bIsRedLight = !bIsRedLight;
 		},
-		1.0f,
+		FlipInterval,
 		true
 	);
 }
 
 void AMadeleine::LoseGame(FName RowName)
 {
+	AMainCharacterController* PC = Cast<AMainCharacterController>(GetWorld()->GetFirstPlayerController());
+	if (PC)
+	{
+		AMainHUD* HUD = Cast<AMainHUD>(PC->GetHUD());
+		if (HUD)
+		{
+			HUD->HideLeftTimeWidget();
+		}
+	}
+
 	SetActorTickEnabled(false);
 
-	// get player location
+	MoveToPlayer();
+
+	StartDialogue(RowName);
+}
+
+void AMadeleine::MoveToPlayer()
+{
 	FVector DistanceVector = (CachedPlayer->GetActorLocation() - GetActorLocation());
 	float Distance = DistanceVector.Size2D() - 100.f;
 	FVector Direction = FVector(DistanceVector.X, DistanceVector.Y, 0.f).GetSafeNormal();
-	
+
 	UCharacterMovementComponent* MovementComponent = GetCharacterMovement();
 	MovementComponent->MaxAcceleration = 100000.f;
 	MovementComponent->MaxWalkSpeed = 6400.f;
@@ -275,8 +335,9 @@ void AMadeleine::LoseGame(FName RowName)
 	{
 		AIC->MoveToLocation(GetActorLocation() + Direction * Distance);
 	}
+}
 
-	StartDialogue(RowName);
-
-	// kill player here
+void AMadeleine::PlayDeathScene()
+{
+	OnPlayDeathScene.Broadcast(EDeathSceneType::EDS_RedLight);
 }

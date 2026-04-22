@@ -85,5 +85,6 @@ enum class ERedLightStageStatus : uint8
 	ERSS_OnPlaying UMETA(DisplayName = "On Playing"),
 	ERSS_TimeOut UMETA(DisplayName = "Time Out"),
 	ERSS_RedLightMoved UMETA(DisplayName = "Red Light Moved"),
+	ERSS_PlayDeathScene UMETA(DisplayName = "Play Death Scene"),
 	ERSS_Pass UMETA(DisplayName = "Pass")
 };

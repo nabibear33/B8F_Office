@@ -54,6 +54,7 @@ void AGameManager::BeginPlay()
 		Madeleine->OnPlayDeathScene.AddDynamic(this, &AGameManager::OnPlayDeathScene);
 	}
 
+
 	if (CutsceneManager)
 	{
 		CutsceneManager->OnPlayerDeathAndReset.AddDynamic(this, &AGameManager::OnPlayerDeathAndReset);
@@ -203,6 +204,7 @@ void AGameManager::OnPlayerDeathAndReset()
 	UpdateInfoPanel(-8, AnomalyType, AnomalyStatus);
 	
 	StageManager->ResetStage();
+	StageManager->SetNormalStage();
 	Player->OnRevive();
 }
 

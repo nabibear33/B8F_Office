@@ -6,8 +6,8 @@
 #include "GameFramework/HUD.h"
 #include "MainHUD.generated.h"
 
-class UDialogueComponent;
 class UDialogueWidget;
+class ULeftTimeWidget;
 
 /**
  * 
@@ -18,8 +18,11 @@ class B8F_OFFICE_API AMainHUD : public AHUD
 	GENERATED_BODY()
 
 public:
-	void ShowDialogueWidget(UDialogueComponent* DialogueComponent);
+	void ShowDialogueWidget();
 	void HideDialogueWidget();
+
+	void ShowLeftTimeWidget();
+	void HideLeftTimeWidget();
 
 private:
 	virtual void BeginPlay() override;
@@ -29,6 +32,12 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<UDialogueWidget> DialogueWidget;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UUserWidget> LeftTimeWidgetClass;
+
+	UPROPERTY()
+	TObjectPtr<ULeftTimeWidget> LeftTimeWidget;
 
 public:
 	FORCEINLINE UDialogueWidget* GetDialogueWidget() { return DialogueWidget; }

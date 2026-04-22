@@ -7,6 +7,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerDeathAndReset);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeathSceneChoiceSelected);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLeftTimeUpdated, float, LeftTime);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDialogueEnded, FName, DialogueID);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCurrentHighlightedChoiceUpdated, int32, CurrentHighlightedChoice);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInteractableLeft, AActor*, InteractableActor, AMainCharacter*, MainCharacter);
