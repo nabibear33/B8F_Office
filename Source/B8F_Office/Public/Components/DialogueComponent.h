@@ -67,6 +67,8 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<ADialogueSpeakerMappingHelper> DialogueSpeakerMappingHelper;
 
+	FName LastRowName;
+
 public:
 	FORCEINLINE void SetDialogueDataTable(UDataTable* DataTable) { DialogueDataTable = DataTable; }
 	FORCEINLINE void SetCurrentRowID(FName ID) { CurrentRowID = ID; }

@@ -93,6 +93,7 @@ void UDialogueComponent::AdvanceDialogue(FName ChoiceRowID)
 
     if (IsLastRow(Row))
     {   
+        LastRowName = TargetRow;
 		SetCurrentRowID(NAME_None);
         return;
     }
@@ -122,9 +123,10 @@ bool UDialogueComponent::IsLastRow(FDialogueRow* Row)
 void UDialogueComponent::EndDialogue()
 {
     UE_LOG(LogTemp, Warning, TEXT("EndDialogue"));
-    OnDialogueEnded.Broadcast();
+    OnDialogueEnded.Broadcast(LastRowName);
 
     SetDialogueDataTable(nullptr);
+    LastRowName = NAME_None;
     SetCurrentRowID(NAME_None);
     CurrentRow.Reset();
 

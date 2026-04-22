@@ -31,7 +31,7 @@ public:
 	void SetDialogueIMC();
 
 	UFUNCTION()
-	void EndDialogue();
+	void EndDialogue(FName DialogueID);
 
 	void SetDefaultIMC();
 	

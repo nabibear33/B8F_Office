@@ -123,7 +123,7 @@ void AMainCharacterController::SetDefaultIMC()
     }
 }
 
-void AMainCharacterController::EndDialogue()
+void AMainCharacterController::EndDialogue(FName DialogueID)
 {
     bOnDialogue = false;
 

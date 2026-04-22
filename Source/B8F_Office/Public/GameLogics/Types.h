@@ -77,3 +77,13 @@ enum class EAnomalyStatus : uint8
 	EAS_SeenButNotFound UMETA(DisplayName = "Seen but not Found"),
 	EAS_Found UMETA(DisplayName = "Found")
 };
+
+UENUM(BlueprintType)
+enum class ERedLightStageStatus : uint8
+{
+	ERSS_Entered UMETA(DisplayName = "Entered"),
+	ERSS_OnPlaying UMETA(DisplayName = "On Playing"),
+	ERSS_TimeOut UMETA(DisplayName = "Time Out"),
+	ERSS_RedLightMoved UMETA(DisplayName = "Red Light Moved"),
+	ERSS_Pass UMETA(DisplayName = "Pass")
+};
