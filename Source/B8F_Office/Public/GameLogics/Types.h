@@ -26,6 +26,8 @@ enum class EAnomalyType : uint8
 	EAT_BurningTree UMETA(Displayname = "Burning Tree"),
 	EAT_LightOff UMETA(Displayname = "Light Off"),
 	EAT_RedLight UMETA(Displayname = "Red Light"),
+	EAT_MirrorReversed UMETA(Displayname = "Mirror Reversed"),
+	EAT_MirrorUpsideDown UMETA(Displayname = "Mirror Upside Down"),
 	EAT_MAX UMETA(Hidden)
 };
 
@@ -39,13 +41,6 @@ struct FAnomalyTypeHelper
 			case EAnomalyType::EAT_RedLight:
 				return true;
 
-			case EAnomalyType::EAT_NotKommyChase:
-			case EAnomalyType::EAT_Normal:
-			case EAnomalyType::EAT_RenewaFrame:
-			case EAnomalyType::EAT_ChangeStandee:
-			case EAnomalyType::EAT_SongPyeon:
-			case EAnomalyType::EAT_BurningTree:
-			case EAnomalyType::EAT_LightOff:
 			default:
 				return false;
 		}

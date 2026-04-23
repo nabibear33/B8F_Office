@@ -99,6 +99,7 @@ void AMainCharacter::TryInteract()
 
 void AMainCharacter::SprintStart()
 {
+	bIsSprinting = true;
 	if (Controller)
 	{
 		GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
@@ -107,6 +108,7 @@ void AMainCharacter::SprintStart()
 
 void AMainCharacter::SprintStop()
 {
+	bIsSprinting = false;
 	if (Controller)
 	{
 		GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;

@@ -35,6 +35,7 @@ public:
 
 	void ResetInteractableCount();
 
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -55,6 +56,9 @@ protected:
 	// Camera
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 	TObjectPtr<UCameraComponent> FirstPersonCamera;
+
+	UPROPERTY(BlueprintReadOnly)
+	bool bIsSprinting;
 
 private:
 	// Input Actions
@@ -85,4 +89,5 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	TScriptInterface<IInteractable> CurrentInteractTarget;
+
 };
