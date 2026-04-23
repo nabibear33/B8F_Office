@@ -13,6 +13,7 @@ class UDataTable;
 class UCameraComponent;
 class ATriggerArea;
 class AMainCharacter;
+class UEventBusSubsystem;
 
 /**
  * 
@@ -71,6 +72,8 @@ private:
 
 	void OnPhaseTransition(ERedLightStageStatus Status);
 
+	void ChangeLightsColor(const FLinearColor& Color, UEventBusSubsystem* Subsystem);
+
 	void OnStageEntered();
 
 	void MainGame();
@@ -94,6 +97,11 @@ private:
 	void PlayDeathScene();
 
 	FVector InitialLocation;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<APostProcessVolume> PostProcessVolume;
+
+	FTimerHandle LightFlipTimerHandle;
 
 	FORCEINLINE void SetPhase(ERedLightStageStatus Status) { StageStatus = Status; }
 };

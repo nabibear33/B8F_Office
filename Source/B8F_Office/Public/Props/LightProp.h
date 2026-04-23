@@ -6,7 +6,7 @@
 #include "Props/BaseProp.h"
 #include "LightProp.generated.h"
 
-class URectLightComponent;
+class ULightComponent;
 
 /**
  * 
@@ -22,6 +22,9 @@ public:
 	UFUNCTION()
 	void AnomalyLightOff(AActor* TriggeringActor, AActor* TriggeredCharacter);
 
+	UFUNCTION()
+	void OnLightColorChanged(FLinearColor Color);
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -30,13 +33,10 @@ private:
 	virtual void SetNormal() override;
 
 	UPROPERTY(EditAnywhere)
-	TObjectPtr<URectLightComponent> RectLightComponent;
+	TSubclassOf<ULightComponent> LightComponentClass;
 
 	UPROPERTY(EditAnywhere)
-	float AnomalyLightIntensity;
-
-	UPROPERTY(EditAnywhere)
-	FLinearColor AnomalyLightColor;
+	TObjectPtr<ULightComponent> LightComponent;
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<ALightProp> LinkedLightProp;

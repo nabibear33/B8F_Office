@@ -12,6 +12,7 @@
 #include "GameInstances/EventBusSubsystem.h"
 #include "AIController.h"
 #include "HUD/MainHUD.h"
+#include "Kismet/GameplayStatics.h"
 
 
 AMadeleine::AMadeleine()
@@ -34,6 +35,9 @@ void AMadeleine::BeginPlay()
 	}
 
 	InitialLocation = GetActorLocation();
+
+	PostProcessVolume = Cast<APostProcessVolume>(
+		UGameplayStatics::GetActorOfClass(GetWorld(), APostProcessVolume::StaticClass()));
 }
 
 void AMadeleine::Interact_Implementation()
@@ -201,6 +205,7 @@ void AMadeleine::OnFinishAreaTriggerd(AActor* TriggeringArea, AActor* OtherActor
 
 void AMadeleine::OnPassedGame()
 {
+	GetWorldTimerManager().ClearTimer(LightFlipTimerHandle);
 	// set madeleine to rotate towards player here
 
 	AMainCharacterController* PC = Cast<AMainCharacterController>(GetWorld()->GetFirstPlayerController());
@@ -228,6 +233,7 @@ void AMadeleine::OnPassedGame()
 void AMadeleine::OnPhaseTransition(ERedLightStageStatus Status)
 {
 	SetPhase(Status);
+	UEventBusSubsystem* Subsystem = GetGameInstance()->GetSubsystem<UEventBusSubsystem>();
 
 	switch (StageStatus)
 	{
@@ -241,18 +247,27 @@ void AMadeleine::OnPhaseTransition(ERedLightStageStatus Status)
 
 
 		case ERedLightStageStatus::ERSS_TimeOut:
+			ChangeLightsColor(FLinearColor::Red, Subsystem);
 			LoseGame(FName(TEXT("Madeleine_TimeOut")));
 			break;
 		case ERedLightStageStatus::ERSS_RedLightMoved:
+			ChangeLightsColor(FLinearColor::Red, Subsystem);
 			LoseGame(FName(TEXT("Madeleine_RedLightMoved")));
 			break;
 		case ERedLightStageStatus::ERSS_PlayDeathScene:
 			PlayDeathScene();
 			break;
 		case ERedLightStageStatus::ERSS_Pass:
+			ChangeLightsColor(FLinearColor::White, Subsystem);
 			OnPassedGame();
 			break;
 	}
+}
+
+void AMadeleine::ChangeLightsColor(const FLinearColor& Color, UEventBusSubsystem* Subsystem)
+{
+	PostProcessVolume->Settings.SceneColorTint = Color;
+	Subsystem->OnLightColorUpdated.Broadcast(Color);
 }
 
 void AMadeleine::OnStageEntered()
@@ -289,12 +304,18 @@ void AMadeleine::MainGame()
 	}
 	
 	// Reverse the light per 1 sec (temp)
-	FTimerHandle TimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(
-		TimerHandle,
+		LightFlipTimerHandle,
 		[this]()
 		{
 			bIsRedLight = !bIsRedLight;
+			UEventBusSubsystem* Subsystem = GetGameInstance()->GetSubsystem<UEventBusSubsystem>();
+			if (Subsystem)
+			{
+				FLinearColor Color = (bIsRedLight) ? FLinearColor::Red : FLinearColor::Green;
+				UE_LOG(LogTemp, Warning, TEXT("Change Color BroadCast"));
+				ChangeLightsColor(Color, Subsystem);
+			}
 		},
 		FlipInterval,
 		true
@@ -303,6 +324,7 @@ void AMadeleine::MainGame()
 
 void AMadeleine::LoseGame(FName RowName)
 {
+	GetWorldTimerManager().ClearTimer(LightFlipTimerHandle);
 	AMainCharacterController* PC = Cast<AMainCharacterController>(GetWorld()->GetFirstPlayerController());
 	if (PC)
 	{

@@ -2,24 +2,18 @@
 
 
 #include "Props/LightProp.h"
-#include "Components/RectLightComponent.h"
+#include "Components/LightComponent.h"
 #include "GameLogics/TriggerArea.h"
+#include "GameInstances/EventBusSubsystem.h"
 
 
 ALightProp::ALightProp()
 {
-	RectLightComponent = CreateDefaultSubobject<URectLightComponent>(TEXT("RectLightComponent"));
-	RectLightComponent->SetupAttachment(RootComponent);
 }
 
 void ALightProp::AnomalyLightOff(AActor* TriggeringActor, AActor* TriggeredCharacter)
 {
-	UE_LOG(LogTemp, Warning, TEXT("AnomalyLightOff called on %s by TriggeringActor: %s, TriggeredCharacter: %s"),
-		*GetActorLabel(),
-		*TriggeringActor->GetActorLabel(),
-		*TriggeredCharacter->GetActorLabel());
-	RectLightComponent->SetVisibility(false);
-	// RectLightComponent->SetIntensity(AnomalyLightIntensity);
+	LightComponent->SetVisibility(false);
 	if (LinkedLightProp)
 	{	
 		GetWorld()->GetTimerManager().SetTimer(
@@ -34,10 +28,22 @@ void ALightProp::AnomalyLightOff(AActor* TriggeringActor, AActor* TriggeredChara
 	}
 }
 
+void ALightProp::OnLightColorChanged(FLinearColor Color)
+{
+	LightComponent->SetLightColor(Color);
+}
+
 
 void ALightProp::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (LightComponentClass)
+	{
+		LightComponent = NewObject<ULightComponent>(this, LightComponentClass);
+		LightComponent->SetupAttachment(RootComponent);
+		LightComponent->RegisterComponent();
+	}
 }
 
 void ALightProp::OnStageStart(EAnomalyType AnomalyType)
@@ -50,6 +56,16 @@ void ALightProp::OnStageStart(EAnomalyType AnomalyType)
 			LinkedArea->OnAreaTriggered.AddDynamic(this, &ALightProp::AnomalyLightOff);
 		}
 	}
+	else if (AnomalyType == EAnomalyType::EAT_RedLight)
+	{
+		UEventBusSubsystem* Subsystem = GetGameInstance()->GetSubsystem<UEventBusSubsystem>();
+		if (Subsystem)
+		{
+			Subsystem->OnLightColorUpdated.RemoveDynamic(this, &ALightProp::OnLightColorChanged);
+			Subsystem->OnLightColorUpdated.AddDynamic(this, &ALightProp::OnLightColorChanged);
+		}
+		
+	}
 	else
 	{
 		SetNormal();
@@ -58,11 +74,6 @@ void ALightProp::OnStageStart(EAnomalyType AnomalyType)
 
 void ALightProp::SetNormal()
 {
-	RectLightComponent->SetVisibility(true);
-	// RectLightComponent->SetIntensity(3000.f);
-	RectLightComponent->SetLightColor(FLinearColor::White);
-	if (LinkedArea)
-	{
-		LinkedArea->OnAreaTriggered.RemoveDynamic(this, &ALightProp::AnomalyLightOff);
-	}
+	LightComponent->SetVisibility(true);
+	LightComponent->SetLightColor(FLinearColor::White);
 }

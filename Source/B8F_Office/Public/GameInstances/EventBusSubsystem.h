@@ -16,5 +16,8 @@ class B8F_OFFICE_API UEventBusSubsystem : public UGameInstanceSubsystem
 	GENERATED_BODY()
 	
 public:
+	// Red Light
 	FOnLeftTimeUpdated OnLeftTimeUpdated;
+	FOnLightColorUpdated OnLightColorUpdated;
+	FOnPhaseUpdated OnPhaseUpdated;
 };
