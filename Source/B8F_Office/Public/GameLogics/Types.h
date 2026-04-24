@@ -26,7 +26,7 @@ enum class EAnomalyType : uint8
 	EAT_BurningTree UMETA(Displayname = "Burning Tree"),
 	EAT_LightOff UMETA(Displayname = "Light Off"),
 	EAT_RedLight UMETA(Displayname = "Red Light"),
-	EAT_MirrorReversed UMETA(Displayname = "Mirror Reversed"),
+	EAT_MiroAppeared UMETA(Displayname = "Miro Appeared"),
 	EAT_MirrorUpsideDown UMETA(Displayname = "Mirror Upside Down"),
 	EAT_MAX UMETA(Hidden)
 };

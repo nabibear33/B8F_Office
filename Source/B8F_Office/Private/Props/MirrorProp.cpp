@@ -35,13 +35,14 @@ void AMirrorProp::BeginPlay()
 
 void AMirrorProp::OnStageStart(EAnomalyType AnomalyType)
 {
-	if (AnomalyType == EAnomalyType::EAT_MirrorReversed)
+	if (AnomalyType == EAnomalyType::EAT_MirrorUpsideDown)
 	{
+		MID->SetVectorParameterValue(TEXT("UV_Tiling"), FLinearColor(1.f, -1.f, 0.f, 0.f));
 
 	}
-	else if (AnomalyType == EAnomalyType::EAT_MirrorUpsideDown)
+	else
 	{
-
+		MID->SetVectorParameterValue(TEXT("UV_Tiling"), FLinearColor(1.f, 1.f, 0.f, 0.f));
 	}
 }
 
@@ -64,9 +65,9 @@ void AMirrorProp::Tick(float Deltatime)
 	SceneCapture->ClipPlaneNormal = MirrorNormal;
 
 	float Distance = FVector::Distance(CameraPos, MirrorPos);
-	float MirrorHalfSize = 50.f;
+	float MirrorHalfSize = 100.f;
 	float FOV = FMath::RadiansToDegrees(2.f * FMath::Atan(MirrorHalfSize / Distance));
-	SceneCapture->FOVAngle = FMath::Clamp(FOV, 5.f, 175.f);
+	SceneCapture->FOVAngle = FMath::Clamp(FOV, 10.f, 160.f);
 	
 	/*
 
