@@ -8,18 +8,19 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Save/MainSaveGame.h"
 #include "GameInstances/SaveGameInstanceSubsystem.h"
+#include "Controllers/MainMenuController.h"
 
 void UMainMenu::NativeConstruct()
 {
     Super::NativeConstruct();
-
-    if (NewGameButton)
+    AMainMenuController* PC = Cast<AMainMenuController>(GetOwningPlayer());
+    if (PC)
     {
-        NewGameButton->OnClicked.AddDynamic(this, &UMainMenu::OnNewGameButtonClicked);
-        ContinueButton->OnClicked.AddDynamic(this, &UMainMenu::OnContinueButtonClicked);
-        QuitButton->OnClicked.AddDynamic(this, &UMainMenu::OnQuitButtonClicked);
-        CollectionButton->OnClicked.AddDynamic(this, &UMainMenu::OnCollectionButtonClicked);
-        SettingButton->OnClicked.AddDynamic(this, &UMainMenu::OnSettingButtonClicked);
+        NewGameButton->OnClicked.AddDynamic(PC, &AMainMenuController::OnClickedNewGame);
+        ContinueButton->OnClicked.AddDynamic(PC, &AMainMenuController::OnClickedContinue);
+        CollectionButton->OnClicked.AddDynamic(PC, &AMainMenuController::OnClickedCollection);
+        SettingButton->OnClicked.AddDynamic(PC, &AMainMenuController::OnClickedSetting);
+        QuitButton->OnClicked.AddDynamic(PC, &AMainMenuController::OnClickedQuit);
     }
 
     SaveSubsystem = GetGameInstance()->GetSubsystem<USaveGameInstanceSubsystem>();
@@ -51,6 +52,7 @@ void UMainMenu::OnQuitButtonClicked()
 
 void UMainMenu::OnCollectionButtonClicked()
 {
+
 }
 
 void UMainMenu::OnSettingButtonClicked()

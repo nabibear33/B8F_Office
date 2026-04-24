@@ -83,3 +83,14 @@ enum class ERedLightStageStatus : uint8
 	ERSS_PlayDeathScene UMETA(DisplayName = "Play Death Scene"),
 	ERSS_Pass UMETA(DisplayName = "Pass")
 };
+
+
+UENUM(BlueprintType)
+enum class EMainMenuStatus : uint8
+{
+	EMMS_Intro UMETA(DisplayName = "Intro"),
+	EMMS_MainMenu UMETA(DisplayName = "Main Menu"),
+	EMMS_StartGame UMETA(DisplayName = "Start Game"),
+	EMMS_Collection UMETA(DisplayName = "Collection"),
+	EMMS_Setting UMETA(DisplayName = "Setting")
+};

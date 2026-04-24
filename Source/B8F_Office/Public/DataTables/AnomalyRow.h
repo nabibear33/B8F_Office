@@ -18,7 +18,7 @@ struct FAnomalyRow : public FTableRowBase
     FText AnomalyName;
 
     UPROPERTY(EditAnywhere)
-    TSoftObjectPtr<UTexture2D> AnomalyImage;
+    TObjectPtr<UTexture2D> AnomalyImage;
 
     UPROPERTY(EditAnywhere)
     FText AnomalyDescription;
