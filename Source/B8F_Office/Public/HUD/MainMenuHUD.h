@@ -8,6 +8,8 @@
 
 class UMainMenu;
 class UCollectedAnomalyList;
+class UStartGameWidget;
+class UBackWidget;
 
 /**
  * 
@@ -18,12 +20,17 @@ class B8F_OFFICE_API AMainMenuHUD : public AHUD
 	GENERATED_BODY()
 	
 public:
-	void ShowMainMenuWidget();
-	void HideMainMenuWidget();
+	void EnableMainMenuWidget(bool Enabled);
+	void EnableCollectionWidget(bool Enabled);
+	void EnableStartGameWidget(bool Enabled);
+	void EnableBackWidget(bool Enabled);
 
-	// show, hide other widgets too.
+	void DisableAllWidgets();
 
 	void OnFinishedIntroCredit();
+
+	UFUNCTION()
+	void OnMainMenuStatusUpdated(EMainMenuStatus Status);
 
 protected:
 	virtual void BeginPlay() override;
@@ -36,10 +43,22 @@ private:
 	TObjectPtr<UMainMenu> MainMenuWidget;
 
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<UUserWidget> CollectedAnomalyWidgetClass;
+	TSubclassOf<UUserWidget> CollectionWidgetClass;
 
 	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UCollectedAnomalyList> CollectedAnomalyWidget;
+	TObjectPtr<UCollectedAnomalyList> CollectionWidget;
 
-	// add game start widget, setting widget later
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UUserWidget> StartGameWidgetClass;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UStartGameWidget> StartGameWidget;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UUserWidget> BackWidgetClass;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UBackWidget> BackWidget;
+
+
 };

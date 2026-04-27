@@ -23,10 +23,7 @@ public:
 
 private:
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UButton> NewGameButton;
-
-	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UButton> ContinueButton;
+	TObjectPtr<UButton> StartGameButton;
 
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UButton> CollectionButton;

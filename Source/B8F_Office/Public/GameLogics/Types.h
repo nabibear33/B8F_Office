@@ -17,7 +17,7 @@ enum class EStageState : uint8
 UENUM(BlueprintType)
 enum class EAnomalyType : uint8
 {
-	EAT_Normal UMETA(Displayname = "Normal"),
+	EAT_None UMETA(Displayname = "None"),
 	EAT_RenewaFrame UMETA(Displayname = "Renewa Frame"),
 	EAT_NotKommyChase UMETA(Displayname = "NotKommy Chasing"),
 	EAT_RenewaQuiz UMETA(Displayname = "Renewa Quiz"),
@@ -87,6 +87,17 @@ enum class ERedLightStageStatus : uint8
 
 UENUM(BlueprintType)
 enum class EMainMenuStatus : uint8
+{
+	EMMS_Intro UMETA(DisplayName = "Intro"),
+	EMMS_MainMenu UMETA(DisplayName = "Main Menu"),
+	EMMS_StartGame UMETA(DisplayName = "Start Game"),
+	EMMS_Collection UMETA(DisplayName = "Collection"),
+	EMMS_Setting UMETA(DisplayName = "Setting")
+};
+
+
+UENUM(BlueprintType)
+enum class EMainStoryStatus : uint8
 {
 	EMMS_Intro UMETA(DisplayName = "Intro"),
 	EMMS_MainMenu UMETA(DisplayName = "Main Menu"),

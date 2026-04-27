@@ -56,9 +56,9 @@ void AStageManager::ResetStage()
 void AStageManager::SetNormalStage()
 {
 	StageState = EStageState::ESS_Normal;
-	AnomalyType = EAnomalyType::EAT_Normal;
+	AnomalyType = EAnomalyType::EAT_None;
 	AnomalyStatus = EAnomalyStatus::EAS_Found;
 
-	OnStageStart.Broadcast(EAnomalyType::EAT_Normal);
+	OnStageStart.Broadcast(EAnomalyType::EAT_None);
 	UE_LOG(LogTemp, Warning, TEXT("Initialize Stage"));
 }

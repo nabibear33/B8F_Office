@@ -39,6 +39,10 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<ULeftTimeWidget> LeftTimeWidget;
 
+	// add pause widget
+
+	// add interact widget (refactoring)
+
 public:
 	FORCEINLINE UDialogueWidget* GetDialogueWidget() { return DialogueWidget; }
 };

@@ -11,15 +11,23 @@
 void AMainMenuController::BeginPlay()
 {
 	Super::BeginPlay();
+
+	FInputModeUIOnly InputMode;
+	SetInputMode(InputMode);
+	SetShowMouseCursor(true);
 }
 
 void AMainMenuController::OnClickedStartGame()
 {
-	// open start game widget hierarchy (new game / continue) 
+	OnMainMenuStatusUpdated.Broadcast(EMainMenuStatus::EMMS_StartGame);
 }
 
 void AMainMenuController::OnClickedNewGame()
 {
+	UE_LOG(LogTemp, Warning, TEXT("New Game Button Clicked"));
+	// open confirmation popup later
+
+	// after given response from the confirmation popup
 	USaveGameInstanceSubsystem* SaveSubsystem = GetGameInstance()->GetSubsystem<USaveGameInstanceSubsystem>();
 	SaveSubsystem->CreateNewSaveGame();
 	UMainSaveGame* SaveGame = SaveSubsystem->GetSaveGame();
@@ -32,18 +40,33 @@ void AMainMenuController::OnClickedContinue()
 	UGameplayStatics::OpenLevel(this, FName("MainStage"));
 }
 
+void AMainMenuController::OnClickedCollectionMode()
+{
+	// start game with collection mode
+}
+
+void AMainMenuController::OnClickedMarathonMode()
+{
+	// Start Game with Marathon mode
+}
+
 void AMainMenuController::OnClickedCollection()
 {
-	//open collection widget
+	OnMainMenuStatusUpdated.Broadcast(EMainMenuStatus::EMMS_Collection);
 }
 
 void AMainMenuController::OnClickedSetting()
 {
-	// open setting widget
+	OnMainMenuStatusUpdated.Broadcast(EMainMenuStatus::EMMS_Setting);
 }
 
 void AMainMenuController::OnClickedQuit()
 {
 	UKismetSystemLibrary::QuitGame(this, nullptr, EQuitPreference::Quit, false);
+}
+
+void AMainMenuController::OnClickedBack()
+{
+	OnMainMenuStatusUpdated.Broadcast(EMainMenuStatus::EMMS_MainMenu);
 }
 

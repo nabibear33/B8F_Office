@@ -31,6 +31,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnAreaTriggered, AActor*, Triggeri
 // Info Panel Update
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnInfoPanelChanged, int32, Floor, EAnomalyType, AnomalyType, EAnomalyStatus, AnomalyStatus);
 
+// Main Menu Status Update
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMainMenuStatusUpdated, EMainMenuStatus, MainMenuStatus);
+
 UCLASS()
 class UDelegates : public UObject
 {

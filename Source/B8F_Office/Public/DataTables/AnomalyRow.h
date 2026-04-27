@@ -12,7 +12,7 @@ struct FAnomalyRow : public FTableRowBase
     GENERATED_BODY()
 
     UPROPERTY(EditAnywhere)
-    EAnomalyType AnomalyType;
+    EAnomalyType AnomalyType = EAnomalyType::EAT_None;
 
     UPROPERTY(EditAnywhere)
     FText AnomalyName;

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "GameLogics/Types.h"
+#include "GameLogics/Delegates.h"
 #include "MainMenuController.generated.h"
 
 /**
@@ -26,6 +27,12 @@ public:
 	void OnClickedContinue();
 
 	UFUNCTION()
+	void OnClickedCollectionMode();
+
+	UFUNCTION()
+	void OnClickedMarathonMode();
+
+	UFUNCTION()
 	void OnClickedCollection();
 
 	UFUNCTION()
@@ -33,6 +40,11 @@ public:
 
 	UFUNCTION()
 	void OnClickedQuit();
+
+	UFUNCTION()
+	void OnClickedBack();
+
+	FOnMainMenuStatusUpdated OnMainMenuStatusUpdated;
 
 protected:
 	virtual void BeginPlay() override;
