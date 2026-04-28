@@ -5,56 +5,35 @@
 #include "GameInstances/SaveGameInstanceSubsystem.h"
 #include "Save/MainSaveGame.h"
 #include "Widgets/MainMenu/CollectedAnomalyItem.h"
+#include "Widgets/MainMenu/CollectedAnomalyDetail.h"
 #include "Components/WrapBox.h"
+
+void UCollectedAnomalyList::AnomalyDetailWidgetUpdated(FText AnomalyName, UTexture2D* Texture, FText AnomalyDetail)
+{
+    AnomalyDetailWidget->SetAnomalyName(AnomalyName);
+    AnomalyDetailWidget->SetImage(Texture);
+    AnomalyDetailWidget->SetAnomalyDetail(AnomalyDetail);
+    AnomalyDetailWidget->SetVisibility(ESlateVisibility::Visible);
+}
+
+void UCollectedAnomalyList::AnomalyDetailWidgetUpdated(ESlateVisibility _Visibility)
+{
+    if (_Visibility != ESlateVisibility::Hidden) return;
+ 
+    AnomalyDetailWidget->SetVisibility(ESlateVisibility::Hidden);
+    AnomalyDetailWidget->SetAnomalyName(FText::GetEmpty());
+    AnomalyDetailWidget->SetImage(nullptr);
+    AnomalyDetailWidget->SetAnomalyDetail(FText::GetEmpty());
+}
 
 void UCollectedAnomalyList::NativeConstruct()
 {
-	//Super::NativeConstruct();
-
-	//USaveGameInstanceSubsystem* SaveSubsystem = GetGameInstance()->GetSubsystem<USaveGameInstanceSubsystem>();
-	//UMainSaveGame* SaveGame = SaveSubsystem->GetSaveGame();
-	//const TMap<EAnomalyType, EAnomalyStatus>& AnomalyRecord = SaveGame->GetAnomalyRecord();
-
-	//for (auto& Pair : AnomalyRecord)
-	//{
-	//	EAnomalyType Type = Pair.Key;
-	//	EAnomalyStatus Status = Pair.Value;
-
-	//	if (Type == EAnomalyType::EAT_None) continue;
-
-	//	if (AnomalyItemClass)
-	//	{
-	//		UCollectedAnomalyItem* Item = CreateWidget<UCollectedAnomalyItem>(GetWorld(), AnomalyItemClass);
-	//		FName RowName = FName(*UEnum::GetValueAsString(Type));
-	//		FAnomalyRow* Row = AnomalyDataTable->FindRow<FAnomalyRow>(RowName, TEXT(""));
-	//		if (Row)
-	//		{
-	//			Item->SetAnomalyName(Row->AnomalyName);
-	//			Item->SetAnomalyImage(Row->AnomalyImage);
-	//		}
-	//		AnomalyItemWrapper->AddChild(Item);
-	//	}
-	//}
-
     Super::NativeConstruct();
 
     USaveGameInstanceSubsystem* SaveSubsystem = GetGameInstance()->GetSubsystem<USaveGameInstanceSubsystem>();
-    if (!SaveSubsystem)
-    {
-        UE_LOG(LogTemp, Error, TEXT("[CollectedAnomaly] SaveSubsystem is null"));
-        return;
-    }
-
     UMainSaveGame* SaveGame = SaveSubsystem->GetSaveGame();
-    if (!SaveGame)
-    {
-        UE_LOG(LogTemp, Error, TEXT("[CollectedAnomaly] SaveGame is null"));
-        return;
-    }
-
     const TMap<EAnomalyType, EAnomalyStatus>& AnomalyRecord = SaveGame->GetAnomalyRecord();
-    UE_LOG(LogTemp, Log, TEXT("[CollectedAnomaly] AnomalyRecord count: %d"), AnomalyRecord.Num());
-
+    
     for (auto& Pair : AnomalyRecord)
     {
         EAnomalyType Type = Pair.Key;
@@ -62,37 +41,30 @@ void UCollectedAnomalyList::NativeConstruct()
 
         if (Type == EAnomalyType::EAT_None || Type == EAnomalyType::EAT_MAX) continue;
 
-        UE_LOG(LogTemp, Log, TEXT("[CollectedAnomaly] Type: %s | Status: %s"),
-            *UEnum::GetValueAsString(Type),
-            *UEnum::GetValueAsString(Status));
-
-        if (!AnomalyItemClass)
-        {
-            UE_LOG(LogTemp, Warning, TEXT("[CollectedAnomaly] AnomalyItemClass is null, skipping"));
-            continue;
-        }
-
         UCollectedAnomalyItem* Item = CreateWidget<UCollectedAnomalyItem>(GetWorld(), AnomalyItemClass);
-        if (!Item)
-        {
-            UE_LOG(LogTemp, Error, TEXT("[CollectedAnomaly] Failed to create widget for Type: %s"),
-                *UEnum::GetValueAsString(Type));
-            continue;
-        }
+        
+        FString RowNameString = UEnum::GetValueAsString(Type);
+        int32 SlicingIdx;
+        RowNameString.FindLastChar(':', SlicingIdx);
+        RowNameString = RowNameString.RightChop(SlicingIdx + 1);
+        FName RowName = FName(*RowNameString);
 
-        if (!AnomalyDataTable)
-        {
-            UE_LOG(LogTemp, Error, TEXT("[CollectedAnomaly] AnomalyDataTable is null"));
-            continue;
-        }
-
-        FName RowName = FName(*UEnum::GetValueAsString(Type));
         FAnomalyRow* Row = AnomalyDataTable->FindRow<FAnomalyRow>(RowName, TEXT(""));
         if (Row)
         {
             UE_LOG(LogTemp, Log, TEXT("[CollectedAnomaly] Row found: %s"), *Row->AnomalyName.ToString());
-            Item->SetAnomalyName(Row->AnomalyName);
-            Item->SetAnomalyImage(Row->AnomalyImage);
+            if (Status == EAnomalyStatus::EAS_Found)
+            {
+                Item->SetAnomalyName(Row->AnomalyName);
+                Item->SetAnomalyImage(Row->AnomalyImage);
+                Item->SetAnomalyDetail(Row->AnomalyDescription);
+            }
+            else
+            {
+                Item->SetAnomalyName(FText::FromString("???"));
+                Item->SetAnomalyImage(NotSeenTexture);
+                Item->SetAnomalyDetail(FText::FromString("???"));
+            }
         }
         else
         {
@@ -100,8 +72,11 @@ void UCollectedAnomalyList::NativeConstruct()
         }
 
         AnomalyItemWrapper->AddChild(Item);
-        UE_LOG(LogTemp, Log, TEXT("[CollectedAnomaly] Item added to wrapper"));
     }
-
-    UE_LOG(LogTemp, Log, TEXT("[CollectedAnomaly] NativeConstruct complete"));
+    
+    if (AnomalyDetailClass)
+    {
+        AnomalyDetailWidget = CreateWidget<UCollectedAnomalyDetail>(GetWorld(), AnomalyDetailClass);
+        AnomalyDetailWidget->SetVisibility(ESlateVisibility::Hidden);
+    }
 }

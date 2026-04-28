@@ -36,6 +36,9 @@ public:
 	void OnClickedCollection();
 
 	UFUNCTION()
+	void OnClickedCollectionItem(FText AnomalyName, UTexture2D* Texture, FText AnomalyDetail);
+
+	UFUNCTION()
 	void OnClickedSetting();
 
 	UFUNCTION()
@@ -52,5 +55,7 @@ protected:
 private:
 	UPROPERTY(VisibleAnywhere)
 	EMainMenuStatus CurrentStatus;
+
+	EMainMenuStatus GetParentStatus(EMainMenuStatus Status);
 
 };

@@ -123,6 +123,11 @@ void AMainMenuHUD::OnFinishedIntroCredit()
     EnableMainMenuWidget(true);
 }
 
+void AMainMenuHUD::OnCollectionDetailUpdated(FText AnomalyName, UTexture2D* Texture, FText AnomalyDetail)
+{
+    CollectionWidget->AnomalyDetailWidgetUpdated(AnomalyName, Texture, AnomalyDetail);
+}
+
 void AMainMenuHUD::OnMainMenuStatusUpdated(EMainMenuStatus Status)
 {
     DisableAllWidgets();
@@ -134,7 +139,8 @@ void AMainMenuHUD::OnMainMenuStatusUpdated(EMainMenuStatus Status)
     
     if (Status == EMainMenuStatus::EMMS_StartGame
         || Status == EMainMenuStatus::EMMS_Collection
-        || Status == EMainMenuStatus::EMMS_Setting)
+        || Status == EMainMenuStatus::EMMS_Setting
+        || Status == EMainMenuStatus::EMMS_CollectionDetail)
     {
         EnableBackWidget(true);
     }

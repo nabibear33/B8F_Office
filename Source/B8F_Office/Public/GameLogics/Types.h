@@ -92,6 +92,7 @@ enum class EMainMenuStatus : uint8
 	EMMS_MainMenu UMETA(DisplayName = "Main Menu"),
 	EMMS_StartGame UMETA(DisplayName = "Start Game"),
 	EMMS_Collection UMETA(DisplayName = "Collection"),
+	EMMS_CollectionDetail UMETA(DisplayName = "Collection Detail"),
 	EMMS_Setting UMETA(DisplayName = "Setting")
 };
 
@@ -99,9 +100,9 @@ enum class EMainMenuStatus : uint8
 UENUM(BlueprintType)
 enum class EMainStoryStatus : uint8
 {
-	EMMS_Intro UMETA(DisplayName = "Intro"),
-	EMMS_MainMenu UMETA(DisplayName = "Main Menu"),
-	EMMS_StartGame UMETA(DisplayName = "Start Game"),
-	EMMS_Collection UMETA(DisplayName = "Collection"),
-	EMMS_Setting UMETA(DisplayName = "Setting")
+	EMSS_Intro UMETA(DisplayName = "Intro"),
+	EMSS_MainMenu UMETA(DisplayName = "Main Menu"),
+	EMSS_StartGame UMETA(DisplayName = "Start Game"),
+	EMSS_Collection UMETA(DisplayName = "Collection"),
+	EMSS_Setting UMETA(DisplayName = "Setting")
 };

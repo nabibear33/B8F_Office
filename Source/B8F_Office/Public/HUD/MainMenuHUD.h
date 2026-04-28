@@ -29,6 +29,8 @@ public:
 
 	void OnFinishedIntroCredit();
 
+	void OnCollectionDetailUpdated(FText AnomalyName, UTexture2D* Texture, FText AnomalyDetail);
+
 	UFUNCTION()
 	void OnMainMenuStatusUpdated(EMainMenuStatus Status);
 

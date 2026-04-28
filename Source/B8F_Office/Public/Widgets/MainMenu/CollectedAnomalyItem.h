@@ -4,10 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "GameLogics/Delegates.h"
 #include "CollectedAnomalyItem.generated.h"
 
 class UTextBlock;
 class UImage;
+class UButton;
 
 /**
  * 
@@ -21,7 +23,15 @@ public:
 	void SetAnomalyName(FText Text);
 
 	void SetAnomalyImage(UTexture2D* Texture);
+
+	void SetAnomalyDetail(FText Text);
 	
+	UFUNCTION()
+	void OnClickedCollectionDetail();
+
+protected:
+	virtual void NativeConstruct() override;
+
 private:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> AnomalyName;
@@ -29,5 +39,17 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UImage> AnomalyImage;
 
-	// add click for liking detail widget
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UButton> DetailButton;
+
+	FOnCollectionItemClicked OnCollectionItemClicked;
+
+	UPROPERTY()
+	FText CachedAnomalyName;
+
+	UPROPERTY()
+	FText CachedAnomalyDetail;
+
+	UPROPERTY()
+	TObjectPtr<UTexture2D> CachedAnomalyTexture;
 };

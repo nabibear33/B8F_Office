@@ -17,6 +17,20 @@ void AMainMenuController::BeginPlay()
 	SetShowMouseCursor(true);
 }
 
+EMainMenuStatus AMainMenuController::GetParentStatus(EMainMenuStatus Status)
+{
+	switch (Status)
+	{
+		case EMainMenuStatus::EMMS_CollectionDetail:
+			return EMainMenuStatus::EMMS_Collection;
+		case EMainMenuStatus::EMMS_StartGame:
+		case EMainMenuStatus::EMMS_Collection:
+		case EMainMenuStatus::EMMS_Setting:
+		default:
+			return EMainMenuStatus::EMMS_MainMenu;
+	}
+}
+
 void AMainMenuController::OnClickedStartGame()
 {
 	OnMainMenuStatusUpdated.Broadcast(EMainMenuStatus::EMMS_StartGame);
@@ -52,11 +66,21 @@ void AMainMenuController::OnClickedMarathonMode()
 
 void AMainMenuController::OnClickedCollection()
 {
+	CurrentStatus = EMainMenuStatus::EMMS_Collection;
 	OnMainMenuStatusUpdated.Broadcast(EMainMenuStatus::EMMS_Collection);
+}
+
+void AMainMenuController::OnClickedCollectionItem(FText AnomalyName, UTexture2D* Texture, FText AnomalyDetail)
+{
+	CurrentStatus = EMainMenuStatus::EMMS_CollectionDetail;
+	AMainMenuHUD* HUD = Cast<AMainMenuHUD>(GetHUD());
+	HUD->OnCollectionDetailUpdated(AnomalyName, Texture, AnomalyDetail);
+	OnMainMenuStatusUpdated.Broadcast(EMainMenuStatus::EMMS_CollectionDetail);
 }
 
 void AMainMenuController::OnClickedSetting()
 {
+	CurrentStatus = EMainMenuStatus::EMMS_Setting;
 	OnMainMenuStatusUpdated.Broadcast(EMainMenuStatus::EMMS_Setting);
 }
 
@@ -67,6 +91,7 @@ void AMainMenuController::OnClickedQuit()
 
 void AMainMenuController::OnClickedBack()
 {
-	OnMainMenuStatusUpdated.Broadcast(EMainMenuStatus::EMMS_MainMenu);
+	CurrentStatus = GetParentStatus(CurrentStatus);
+	OnMainMenuStatusUpdated.Broadcast(CurrentStatus);
 }
 
