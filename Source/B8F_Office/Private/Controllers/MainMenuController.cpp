@@ -5,7 +5,7 @@
 #include "HUD/MainMenuHUD.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
-#include "GameInstances/SaveGameInstanceSubsystem.h"
+#include "GameInstances/SaveSubsystem.h"
 #include "Save/MainSaveGame.h"
 
 void AMainMenuController::BeginPlay()
@@ -42,7 +42,7 @@ void AMainMenuController::OnClickedNewGame()
 	// open confirmation popup later
 
 	// after given response from the confirmation popup
-	USaveGameInstanceSubsystem* SaveSubsystem = GetGameInstance()->GetSubsystem<USaveGameInstanceSubsystem>();
+	USaveSubsystem* SaveSubsystem = GetGameInstance()->GetSubsystem<USaveSubsystem>();
 	SaveSubsystem->CreateNewSaveGame();
 	UMainSaveGame* SaveGame = SaveSubsystem->GetSaveGame();
 	SaveGame->FirstPlay();

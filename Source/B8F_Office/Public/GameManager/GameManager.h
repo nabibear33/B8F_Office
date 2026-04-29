@@ -16,7 +16,7 @@ class ATriggerArea;
 class AMainCharacter;
 class ACutsceneManager;
 class ANotKommy;
-class USaveGameInstanceSubsystem;
+class USaveSubsystem;
 class UMainSaveGame;
 class ARenewa;
 class AMadeleine;
@@ -99,7 +99,7 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	TMap<EAnomalyType, EAnomalyStatus> AnomalyRecord;
 
-	TObjectPtr<USaveGameInstanceSubsystem> SaveSubsystem;
+	TObjectPtr<USaveSubsystem> SaveSubsystem;
 
 	TObjectPtr<UMainSaveGame> SaveGame;
 

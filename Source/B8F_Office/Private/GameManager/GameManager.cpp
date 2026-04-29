@@ -8,7 +8,7 @@
 #include "Characters/MainCharacter.h"
 #include "Characters/NotKommy.h"
 #include "GameLogics/Types.h"
-#include "GameInstances/SaveGameInstanceSubsystem.h"
+#include "GameInstances/SaveSubsystem.h"
 #include "Save/MainSaveGame.h"
 #include "Kismet/GameplayStatics.h"
 #include "Characters/Renewa.h"
@@ -28,7 +28,7 @@ void AGameManager::BeginPlay()
 {
 	Super::BeginPlay();
 
-	SaveSubsystem = GetGameInstance()->GetSubsystem<USaveGameInstanceSubsystem>();
+	SaveSubsystem = GetGameInstance()->GetSubsystem<USaveSubsystem>();
 	SaveGame = SaveSubsystem->GetSaveGame();
 
 	if (StageStartAreaUp && StageStartAreaDown && TeleportAreaUp && TeleportAreaDown)

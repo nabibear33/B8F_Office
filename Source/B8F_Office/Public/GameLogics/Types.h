@@ -98,11 +98,10 @@ enum class EMainMenuStatus : uint8
 
 
 UENUM(BlueprintType)
-enum class EMainStoryStatus : uint8
+enum class EProgressType : uint8
 {
-	EMSS_Intro UMETA(DisplayName = "Intro"),
-	EMSS_MainMenu UMETA(DisplayName = "Main Menu"),
-	EMSS_StartGame UMETA(DisplayName = "Start Game"),
-	EMSS_Collection UMETA(DisplayName = "Collection"),
-	EMSS_Setting UMETA(DisplayName = "Setting")
+	EPT_Normal UMETA(DisplayName = "Normal"),
+	EPT_CutScene UMETA(DisplayName = "CutScene"),
+	EPT_PlayMedia UMETA(DisplayName = "Play Media"),
+	EPT_Dialogue UMETA(DisplayName = "Dialogue"),
 };

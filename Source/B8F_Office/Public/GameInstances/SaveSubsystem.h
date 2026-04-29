@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Subsystems/GameInstanceSubsystem.h"
-#include "SaveGameInstanceSubsystem.generated.h"
+#include "SaveSubsystem.generated.h"
 
 class UMainSaveGame;
 
@@ -12,7 +12,7 @@ class UMainSaveGame;
  * 
  */
 UCLASS()
-class B8F_OFFICE_API USaveGameInstanceSubsystem : public UGameInstanceSubsystem
+class B8F_OFFICE_API USaveSubsystem : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
 	

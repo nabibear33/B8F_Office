@@ -2,7 +2,7 @@
 
 
 #include "Widgets/MainMenu/StartGameWidget.h"
-#include "GameInstances/SaveGameInstanceSubsystem.h"
+#include "GameInstances/SaveSubsystem.h"
 #include "Save/MainSaveGame.h"
 #include "Components/Button.h"
 #include "Controllers/MainMenuController.h"
@@ -21,7 +21,7 @@ void UStartGameWidget::NativeConstruct()
         MarathonModeButton->OnClicked.AddDynamic(PC, &AMainMenuController::OnClickedMarathonMode);
     }
 
-	USaveGameInstanceSubsystem* Subsystem = GetGameInstance()->GetSubsystem<USaveGameInstanceSubsystem>();
+	USaveSubsystem* Subsystem = GetGameInstance()->GetSubsystem<USaveSubsystem>();
 	UMainSaveGame* SaveGame = Subsystem->GetSaveGame();
 	if (!(SaveGame->HasPlayedBefore()))
 	{

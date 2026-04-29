@@ -5,7 +5,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Components/TextBlock.h"
 #include "Components/WrapBox.h"
-#include "GameInstances/SaveGameInstanceSubsystem.h"
+#include "GameInstances/SaveSubsystem.h"
 #include "Save/MainSaveGame.h"
 #include "Widgets/AnomalyStatusEntry.h"
 
@@ -47,13 +47,13 @@ void UInfoPanelWidget::NativeConstruct()
 		GameManager->OnInfoPanelUpdated.AddDynamic(this, &UInfoPanelWidget::OnInfoPanelUpdated);
 	}
 
-	DrawCurrentFloor(GetGameInstance()->GetSubsystem<USaveGameInstanceSubsystem>()->GetSaveGame()->GetCurrentFloor());
+	DrawCurrentFloor(GetGameInstance()->GetSubsystem<USaveSubsystem>()->GetSaveGame()->GetCurrentFloor());
 	DrawAnomalyRecord();
 }
 
 void UInfoPanelWidget::DrawAnomalyRecord()
 {
-	USaveGameInstanceSubsystem* SaveSubsystem = GetGameInstance()->GetSubsystem<USaveGameInstanceSubsystem>();
+	USaveSubsystem* SaveSubsystem = GetGameInstance()->GetSubsystem<USaveSubsystem>();
 	if (SaveSubsystem && SaveSubsystem->GetSaveGame())
 	{
 		PopulateFromMap(SaveSubsystem->GetSaveGame()->GetAnomalyRecord());

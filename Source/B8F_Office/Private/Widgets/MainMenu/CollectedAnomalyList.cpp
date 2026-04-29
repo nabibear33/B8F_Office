@@ -2,7 +2,7 @@
 
 
 #include "Widgets/MainMenu/CollectedAnomalyList.h"
-#include "GameInstances/SaveGameInstanceSubsystem.h"
+#include "GameInstances/SaveSubsystem.h"
 #include "Save/MainSaveGame.h"
 #include "Widgets/MainMenu/CollectedAnomalyItem.h"
 #include "Widgets/MainMenu/CollectedAnomalyDetail.h"
@@ -12,7 +12,7 @@ void UCollectedAnomalyList::NativeConstruct()
 {
     Super::NativeConstruct();
 
-    USaveGameInstanceSubsystem* SaveSubsystem = GetGameInstance()->GetSubsystem<USaveGameInstanceSubsystem>();
+    USaveSubsystem* SaveSubsystem = GetGameInstance()->GetSubsystem<USaveSubsystem>();
     UMainSaveGame* SaveGame = SaveSubsystem->GetSaveGame();
     const TMap<EAnomalyType, EAnomalyStatus>& AnomalyRecord = SaveGame->GetAnomalyRecord();
     

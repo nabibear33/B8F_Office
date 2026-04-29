@@ -8,7 +8,7 @@
 
 class UButton;
 class UMainSaveGame;
-class USaveGameInstanceSubsystem;
+class USaveSubsystem;
 
 /**
  * 
@@ -49,7 +49,7 @@ private:
 	UFUNCTION()
 	void OnSettingButtonClicked();
 
-	TObjectPtr<USaveGameInstanceSubsystem> SaveSubsystem;
+	TObjectPtr<USaveSubsystem> SaveSubsystem;
 
 	TObjectPtr<UMainSaveGame> SaveGame;
 };
