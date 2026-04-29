@@ -10,6 +10,7 @@ class UMainMenu;
 class UCollectedAnomalyList;
 class UStartGameWidget;
 class UBackWidget;
+class UCollectedAnomalyDetail;
 
 /**
  * 
@@ -22,6 +23,7 @@ class B8F_OFFICE_API AMainMenuHUD : public AHUD
 public:
 	void EnableMainMenuWidget(bool Enabled);
 	void EnableCollectionWidget(bool Enabled);
+	void EnableCollectionDetailWidget(bool Enabled);
 	void EnableStartGameWidget(bool Enabled);
 	void EnableBackWidget(bool Enabled);
 
@@ -49,6 +51,12 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UCollectedAnomalyList> CollectionWidget;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UUserWidget> CollectionDetailWidgetClass;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UCollectedAnomalyDetail> CollectionDetailWidget;
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UUserWidget> StartGameWidgetClass;

@@ -5,6 +5,13 @@
 #include "Components/TextBlock.h"
 #include "Components/Image.h"
 
+void UCollectedAnomalyDetail::AnomalyDetailUpdated(FText _AnomalyName, UTexture2D* Texture, FText _AnomalyDetail)
+{
+	SetAnomalyName(_AnomalyName);
+	SetImage(Texture);
+	SetAnomalyDetail(_AnomalyDetail);
+}
+
 void UCollectedAnomalyDetail::SetAnomalyName(FText Text)
 {
 	AnomalyName->SetText(Text);

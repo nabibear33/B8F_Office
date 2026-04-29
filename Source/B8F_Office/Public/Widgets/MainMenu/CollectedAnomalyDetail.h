@@ -18,6 +18,8 @@ class B8F_OFFICE_API UCollectedAnomalyDetail : public UUserWidget
 	GENERATED_BODY()
 
 public:
+	void AnomalyDetailUpdated(FText _AnomalyName, UTexture2D* Texture, FText _AnomalyDetail);
+	
 	void SetAnomalyName(FText Text);
 
 	void SetAnomalyDetail(FText Text);

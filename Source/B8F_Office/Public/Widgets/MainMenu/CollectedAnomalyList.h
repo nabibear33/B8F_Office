@@ -20,7 +20,6 @@ class B8F_OFFICE_API UCollectedAnomalyList : public UUserWidget
 
 public:
 	void AnomalyDetailWidgetUpdated(FText AnomalyName, UTexture2D* Texture, FText AnomalyDetail);
-	void AnomalyDetailWidgetUpdated(ESlateVisibility _Visibility);
 
 protected:
 	virtual void NativeConstruct() override;
@@ -31,12 +30,6 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UUserWidget> AnomalyItemClass;
-
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<UUserWidget> AnomalyDetailClass;
-
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UCollectedAnomalyDetail> AnomalyDetailWidget;
 
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UWrapBox> AnomalyItemWrapper;

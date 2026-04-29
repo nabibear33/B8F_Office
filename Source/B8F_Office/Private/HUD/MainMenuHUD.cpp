@@ -7,6 +7,7 @@
 #include "Widgets/MainMenu/StartGameWidget.h"
 #include "Widgets/MainMenu/BackWidget.h"
 #include "Controllers/MainMenuController.h"
+#include "Widgets/MainMenu/CollectedAnomalyDetail.h"
 
 void AMainMenuHUD::BeginPlay()
 {
@@ -33,6 +34,16 @@ void AMainMenuHUD::BeginPlay()
         {
             CollectionWidget->AddToViewport();
             CollectionWidget->SetVisibility(ESlateVisibility::Hidden);
+        }
+    }
+
+    if (CollectionDetailWidgetClass)
+    {
+        CollectionDetailWidget = CreateWidget<UCollectedAnomalyDetail>(PC, CollectionDetailWidgetClass);
+        if (CollectionDetailWidget)
+        {
+            CollectionDetailWidget->AddToViewport();
+            CollectionDetailWidget->SetVisibility(ESlateVisibility::Hidden);
         }
     }
 
@@ -64,7 +75,7 @@ void AMainMenuHUD::EnableMainMenuWidget(bool Enabled)
 {
     if (Enabled)
     {
-        MainMenuWidget->SetVisibility(ESlateVisibility::Visible);
+        MainMenuWidget->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
     }
     else
     {
@@ -76,7 +87,7 @@ void AMainMenuHUD::EnableCollectionWidget(bool Enabled)
 {
     if (Enabled)
     {
-        CollectionWidget->SetVisibility(ESlateVisibility::Visible);
+        CollectionWidget->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
     }
     else
     {
@@ -84,11 +95,23 @@ void AMainMenuHUD::EnableCollectionWidget(bool Enabled)
     }
 }
 
+void AMainMenuHUD::EnableCollectionDetailWidget(bool Enabled)
+{
+    if (Enabled)
+    {
+        CollectionDetailWidget->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+    }
+    else
+    {
+        CollectionDetailWidget->SetVisibility(ESlateVisibility::Hidden);
+    }
+}
+
 void AMainMenuHUD::EnableStartGameWidget(bool Enabled)
 {
     if (Enabled)
     {
-        StartGameWidget->SetVisibility(ESlateVisibility::Visible);
+        StartGameWidget->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
     }
     else
     {
@@ -100,7 +123,7 @@ void AMainMenuHUD::EnableBackWidget(bool Enabled)
 {
     if (Enabled)
     {
-        BackWidget->SetVisibility(ESlateVisibility::Visible);
+        BackWidget->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
     }
     else
     {
@@ -113,6 +136,7 @@ void AMainMenuHUD::DisableAllWidgets()
     EnableMainMenuWidget(false);
     EnableStartGameWidget(false);
     EnableCollectionWidget(false);
+    EnableCollectionDetailWidget(false);
     EnableBackWidget(false);
 }
 
@@ -125,7 +149,7 @@ void AMainMenuHUD::OnFinishedIntroCredit()
 
 void AMainMenuHUD::OnCollectionDetailUpdated(FText AnomalyName, UTexture2D* Texture, FText AnomalyDetail)
 {
-    CollectionWidget->AnomalyDetailWidgetUpdated(AnomalyName, Texture, AnomalyDetail);
+    CollectionDetailWidget->AnomalyDetailUpdated(AnomalyName, Texture, AnomalyDetail);
 }
 
 void AMainMenuHUD::OnMainMenuStatusUpdated(EMainMenuStatus Status)
@@ -135,6 +159,7 @@ void AMainMenuHUD::OnMainMenuStatusUpdated(EMainMenuStatus Status)
     if (Status == EMainMenuStatus::EMMS_MainMenu) EnableMainMenuWidget(true);
     if (Status == EMainMenuStatus::EMMS_StartGame) EnableStartGameWidget(true);
     if (Status == EMainMenuStatus::EMMS_Collection) EnableCollectionWidget(true);
+    if (Status == EMainMenuStatus::EMMS_CollectionDetail) EnableCollectionDetailWidget(true);
     if (Status == EMainMenuStatus::EMMS_Setting) {}
     
     if (Status == EMainMenuStatus::EMMS_StartGame

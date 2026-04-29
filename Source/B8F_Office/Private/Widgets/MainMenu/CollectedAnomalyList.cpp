@@ -8,24 +8,6 @@
 #include "Widgets/MainMenu/CollectedAnomalyDetail.h"
 #include "Components/WrapBox.h"
 
-void UCollectedAnomalyList::AnomalyDetailWidgetUpdated(FText AnomalyName, UTexture2D* Texture, FText AnomalyDetail)
-{
-    AnomalyDetailWidget->SetAnomalyName(AnomalyName);
-    AnomalyDetailWidget->SetImage(Texture);
-    AnomalyDetailWidget->SetAnomalyDetail(AnomalyDetail);
-    AnomalyDetailWidget->SetVisibility(ESlateVisibility::Visible);
-}
-
-void UCollectedAnomalyList::AnomalyDetailWidgetUpdated(ESlateVisibility _Visibility)
-{
-    if (_Visibility != ESlateVisibility::Hidden) return;
- 
-    AnomalyDetailWidget->SetVisibility(ESlateVisibility::Hidden);
-    AnomalyDetailWidget->SetAnomalyName(FText::GetEmpty());
-    AnomalyDetailWidget->SetImage(nullptr);
-    AnomalyDetailWidget->SetAnomalyDetail(FText::GetEmpty());
-}
-
 void UCollectedAnomalyList::NativeConstruct()
 {
     Super::NativeConstruct();
@@ -72,11 +54,5 @@ void UCollectedAnomalyList::NativeConstruct()
         }
 
         AnomalyItemWrapper->AddChild(Item);
-    }
-    
-    if (AnomalyDetailClass)
-    {
-        AnomalyDetailWidget = CreateWidget<UCollectedAnomalyDetail>(GetWorld(), AnomalyDetailClass);
-        AnomalyDetailWidget->SetVisibility(ESlateVisibility::Hidden);
     }
 }
