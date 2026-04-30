@@ -46,12 +46,12 @@ void AMainMenuController::OnClickedNewGame()
 	SaveSubsystem->CreateNewSaveGame();
 	UMainSaveGame* SaveGame = SaveSubsystem->GetSaveGame();
 	SaveGame->FirstPlay();
-	UGameplayStatics::OpenLevel(this, FName("MainStage"));
+	UGameplayStatics::OpenLevel(this, NewGameLevelName);
 }
 
 void AMainMenuController::OnClickedContinue()
 {
-	UGameplayStatics::OpenLevel(this, FName("MainStage"));
+	UGameplayStatics::OpenLevel(this, NewGameLevelName);
 }
 
 void AMainMenuController::OnClickedCollectionMode()

@@ -18,8 +18,7 @@ class B8F_OFFICE_API UGameSubsystem : public UGameInstanceSubsystem
 	GENERATED_BODY()
 
 public:
-	// Setter when Changing the progress each time
-	void SetCurrentProgress();
+	void SetCurrentProgress(FName Name, EProgressType Type);
 
 private:
 

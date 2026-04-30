@@ -27,4 +27,9 @@ void UStartGameWidget::NativeConstruct()
 	{
 		ContinueButton->SetIsEnabled(false);
 	}
+    if (!(SaveGame->IsNormalStageCleared()))
+    {
+        CollectionModeButton->SetIsEnabled(false);
+        MarathonModeButton->SetIsEnabled(false);
+    }
 }

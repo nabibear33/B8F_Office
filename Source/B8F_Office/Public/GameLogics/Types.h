@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Types.generated.h"
+
 UENUM(BlueprintType)
 enum class EGameState : uint8
 {
@@ -104,4 +106,15 @@ enum class EProgressType : uint8
 	EPT_CutScene UMETA(DisplayName = "CutScene"),
 	EPT_PlayMedia UMETA(DisplayName = "Play Media"),
 	EPT_Dialogue UMETA(DisplayName = "Dialogue"),
+	EPT_Monologue UMETA(DisplayName = "Monologue"),
+};
+
+USTRUCT()
+struct FMainStageStatus
+{
+	GENERATED_BODY()
+
+	int CurrentFloor;
+
+	TMap<EAnomalyType, EAnomalyStatus> AnomalyRecord;
 };

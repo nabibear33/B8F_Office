@@ -58,4 +58,7 @@ private:
 
 	EMainMenuStatus GetParentStatus(EMainMenuStatus Status);
 
+	UPROPERTY(EditAnywhere)
+	FName NewGameLevelName = FName(TEXT("MainStage"));
+
 };

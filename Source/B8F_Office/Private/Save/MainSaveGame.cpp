@@ -6,7 +6,7 @@
 
 void UMainSaveGame::InitializeAnomalyRecord()
 {
-	AnomalyRecord.Empty();
+	MainStageStatus.AnomalyRecord.Empty();
 
 	const UEnum* EnumPtr = StaticEnum<EAnomalyType>();
 	if (!EnumPtr) return;
@@ -14,22 +14,22 @@ void UMainSaveGame::InitializeAnomalyRecord()
 	for (int32 i = 0; i < EnumPtr->NumEnums() - 1; i++)
 	{
 		EAnomalyType Type = static_cast<EAnomalyType>(EnumPtr->GetValueByIndex(i));
-		AnomalyRecord.Add(Type, EAnomalyStatus::EAS_NotSeen);
+		MainStageStatus.AnomalyRecord.Add(Type, EAnomalyStatus::EAS_NotSeen);
 		UE_LOG(LogTemp, Warning, TEXT("[%d] Added: %s"), i, *UEnum::GetValueAsString(Type));
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("AnomalyRecord Total: %d"), AnomalyRecord.Num());
+	UE_LOG(LogTemp, Warning, TEXT("AnomalyRecord Total: %d"), MainStageStatus.AnomalyRecord.Num());
 }
 
 void UMainSaveGame::SetAnomalyRecord(EAnomalyType Type, EAnomalyStatus Status)
 {
-	if (!AnomalyRecord.Contains(Type))
+	if (!MainStageStatus.AnomalyRecord.Contains(Type))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("SetAnomalyRecord: Non-existing AnomalyType. Add New AnomalyType"));
-		AnomalyRecord.Add(Type, Status);
+		MainStageStatus.AnomalyRecord.Add(Type, Status);
 		return;
 	}
 
 	// Save only when higher status came in.
-	AnomalyRecord[Type] = (AnomalyRecord[Type] < Status) ? Status : AnomalyRecord[Type];
+	MainStageStatus.AnomalyRecord[Type] = (MainStageStatus.AnomalyRecord[Type] < Status) ? Status : MainStageStatus.AnomalyRecord[Type];
 }

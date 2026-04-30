@@ -15,26 +15,27 @@ class B8F_OFFICE_API UMainSaveGame : public USaveGame
 {
 	GENERATED_BODY()
 public:
-	FORCEINLINE void SetCurrentFloor(int32 Value) { CurrentFloor = Value; }
+	FORCEINLINE void SetCurrentFloor(int32 Value) { MainStageStatus.CurrentFloor = Value; }
 	FORCEINLINE void NormalStageCleared() { bHasClearedNormalStage = true; }
 	FORCEINLINE void CollectedAll() { bHasCollectedAll = true; }
 	FORCEINLINE void FirstPlay() { bHasPlayedBefore = true; }
+	FORCEINLINE void SetProgressName(FName Name) { GameProgressRowName = Name; }
 
-	FORCEINLINE int32 GetCurrentFloor() { return CurrentFloor; }
+	FORCEINLINE int32 GetCurrentFloor() { return MainStageStatus.CurrentFloor; }
 	FORCEINLINE bool IsNormalStageCleared() { return bHasClearedNormalStage; }
 	FORCEINLINE bool HasCollectedAll() { return bHasCollectedAll; }
 	FORCEINLINE bool HasPlayedBefore() { return bHasPlayedBefore; }
-	FORCEINLINE const TMap<EAnomalyType, EAnomalyStatus>& GetAnomalyRecord() { return AnomalyRecord; }
+	FORCEINLINE const TMap<EAnomalyType, EAnomalyStatus>& GetAnomalyRecord() { return MainStageStatus.AnomalyRecord; }
 	
 	void InitializeAnomalyRecord();
 	void SetAnomalyRecord(EAnomalyType Type, EAnomalyStatus Status);
 
 private:
 	UPROPERTY()
-	TMap<EAnomalyType, EAnomalyStatus> AnomalyRecord;
+	FName GameProgressRowName = FName(TEXT("NotStarted"));
 
 	UPROPERTY()
-	int32 CurrentFloor;
+	FMainStageStatus MainStageStatus;
 
 	UPROPERTY()
 	bool bHasClearedNormalStage = false;
