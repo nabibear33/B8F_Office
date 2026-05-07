@@ -72,5 +72,5 @@ void ARenewa::KillPlayer()
 {
 	UE_LOG(LogTemp, Warning, TEXT("KillPlayer"));
 	InteractComponent->SetInteractDisabled();
-	OnPlayDeathScene.Broadcast(EDeathSceneType::EDS_RenewaQuiz);
+	OnPlayCutscene.Broadcast(ECutsceneName::ECN_RenewaQuiz);
 }

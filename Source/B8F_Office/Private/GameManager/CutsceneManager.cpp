@@ -2,6 +2,7 @@
 
 #include "GameManager/CutsceneManager.h"
 #include "LevelSequenceActor.h"
+#include "DataTables/CutsceneRow.h"
 #include "LevelSequencePlayer.h"
 
 ACutsceneManager::ACutsceneManager()
@@ -21,16 +22,19 @@ void ACutsceneManager::OnCutsceneFinished()
 	OnPlayerDeathAndReset.Broadcast();
 }
 
-void ACutsceneManager::PlayDeathScene(EDeathSceneType DeathSceneType)
+void ACutsceneManager::PlayCutscene(FName RowName)
 {
-	ULevelSequencePlayer* LevelSequencePlayer = DeathScenes[DeathSceneType]->GetSequencePlayer();
-	if (LevelSequencePlayer)
+	FCutsceneRow* Row = CutsceneDataTable->FindRow<FCutsceneRow>(RowName, TEXT(""));
+	if (Row)
 	{
-		LevelSequencePlayer->OnFinished.RemoveDynamic(this, &ACutsceneManager::OnCutsceneFinished);
-		LevelSequencePlayer->OnFinished.AddDynamic(this, &ACutsceneManager::OnCutsceneFinished);
-		UE_LOG(LogTemp, Warning, TEXT("Play DeathScene"));
-		LevelSequencePlayer->Play();
+		ECutsceneType Type = Row->
 	}
+
+	if (Type == ECutsceneType::ECT_Death)
+	{
+		LevelSequencePlayer->OnFinished.AddDynamic(this, &ACutsceneManager::OnCutsceneFinished);
+	}
+	LevelSequencePlayer->Play();
 }
 
 void ACutsceneManager::Tick(float DeltaTime)

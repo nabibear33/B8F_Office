@@ -5,9 +5,11 @@
 #include "CoreMinimal.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "GameLogics/Types.h"
+#include "DataTables/GameProgressRow.h"
 #include "GameSubsystem.generated.h"
 
-class FSubsystemCollectionBase;
+class AMainCharacterController;
+class ACutsceneManager;
 
 /**
  * 
@@ -18,12 +20,28 @@ class B8F_OFFICE_API UGameSubsystem : public UGameInstanceSubsystem
 	GENERATED_BODY()
 
 public:
-	void SetCurrentProgress(FName Name, EProgressType Type);
+	void OnProgressUpdated(FName Name);
+
+	void SaveCurrentProgress();
+
+	void ExecuteCurrentProgress(FGameProgressRow* Row);
+
+	void UpdateManagers();
 
 private:
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UDataTable> ProgressDataTable;
 
 	FName CurrentProgressName;
 
 	EProgressType CurrentProgressType;
+
+	FName CurrentLevel;
+
+	UPROPERTY()
+	TObjectPtr<AMainCharacterController> PC;
+
+	UPROPERTY()
+	TObjectPtr<ACutsceneManager> CutsceneManager;
 
 };

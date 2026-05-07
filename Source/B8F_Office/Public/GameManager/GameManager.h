@@ -71,7 +71,7 @@ private:
 	void OnTeleportAreaTriggered(AActor* TriggeringArea, AActor* OtherActor);
 
 	UFUNCTION()
-	void OnPlayDeathScene(EDeathSceneType DeathSceneType);
+	void OnPlayCutscene(ECutsceneName CutsceneName);
 
 	UFUNCTION()
 	void OnPlayerDeathAndReset();

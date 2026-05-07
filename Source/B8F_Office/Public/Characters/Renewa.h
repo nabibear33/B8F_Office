@@ -20,7 +20,7 @@ class B8F_OFFICE_API ARenewa : public AInteractableCharacter
 
 public:
 	UPROPERTY()
-	FOnPlayDeathScene OnPlayDeathScene;
+	FOnPlayCutscene OnPlayCutscene;
 
 protected:
 	virtual void BeginPlay() override;

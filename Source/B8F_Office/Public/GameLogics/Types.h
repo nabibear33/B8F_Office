@@ -59,12 +59,19 @@ enum class ECharacterState : uint8
 };
 
 UENUM(BlueprintType)
-enum class EDeathSceneType : uint8
+enum class ECutsceneName : uint8
 {
-	EDS_None UMETA(DisplayName = "None"),
-	EDS_NotKommy UMETA(DisplayName = "NotKommy"),
-	EDS_RenewaQuiz UMETA(DisplayName = "Renewa Quiz"),
-	EDS_RedLight UMETA(DisplayName = "Red Light")
+	ECN_None UMETA(DisplayName = "None"),
+	ECN_NotKommy UMETA(DisplayName = "NotKommy"),
+	ECN_RenewaQuiz UMETA(DisplayName = "Renewa Quiz"),
+	ECN_RedLight UMETA(DisplayName = "Red Light")
+};
+
+UENUM(BlueprintType)
+enum class ECutsceneType : uint8
+{
+	ECT_Normal UMETA(DisplayName = "Normal"),
+	ECT_Death UMETA(DisplayName = "Death")
 };
 
 UENUM(BlueprintType)
@@ -106,7 +113,6 @@ enum class EProgressType : uint8
 	EPT_CutScene UMETA(DisplayName = "CutScene"),
 	EPT_PlayMedia UMETA(DisplayName = "Play Media"),
 	EPT_Dialogue UMETA(DisplayName = "Dialogue"),
-	EPT_Monologue UMETA(DisplayName = "Monologue"),
 };
 
 USTRUCT()

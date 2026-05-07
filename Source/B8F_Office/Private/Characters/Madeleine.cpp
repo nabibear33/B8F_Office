@@ -361,5 +361,5 @@ void AMadeleine::MoveToPlayer()
 
 void AMadeleine::PlayDeathScene()
 {
-	OnPlayDeathScene.Broadcast(EDeathSceneType::EDS_RedLight);
+	OnPlayCutscene.Broadcast(ECutsceneName::ECN_RedLight);
 }

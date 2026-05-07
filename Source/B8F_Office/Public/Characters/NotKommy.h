@@ -23,7 +23,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	
 	UPROPERTY()
-	FOnPlayDeathScene OnPlayDeathScene;
+	FOnPlayCutscene OnPlayCutscene;
 
 	UFUNCTION()
 	void OnAreaTriggered(AActor* TriggeringArea, AActor* OtherActor);

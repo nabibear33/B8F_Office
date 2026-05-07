@@ -27,7 +27,7 @@ class B8F_OFFICE_API AMadeleine : public AInteractableCharacter
 public:
 	AMadeleine();
 
-	FOnPlayDeathScene OnPlayDeathScene;
+	FOnPlayCutscene OnPlayCutscene;
 
 protected:
 	virtual void BeginPlay() override;

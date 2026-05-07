@@ -6,6 +6,8 @@
 #include "GameLogics/Types.h"
 #include "GameProgressRow.generated.h"
 
+class ALevelSequenceActor;
+
 USTRUCT(BlueprintType)
 struct FGameProgressRow : public FTableRowBase
 {
@@ -25,4 +27,18 @@ struct FGameProgressRow : public FTableRowBase
 
 	UPROPERTY(EditAnywhere)
 	FText Description;
+
+	// Options
+	
+	// Cutscene
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<ALevelSequenceActor> LinkedLevelSequence;
+
+	// Dialogue
+	UPROPERTY(EditAnywhere)
+	FName DialogueRowName;
+
+	// Media (later)
+
+
 };

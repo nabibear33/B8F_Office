@@ -41,17 +41,17 @@ void AGameManager::BeginPlay()
 
 	if (NotKommy)
 	{
-		NotKommy->OnPlayDeathScene.AddDynamic(this, &AGameManager::OnPlayDeathScene);
+		NotKommy->OnPlayCutscene.AddDynamic(this, &AGameManager::OnPlayCutscene);
 	}
 	
 	if (Renewa)
 	{
-		Renewa->OnPlayDeathScene.AddDynamic(this, &AGameManager::OnPlayDeathScene);
+		Renewa->OnPlayCutscene.AddDynamic(this, &AGameManager::OnPlayCutscene);
 	}
 
 	if (Madeleine)
 	{
-		Madeleine->OnPlayDeathScene.AddDynamic(this, &AGameManager::OnPlayDeathScene);
+		Madeleine->OnPlayCutscene.AddDynamic(this, &AGameManager::OnPlayCutscene);
 	}
 
 
@@ -115,12 +115,16 @@ void AGameManager::OnTeleportAreaTriggered(AActor* TriggeringArea, AActor* Other
 	}
 }
 
-void AGameManager::OnPlayDeathScene(EDeathSceneType DeathSceneType)
+void AGameManager::OnPlayCutscene(ECutsceneName CutsceneName)
 {
-	Player->OnDeath();
+	// util function to ECutsceneName -> FName
 
-	CutsceneManager->PlayDeathScene(DeathSceneType);
-
+	//if (Type == ECutsceneType::ECT_Death)
+	//{
+	//	Player->OnDeath();
+	//}
+	FName RowName;
+	CutsceneManager->PlayCutscene(RowName);
 }
 
 

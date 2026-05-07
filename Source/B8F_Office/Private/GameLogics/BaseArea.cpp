@@ -50,6 +50,11 @@ void ABaseArea::OnBeginOverlap(class UPrimitiveComponent* OverlappedComp, class 
 	DisableArea();
 
 	OnAreaTriggered.Broadcast(OverlappedComp->GetOwner(), OtherActor);
+
+	if (LinkedProgress != NAME_None)
+	{
+		OnGameProgressUpdated.Broadcast(LinkedProgress);
+	}
 }
 
 void ABaseArea::OnStageStart(EAnomalyType AnomalyType)

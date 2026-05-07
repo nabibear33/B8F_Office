@@ -26,7 +26,8 @@ public:
 	FORCEINLINE bool HasCollectedAll() { return bHasCollectedAll; }
 	FORCEINLINE bool HasPlayedBefore() { return bHasPlayedBefore; }
 	FORCEINLINE const TMap<EAnomalyType, EAnomalyStatus>& GetAnomalyRecord() { return MainStageStatus.AnomalyRecord; }
-	
+	FORCEINLINE FName GetProgressName() { return GameProgressRowName; }
+
 	void InitializeAnomalyRecord();
 	void SetAnomalyRecord(EAnomalyType Type, EAnomalyStatus Status);
 

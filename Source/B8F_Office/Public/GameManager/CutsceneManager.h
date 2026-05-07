@@ -9,6 +9,7 @@
 #include "CutsceneManager.generated.h"
 
 class ALevelSequenceActor;
+class ULevelSequencePlayer;
 
 UCLASS()
 class B8F_OFFICE_API ACutsceneManager : public AActor
@@ -19,7 +20,7 @@ public:
 	ACutsceneManager();
 	virtual void Tick(float DeltaTime) override;
 
-	void PlayDeathScene(EDeathSceneType DeathSceneType);
+	void PlayCutscene(FName RowName);
 
 	FOnPlayerDeathAndReset OnPlayerDeathAndReset;
 
@@ -27,9 +28,9 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
-	UPROPERTY(EditAnywhere)
-	TMap<EDeathSceneType, TObjectPtr<ALevelSequenceActor>> DeathScenes;
-
 	UFUNCTION()
 	void OnCutsceneFinished();
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UDataTable> CutsceneDataTable;
 };

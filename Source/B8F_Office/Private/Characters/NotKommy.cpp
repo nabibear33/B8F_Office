@@ -50,7 +50,7 @@ void ANotKommy::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* Othe
 		OtherComp ? *OtherComp->GetName() : TEXT("NULL"));
 	if (!(OtherActor->IsA<AMainCharacter>() && OtherComp->IsA<UCapsuleComponent>())) return;
 
-	OnPlayDeathScene.Broadcast(EDeathSceneType::EDS_NotKommy);
+	OnPlayCutscene.Broadcast(ECutsceneName::ECN_NotKommy);
 }
 
 void ANotKommy::OnAreaTriggered(AActor* TriggeringArea, AActor* OtherActor)

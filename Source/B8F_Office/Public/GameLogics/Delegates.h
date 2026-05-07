@@ -5,9 +5,9 @@
 #include "CoreMinimal.h"
 #include "Delegates.generated.h"
 
-// Death Scene
+// Cut Scene
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerDeathAndReset);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayDeathScene, EDeathSceneType, DeathSceneType);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayCutscene, ECutsceneName, CutsceneName);
 
 // Dialogue Component Logic
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeathSceneChoiceSelected);
@@ -34,6 +34,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnInfoPanelChanged, int32, Floor
 // Main Menu
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMainMenuStatusUpdated, EMainMenuStatus, MainMenuStatus);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnCollectionItemClicked, FText, AnomalyName, UTexture2D*, Texture, FText, AnomalyDetail);
+
+// Game Progress
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameProgressUpdated, FName, ProgressName);
 
 UCLASS()
 class UDelegates : public UObject

@@ -2,6 +2,7 @@
 
 
 #include "GameInstances/SaveSubsystem.h"
+#include "GameInstances/GameSubsystem.h"
 #include "Save/MainSaveGame.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -37,6 +38,11 @@ void USaveSubsystem::LoadGame()
 		}
 		else
 		{
+			UGameSubsystem* Subsystem = GetGameInstance()->GetSubsystem<UGameSubsystem>();
+			if (Subsystem)
+			{
+				Subsystem->OnProgressUpdated(CurrentSaveGame->GetProgressName());
+			}
 			UE_LOG(LogTemp, Warning, TEXT("LoadGame: Success"));
 		}
 	}

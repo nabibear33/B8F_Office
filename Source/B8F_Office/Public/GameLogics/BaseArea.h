@@ -22,6 +22,8 @@ public:
 	virtual void EnableArea();
 	virtual void DisableArea();
 
+	FOnGameProgressUpdated OnGameProgressUpdated;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -38,6 +40,9 @@ protected:
 
 private:
 	bool bIsEnabled = false;
+
+	UPROPERTY(EditAnywhere)
+	FName LinkedProgress;
 
 public:
 	FORCEINLINE bool IsAreaEnabled() { return bIsEnabled; }
