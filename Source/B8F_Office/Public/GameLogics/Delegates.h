@@ -6,7 +6,8 @@
 #include "Delegates.generated.h"
 
 // Cut Scene
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerDeathAndReset);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerDeath);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerRevive);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayCutscene, ECutsceneName, CutsceneName);
 
 // Dialogue Component Logic

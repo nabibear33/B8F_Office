@@ -17,9 +17,9 @@ void ACutsceneManager::BeginPlay()
 	
 }
 
-void ACutsceneManager::OnCutsceneFinished()
+void ACutsceneManager::OnDeathsceneFinished()
 {
-	OnPlayerDeathAndReset.Broadcast();
+	OnPlayerRevive.Broadcast();
 }
 
 void ACutsceneManager::PlayCutscene(FName RowName)
@@ -27,14 +27,15 @@ void ACutsceneManager::PlayCutscene(FName RowName)
 	FCutsceneRow* Row = CutsceneDataTable->FindRow<FCutsceneRow>(RowName, TEXT(""));
 	if (Row)
 	{
-		ECutsceneType Type = Row->
+		ECutsceneType Type = Row->CutsceneType;
+		if (Type == ECutsceneType::ECT_Death)
+		{
+			OnPlayerDeath.Broadcast();
+			Row->LevelSequencePlayer->OnFinished.AddDynamic(this, &ACutsceneManager::OnDeathsceneFinished);
+		}
+		Row->LevelSequencePlayer->Play();
 	}
 
-	if (Type == ECutsceneType::ECT_Death)
-	{
-		LevelSequencePlayer->OnFinished.AddDynamic(this, &ACutsceneManager::OnCutsceneFinished);
-	}
-	LevelSequencePlayer->Play();
 }
 
 void ACutsceneManager::Tick(float DeltaTime)

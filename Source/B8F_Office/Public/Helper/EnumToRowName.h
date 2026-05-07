@@ -14,5 +14,15 @@ public:
 	EnumToRowName();
 	~EnumToRowName();
 
-	FName Convert(FString String);
+    template<typename TEnum>
+    static FName Convert(TEnum Type)
+    {
+        FString RowNameString = UEnum::GetValueAsString(Type);
+        int32 SlicingIdx;
+        RowNameString.FindLastChar(':', SlicingIdx);
+        RowNameString = RowNameString.RightChop(SlicingIdx + 1);
+        FName RowName = FName(*RowNameString);
+
+        return RowName;
+    }
 };

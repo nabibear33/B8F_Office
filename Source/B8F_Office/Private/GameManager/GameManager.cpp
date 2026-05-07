@@ -13,6 +13,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Characters/Renewa.h"
 #include "Characters/Madeleine.h"
+#include "Helper/EnumToRowName.h"
 
 AGameManager::AGameManager()
 {
@@ -57,7 +58,8 @@ void AGameManager::BeginPlay()
 
 	if (CutsceneManager)
 	{
-		CutsceneManager->OnPlayerDeathAndReset.AddDynamic(this, &AGameManager::OnPlayerDeathAndReset);
+		CutsceneManager->OnPlayerDeath.AddDynamic(this, &AGameManager::OnPlayerDeath);
+		CutsceneManager->OnPlayerRevive.AddDynamic(this, &AGameManager::OnPlayerRevive);
 	}
 
 	InitializeInfoPanel();
@@ -117,13 +119,7 @@ void AGameManager::OnTeleportAreaTriggered(AActor* TriggeringArea, AActor* Other
 
 void AGameManager::OnPlayCutscene(ECutsceneName CutsceneName)
 {
-	// util function to ECutsceneName -> FName
-
-	//if (Type == ECutsceneType::ECT_Death)
-	//{
-	//	Player->OnDeath();
-	//}
-	FName RowName;
+	FName RowName = EnumToRowName::Convert(CutsceneName);
 	CutsceneManager->PlayCutscene(RowName);
 }
 
@@ -197,7 +193,7 @@ void AGameManager::UpdateInfoPanel(int32 Floor, EAnomalyType AnomalyType, EAnoma
 	OnInfoPanelUpdated.Broadcast(Floor, AnomalyType, AnomalyStatus);
 }
 
-void AGameManager::OnPlayerDeathAndReset()
+void AGameManager::OnPlayerRevive()
 {
 	SaveGame->SetCurrentFloor(-8);
 	EAnomalyType AnomalyType = GetStageManager()->GetAnomalyType();
@@ -210,5 +206,10 @@ void AGameManager::OnPlayerDeathAndReset()
 	StageManager->ResetStage();
 	StageManager->SetNormalStage();
 	Player->OnRevive();
+}
+
+void AGameManager::OnPlayerDeath()
+{
+	Player->OnDeath();
 }
 

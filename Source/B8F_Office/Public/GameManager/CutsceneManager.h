@@ -22,14 +22,16 @@ public:
 
 	void PlayCutscene(FName RowName);
 
-	FOnPlayerDeathAndReset OnPlayerDeathAndReset;
+	FOnPlayerDeath OnPlayerDeath;
+
+	FOnPlayerRevive OnPlayerRevive;
 
 protected:
 	virtual void BeginPlay() override;
 
 private:
 	UFUNCTION()
-	void OnCutsceneFinished();
+	void OnDeathsceneFinished();
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UDataTable> CutsceneDataTable;

@@ -26,7 +26,7 @@ public:
 
 	virtual void SetControlRotation(const FRotator& NewRotation) override;
 
-	void StartDialogue(AInteractableCharacter* DialogueTarget_, UDataTable* DialogueRows, FName ID);
+	void StartDialogue(UDataTable* DialogueRows, FName ID);
 
 	void SetDialogueIMC();
 

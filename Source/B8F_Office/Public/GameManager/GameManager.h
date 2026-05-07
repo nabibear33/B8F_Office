@@ -74,7 +74,10 @@ private:
 	void OnPlayCutscene(ECutsceneName CutsceneName);
 
 	UFUNCTION()
-	void OnPlayerDeathAndReset();
+	void OnPlayerRevive();
+
+	UFUNCTION()
+	void OnPlayerDeath();
 
 
 	UPROPERTY(EditAnywhere)

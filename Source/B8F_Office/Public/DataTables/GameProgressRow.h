@@ -32,9 +32,12 @@ struct FGameProgressRow : public FTableRowBase
 	
 	// Cutscene
 	UPROPERTY(EditAnywhere)
-	TObjectPtr<ALevelSequenceActor> LinkedLevelSequence;
+	FName CutsceneName;
 
 	// Dialogue
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UDataTable> DialogueDataTable;
+
 	UPROPERTY(EditAnywhere)
 	FName DialogueRowName;
 

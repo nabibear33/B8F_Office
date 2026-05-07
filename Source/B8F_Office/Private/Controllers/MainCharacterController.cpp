@@ -86,10 +86,8 @@ void AMainCharacterController::SetControlRotation(const FRotator& NewRotation)
     Super::SetControlRotation(NewRotation);
 }
 
-void AMainCharacterController::StartDialogue(AInteractableCharacter* DialogueTarget_, UDataTable* DialogueDataTable, FName ID)
+void AMainCharacterController::StartDialogue(UDataTable* DialogueDataTable, FName ID)
 {
-    DialogueTarget = DialogueTarget_;
-
     SetDialogueIMC();
 
     AMainHUD* HUD = Cast<AMainHUD>(GetHUD());
@@ -127,8 +125,9 @@ void AMainCharacterController::EndDialogue(FName DialogueID)
 {
     bOnDialogue = false;
 
-    DialogueTarget->GetInteractComponent()->SetInteractEnabled();
-    DialogueTarget = nullptr;
+    // disable temporaly (later fully migrate to HUD)
+    //DialogueTarget->GetInteractComponent()->SetInteractEnabled();
+    //DialogueTarget = nullptr;
 
     SetDefaultIMC();
     AMainHUD* HUD = Cast<AMainHUD>(GetHUD());

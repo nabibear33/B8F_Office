@@ -19,7 +19,7 @@ void UGameSubsystem::OnProgressUpdated(FName Name)
 			CurrentProgressName = Name;
 			CurrentProgressType = Row->ProgressType;
 			CurrentLevel = Row->LevelName;
-			ExecuteCurrentProgress(_placeholder_);
+			ExecuteCurrentProgress(Row);
 		}
 	}
 }
@@ -49,13 +49,13 @@ void UGameSubsystem::ExecuteCurrentProgress(FGameProgressRow* Row)
 		case EProgressType::EPT_Dialogue:
 			if (PC)
 			{
-				PC->StartDialogue(Row->DialogueRowName);
+				PC->StartDialogue(Row->DialogueDataTable, Row->DialogueRowName);
 			}
 			break;
 		case EProgressType::EPT_CutScene:
 			if (CutsceneManager)
 			{
-				CutsceneManager->
+				CutsceneManager->PlayCutscene(Row->CutsceneName);
 			}
 			break;
 		case EProgressType::EPT_PlayMedia:

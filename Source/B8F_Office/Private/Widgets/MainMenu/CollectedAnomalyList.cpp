@@ -7,6 +7,7 @@
 #include "Widgets/MainMenu/CollectedAnomalyItem.h"
 #include "Widgets/MainMenu/CollectedAnomalyDetail.h"
 #include "Components/WrapBox.h"
+#include "Helper/EnumToRowName.h"
 
 void UCollectedAnomalyList::NativeConstruct()
 {
@@ -24,12 +25,8 @@ void UCollectedAnomalyList::NativeConstruct()
         if (Type == EAnomalyType::EAT_None || Type == EAnomalyType::EAT_MAX) continue;
 
         UCollectedAnomalyItem* Item = CreateWidget<UCollectedAnomalyItem>(GetWorld(), AnomalyItemClass);
-        
-        FString RowNameString = UEnum::GetValueAsString(Type);
-        int32 SlicingIdx;
-        RowNameString.FindLastChar(':', SlicingIdx);
-        RowNameString = RowNameString.RightChop(SlicingIdx + 1);
-        FName RowName = FName(*RowNameString);
+
+        FName RowName = EnumToRowName::Convert(Type);
 
         FAnomalyRow* Row = AnomalyDataTable->FindRow<FAnomalyRow>(RowName, TEXT(""));
         if (Row)
