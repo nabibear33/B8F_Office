@@ -13,6 +13,7 @@
 #include "Characters/InteractableCharacter.h"
 #include "Components/InteractComponent.h"
 #include "EnhancedInputComponent.h"
+#include "GameInstances/GameSubsystem.h"
 
 AMainCharacterController::AMainCharacterController()
 {
@@ -27,12 +28,19 @@ void AMainCharacterController::BeginPlay()
     PlayerController->bShowMouseCursor = false;
 
 
+
     if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(this->GetLocalPlayer()))
     {
         Subsystem->AddMappingContext(IMC_Default, 0);
     }
 
     DialogueComponent->Initialize();
+
+    UGameSubsystem* Subsystem = GetGameInstance()->GetSubsystem<UGameSubsystem>();
+    if (Subsystem)
+    {
+        Subsystem->SetPlayerController(this);
+    }
 }
 
 void AMainCharacterController::OnDialogueWidgetReady()
@@ -88,8 +96,6 @@ void AMainCharacterController::SetControlRotation(const FRotator& NewRotation)
 
 void AMainCharacterController::StartDialogue(UDataTable* DialogueDataTable, FName ID)
 {
-    SetDialogueIMC();
-
     AMainHUD* HUD = Cast<AMainHUD>(GetHUD());
     if (HUD)
     {
@@ -98,8 +104,22 @@ void AMainCharacterController::StartDialogue(UDataTable* DialogueDataTable, FNam
 
     bOnDialogue = true;
     DialogueComponent->StartDialogue(DialogueDataTable, ID);
-
 }
+
+
+void AMainCharacterController::OnGamePhaseUpdated(EGamePhase Phase)
+{
+    switch (Phase)
+    {
+        case EGamePhase::EGP_Dialogue:
+            SetDialogueIMC();
+            break;
+        default:
+            SetDefaultIMC();
+            break;
+    }
+}
+
 
 void AMainCharacterController::SetDialogueIMC()
 {
@@ -129,7 +149,6 @@ void AMainCharacterController::EndDialogue(FName DialogueID)
     //DialogueTarget->GetInteractComponent()->SetInteractEnabled();
     //DialogueTarget = nullptr;
 
-    SetDefaultIMC();
     AMainHUD* HUD = Cast<AMainHUD>(GetHUD());
     if (HUD)
     {

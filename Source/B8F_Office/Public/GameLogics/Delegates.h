@@ -36,8 +36,10 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnInfoPanelChanged, int32, Floor
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMainMenuStatusUpdated, EMainMenuStatus, MainMenuStatus);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnCollectionItemClicked, FText, AnomalyName, UTexture2D*, Texture, FText, AnomalyDetail);
 
-// Game Progress
+// Global Game State
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameProgressUpdated, FName, ProgressName);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGamePhaseUpdated, EGamePhase, GamePhase);
+
 
 UCLASS()
 class UDelegates : public UObject

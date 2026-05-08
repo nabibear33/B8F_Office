@@ -23,7 +23,10 @@ public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 
 	UFUNCTION()
-	void OnProgressUpdated(FName Name);
+	void OnGameProgressUpdated(FName Name);
+
+	UFUNCTION()
+	void OnGamePhaseUpdated(EGamePhase Phase);
 
 	void SaveCurrentProgress();
 
@@ -35,7 +38,7 @@ public:
 	FName CurrentProgressName;
 
 	UPROPERTY(BlueprintReadOnly)
-	EProgressType CurrentProgressType;
+	EGamePhase CurrentGamePhase;
 
 	UPROPERTY(BlueprintReadOnly)
 	FName CurrentLevel;
@@ -45,9 +48,13 @@ private:
 	TObjectPtr<UDataTable> ProgressDataTable;
 
 	UPROPERTY()
-	TObjectPtr<AMainCharacterController> PC;
+	TObjectPtr<AMainCharacterController> PlayerController;
 
 	UPROPERTY()
 	TObjectPtr<ACutsceneManager> CutsceneManager;
+
+public:
+	FORCEINLINE void SetCutsceneManager(ACutsceneManager* Manager) { CutsceneManager = Manager; }
+	FORCEINLINE void SetPlayerController(AMainCharacterController* Controller) { PlayerController = Controller; }
 
 };

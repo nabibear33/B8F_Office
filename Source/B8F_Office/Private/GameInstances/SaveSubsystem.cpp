@@ -41,7 +41,7 @@ void USaveSubsystem::LoadGame()
 			UGameSubsystem* Subsystem = GetGameInstance()->GetSubsystem<UGameSubsystem>();
 			if (Subsystem)
 			{
-				Subsystem->OnProgressUpdated(CurrentSaveGame->GetProgressName());
+				Subsystem->OnGameProgressUpdated(CurrentSaveGame->GetProgressName());
 			}
 			UE_LOG(LogTemp, Warning, TEXT("LoadGame: Success"));
 		}

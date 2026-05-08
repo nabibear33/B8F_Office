@@ -27,6 +27,9 @@ public:
 	void OnSelectCurrentChoice();
 
 	UPROPERTY()
+	FOnGamePhaseUpdated OnGamePhaseUpdated;
+	
+	UPROPERTY()
 	FOnDialogueUpdated OnDialogueUpdated;
 
 	UPROPERTY()
@@ -41,7 +44,9 @@ public:
 	void ResetDialogueComponent();
 
 	void Initialize();
+
 protected:
+	virtual void BeginPlay() override;
 
 private:
 	UPROPERTY(EditAnywhere)

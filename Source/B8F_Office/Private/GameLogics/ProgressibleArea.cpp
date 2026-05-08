@@ -11,7 +11,7 @@ void AProgressibleArea::BeginPlay()
 	UGameSubsystem* Subsystem = GetGameInstance()->GetSubsystem<UGameSubsystem>();
 	if (Subsystem)
 	{
-		OnGameProgressUpdated.AddDynamic(Subsystem, &UGameSubsystem::OnProgressUpdated);
+		OnGameProgressUpdated.AddDynamic(Subsystem, &UGameSubsystem::OnGameProgressUpdated);
 	}
 }
 

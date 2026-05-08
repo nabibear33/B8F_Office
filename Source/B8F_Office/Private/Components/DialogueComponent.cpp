@@ -37,6 +37,15 @@ void UDialogueComponent::Initialize()
     }
 }
 
+void UDialogueComponent::BeginPlay()
+{
+    AMainCharacterController* PC = Cast<AMainCharacterController>(GetOwner());
+    if (PC)
+    {
+        OnGamePhaseUpdated.AddDynamic(PC, &AMainCharacterController::OnGamePhaseUpdated);
+    }
+}
+
 
 void UDialogueComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
@@ -46,6 +55,7 @@ void UDialogueComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 
 void UDialogueComponent::StartDialogue(UDataTable* DialogueRows, FName ID)
 {
+    OnGamePhaseUpdated.Broadcast(EGamePhase::EGP_Dialogue);
 	SetDialogueDataTable(DialogueRows);
 	SetCurrentRowID(ID);
     UE_LOG(LogTemp, Warning, TEXT("StartDialogue"));
@@ -136,6 +146,8 @@ void UDialogueComponent::EndDialogue()
         OnDeathSceneChoiceSelected.Broadcast();
         bDeathSceneChoiceTriggered = false;
 	}
+
+    OnGamePhaseUpdated.Broadcast(EGamePhase::EGP_Normal);
 }
 
 void UDialogueComponent::NavigateCurrentChoiceIdx(float Value)

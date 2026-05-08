@@ -20,5 +20,4 @@ struct FCutsceneRow : public FTableRowBase
 
     UPROPERTY(EditAnywhere)
     TObjectPtr<ULevelSequence> LevelSequence;
-
 };

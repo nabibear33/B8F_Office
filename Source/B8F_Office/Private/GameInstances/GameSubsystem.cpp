@@ -20,7 +20,7 @@ void UGameSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 	}
 }
 
-void UGameSubsystem::OnProgressUpdated(FName Name)
+void UGameSubsystem::OnGameProgressUpdated(FName Name)
 {
 	if (ProgressDataTable)
 	{
@@ -29,11 +29,16 @@ void UGameSubsystem::OnProgressUpdated(FName Name)
 		if (Row)
 		{
 			CurrentProgressName = Name;
-			CurrentProgressType = Row->ProgressType;
+			CurrentGamePhase = Row->GamePhase;
 			CurrentLevel = Row->LevelName;
 			ExecuteCurrentProgress(Row);
 		}
 	}
+}
+
+void UGameSubsystem::OnGamePhaseUpdated(EGamePhase Phase)
+{
+	CurrentGamePhase = Phase;
 }
 
 void UGameSubsystem::SaveCurrentProgress()
@@ -53,18 +58,17 @@ void UGameSubsystem::ExecuteCurrentProgress(FGameProgressRow* Row)
 	if (CurrentLevel != UGameplayStatics::GetCurrentLevelName(this, true))
 	{
 		UGameplayStatics::OpenLevel(this, CurrentLevel);
-		UpdateManagers();
 	}
 
-	switch (CurrentProgressType)
+	switch (CurrentGamePhase)
 	{
-		case EProgressType::EPT_Dialogue:
-			if (PC)
+		case EGamePhase::EGP_Dialogue:
+			if (PlayerController)
 			{
-				PC->StartDialogue(Row->DialogueDataTable, Row->DialogueRowName);
+				PlayerController->StartDialogue(Row->DialogueDataTable, Row->DialogueRowName);
 			}
 			break;
-		case EProgressType::EPT_CutScene:
+		case EGamePhase::EGP_CutScene:
 			if (CutsceneManager)
 			{
 				CutsceneManager->PlayCutscene(Row->CutsceneName);
@@ -77,10 +81,10 @@ void UGameSubsystem::ExecuteCurrentProgress(FGameProgressRow* Row)
 				CutsceneManager->PlayCutscene(Row->CutsceneName);
 			}
 			break;
-		case EProgressType::EPT_PlayMedia:
+		case EGamePhase::EGP_PlayMedia:
 			// Get Media manager and play media (later)
 			break;
-		case EProgressType::EPT_Normal:
+		case EGamePhase::EGP_Normal:
 			// Do Nothing
 			break;
 	}
@@ -91,6 +95,6 @@ void UGameSubsystem::UpdateManagers()
 	CutsceneManager = Cast<ACutsceneManager>(
 		UGameplayStatics::GetActorOfClass(this, ACutsceneManager::StaticClass()));
 	
-	PC = Cast<AMainCharacterController>(GetWorld()->GetFirstPlayerController());
+	PlayerController = Cast<AMainCharacterController>(GetWorld()->GetFirstPlayerController());
 }
 

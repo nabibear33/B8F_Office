@@ -3,10 +3,10 @@
 #include "Types.generated.h"
 
 UENUM(BlueprintType)
-enum class EGameState : uint8
+enum class EMainStageState : uint8
 {
 	EGS_OnStage UMETA(Displayname = "On Stage"),
-	EGS_IntermediateStage UMETA(Displayname = "Intermediate Stage")
+	EGS_Intermediate UMETA(Displayname = "Intermediate Stage")
 };
 
 UENUM(BlueprintType)
@@ -109,12 +109,12 @@ enum class EMainMenuStatus : uint8
 
 
 UENUM(BlueprintType)
-enum class EProgressType : uint8
+enum class EGamePhase : uint8
 {
-	EPT_Normal UMETA(DisplayName = "Normal"),
-	EPT_CutScene UMETA(DisplayName = "CutScene"),
-	EPT_PlayMedia UMETA(DisplayName = "Play Media"),
-	EPT_Dialogue UMETA(DisplayName = "Dialogue"),
+	EGP_Normal UMETA(DisplayName = "Normal"),
+	EGP_CutScene UMETA(DisplayName = "CutScene"),
+	EGP_PlayMedia UMETA(DisplayName = "Play Media"),
+	EGP_Dialogue UMETA(DisplayName = "Dialogue"),
 };
 
 USTRUCT()

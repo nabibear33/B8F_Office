@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "GameLogics/Types.h"
 #include "GameLogics/Delegates.h"
+#include "DataTables/CutsceneRow.h"
 #include "CutsceneManager.generated.h"
 
 class ALevelSequenceActor;
@@ -26,16 +27,20 @@ public:
 
 	FOnPlayerRevive OnPlayerRevive;
 
+	FOnGamePhaseUpdated OnGamePhaseUpdated;
+
 protected:
 	virtual void BeginPlay() override;
 
 private:
 	UFUNCTION()
-	void OnDeathsceneFinished();
+	void OnCutsceneFinished();
 
 	UPROPERTY()
 	TObjectPtr<ULevelSequencePlayer> LevelSequencePlayer;
 
 	UPROPERTY()
 	TObjectPtr<ALevelSequenceActor> LevelSequenceActor;
+
+	FCutsceneRow* CurrentPlayingRow;
 };

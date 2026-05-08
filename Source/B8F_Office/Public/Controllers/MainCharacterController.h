@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "InputActionValue.h"
+#include "GameLogics/Types.h"
 #include "MainCharacterController.generated.h"
 
 class UDialogueComponent;
@@ -36,6 +37,9 @@ public:
 	void SetDefaultIMC();
 	
 	void OnDialogueWidgetReady();
+
+	UFUNCTION()
+	void OnGamePhaseUpdated(EGamePhase Phase);
 
 protected:
 	virtual void BeginPlay() override;

@@ -5,6 +5,7 @@
 #include "DataTables/CutsceneRow.h"
 #include "LevelSequencePlayer.h"
 #include "GameInstances/MainGameInstance.h"
+#include "GameInstances/GameSubsystem.h"
 
 ACutsceneManager::ACutsceneManager()
 {
@@ -15,38 +16,52 @@ ACutsceneManager::ACutsceneManager()
 void ACutsceneManager::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	UGameSubsystem* Subsystem = GetGameInstance()->GetSubsystem<UGameSubsystem>();
+	if (Subsystem)
+	{
+		Subsystem->SetCutsceneManager(this);
+		OnGamePhaseUpdated.AddDynamic(Subsystem, &UGameSubsystem::OnGamePhaseUpdated);
+	}
 }
 
-void ACutsceneManager::OnDeathsceneFinished()
+void ACutsceneManager::OnCutsceneFinished()
 {
-	OnPlayerRevive.Broadcast();
+	if (CurrentPlayingRow->CutsceneType == ECutsceneType::ECT_Death)
+	{
+		OnPlayerRevive.Broadcast();
+	}
+
+	CurrentPlayingRow = nullptr;
+	OnGamePhaseUpdated.Broadcast(EGamePhase::EGP_Normal);
 }
 
 void ACutsceneManager::PlayCutscene(FName RowName)
 {
+	OnGamePhaseUpdated.Broadcast(EGamePhase::EGP_CutScene);
+
 	UMainGameInstance* GameInstance = Cast<UMainGameInstance>(GetGameInstance());
 	if (!GameInstance) return;
 	
-	FCutsceneRow* Row = GameInstance->CutsceneDataTable->FindRow<FCutsceneRow>(RowName, TEXT(""));
-	if (Row)
+	CurrentPlayingRow = GameInstance->CutsceneDataTable->FindRow<FCutsceneRow>(RowName, TEXT(""));
+	if (CurrentPlayingRow)
 	{
 		FMovieSceneSequencePlaybackSettings Settings;
 		ALevelSequenceActor* TempActor = nullptr;
 		LevelSequencePlayer = ULevelSequencePlayer::CreateLevelSequencePlayer(
 			GetWorld(),
-			Row->LevelSequence,
+			CurrentPlayingRow->LevelSequence,
 			Settings,
 			TempActor
 		);
 		LevelSequenceActor = TempActor;
 
-		ECutsceneType Type = Row->CutsceneType;
-		if (Type == ECutsceneType::ECT_Death)
+		if (CurrentPlayingRow->CutsceneType == ECutsceneType::ECT_Death)
 		{
 			OnPlayerDeath.Broadcast();
-			LevelSequencePlayer->OnFinished.AddDynamic(this, &ACutsceneManager::OnDeathsceneFinished);
 		}
+
+		LevelSequencePlayer->OnFinished.AddDynamic(this, &ACutsceneManager::OnCutsceneFinished);
 		LevelSequencePlayer->Play();
 	}
 
