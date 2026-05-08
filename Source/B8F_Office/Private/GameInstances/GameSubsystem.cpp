@@ -7,6 +7,18 @@
 #include "Kismet/GameplayStatics.h"
 #include "Controllers/MainCharacterController.h"
 #include "GameManager/CutsceneManager.h"
+#include "GameInstances/MainGameInstance.h"
+
+void UGameSubsystem::Initialize(FSubsystemCollectionBase& Collection)
+{
+	Super::Initialize(Collection);
+
+	UMainGameInstance* GameInstance = Cast<UMainGameInstance>(GetGameInstance());
+	if (GameInstance)
+	{
+		ProgressDataTable = GameInstance->ProgressDataTable;
+	}
+}
 
 void UGameSubsystem::OnProgressUpdated(FName Name)
 {
@@ -55,6 +67,13 @@ void UGameSubsystem::ExecuteCurrentProgress(FGameProgressRow* Row)
 		case EProgressType::EPT_CutScene:
 			if (CutsceneManager)
 			{
+				CutsceneManager->PlayCutscene(Row->CutsceneName);
+			}
+			else
+			{
+				CutsceneManager = Cast<ACutsceneManager>(
+					UGameplayStatics::GetActorOfClass(this, ACutsceneManager::StaticClass()));
+				UE_LOG(LogTemp, Warning, TEXT("No Cutscene Manager"));
 				CutsceneManager->PlayCutscene(Row->CutsceneName);
 			}
 			break;

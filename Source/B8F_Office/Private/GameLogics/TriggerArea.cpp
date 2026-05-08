@@ -2,6 +2,8 @@
 
 #include "GameLogics/TriggerArea.h"
 #include "GameLogics/Types.h"
+#include "GameManager/StageManager.h"
+#include "Kismet/GameplayStatics.h"
 
 ATriggerArea::ATriggerArea()
 {
@@ -10,6 +12,12 @@ ATriggerArea::ATriggerArea()
 void ATriggerArea::BeginPlay()
 {
 	Super::BeginPlay();
+
+	AStageManager* StageManager = Cast<AStageManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AStageManager::StaticClass()));
+	if (StageManager)
+	{
+		StageManager->OnStageStart.AddDynamic(this, &ATriggerArea::OnStageStart);
+	}
 
 	SetNormal();
 }

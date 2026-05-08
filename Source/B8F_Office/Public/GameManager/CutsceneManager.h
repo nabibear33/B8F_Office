@@ -33,9 +33,6 @@ private:
 	UFUNCTION()
 	void OnDeathsceneFinished();
 
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<UDataTable> CutsceneDataTable;
-
 	UPROPERTY()
 	TObjectPtr<ULevelSequencePlayer> LevelSequencePlayer;
 

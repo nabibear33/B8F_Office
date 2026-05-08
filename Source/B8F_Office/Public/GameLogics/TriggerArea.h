@@ -24,9 +24,9 @@ protected:
 private:
 	void OnBeginOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
 	
-	virtual void OnStageStart(EAnomalyType AnomalyType) override;
+	void OnStageStart(EAnomalyType AnomalyType);
 
-	virtual void SetNormal() override;
+	void SetNormal();
 
 	UPROPERTY(EditAnywhere)
 	EAnomalyType LinkedAnomalyType;

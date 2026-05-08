@@ -20,6 +20,9 @@ class B8F_OFFICE_API UGameSubsystem : public UGameInstanceSubsystem
 	GENERATED_BODY()
 
 public:
+	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+
+	UFUNCTION()
 	void OnProgressUpdated(FName Name);
 
 	void SaveCurrentProgress();
@@ -28,15 +31,18 @@ public:
 
 	void UpdateManagers();
 
-private:
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<UDataTable> ProgressDataTable;
-
+	UPROPERTY(BlueprintReadOnly)
 	FName CurrentProgressName;
 
+	UPROPERTY(BlueprintReadOnly)
 	EProgressType CurrentProgressType;
 
+	UPROPERTY(BlueprintReadOnly)
 	FName CurrentLevel;
+
+private:
+	UPROPERTY()
+	TObjectPtr<UDataTable> ProgressDataTable;
 
 	UPROPERTY()
 	TObjectPtr<AMainCharacterController> PC;

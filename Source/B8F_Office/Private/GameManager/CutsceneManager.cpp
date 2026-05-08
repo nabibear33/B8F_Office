@@ -4,6 +4,7 @@
 #include "LevelSequenceActor.h"
 #include "DataTables/CutsceneRow.h"
 #include "LevelSequencePlayer.h"
+#include "GameInstances/MainGameInstance.h"
 
 ACutsceneManager::ACutsceneManager()
 {
@@ -24,7 +25,10 @@ void ACutsceneManager::OnDeathsceneFinished()
 
 void ACutsceneManager::PlayCutscene(FName RowName)
 {
-	FCutsceneRow* Row = CutsceneDataTable->FindRow<FCutsceneRow>(RowName, TEXT(""));
+	UMainGameInstance* GameInstance = Cast<UMainGameInstance>(GetGameInstance());
+	if (!GameInstance) return;
+	
+	FCutsceneRow* Row = GameInstance->CutsceneDataTable->FindRow<FCutsceneRow>(RowName, TEXT(""));
 	if (Row)
 	{
 		FMovieSceneSequencePlaybackSettings Settings;

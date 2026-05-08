@@ -20,12 +20,6 @@ void ABaseArea::BeginPlay()
 	Super::BeginPlay();
 
 	TriggerBox->OnComponentBeginOverlap.AddDynamic(this, &ABaseArea::OnBeginOverlap);
-
-	AStageManager* StageManager = Cast<AStageManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AStageManager::StaticClass()));
-	if (StageManager)
-	{
-		StageManager->OnStageStart.AddDynamic(this, &ABaseArea::OnStageStart);
-	}
 }
 
 void ABaseArea::EnableArea()
@@ -45,22 +39,9 @@ void ABaseArea::OnBeginOverlap(class UPrimitiveComponent* OverlappedComp, class 
 	AMainCharacter* MainCharacter = Cast<AMainCharacter>(OtherActor);
 	if (!MainCharacter) return;
 
-	UE_LOG(LogTemp, Warning, TEXT("TriggerArea : %s"), *OverlappedComp->GetOwner()->GetActorLabel());
+	UE_LOG(LogTemp, Warning, TEXT("Area Triggered : %s"), *OverlappedComp->GetOwner()->GetActorLabel());
 
 	DisableArea();
 
 	OnAreaTriggered.Broadcast(OverlappedComp->GetOwner(), OtherActor);
-
-	if (LinkedProgress != NAME_None)
-	{
-		OnGameProgressUpdated.Broadcast(LinkedProgress);
-	}
-}
-
-void ABaseArea::OnStageStart(EAnomalyType AnomalyType)
-{
-}
-
-void ABaseArea::SetNormal()
-{
 }

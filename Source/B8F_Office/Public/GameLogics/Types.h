@@ -64,7 +64,9 @@ enum class ECutsceneName : uint8
 	ECN_None UMETA(DisplayName = "None"),
 	ECN_NotKommy UMETA(DisplayName = "NotKommy"),
 	ECN_RenewaQuiz UMETA(DisplayName = "Renewa Quiz"),
-	ECN_RedLight UMETA(DisplayName = "Red Light")
+	ECN_RedLight UMETA(DisplayName = "Red Light"),
+	ECN_TestA_001 UMETA(DisplayName = "TestA_001"),
+
 };
 
 UENUM(BlueprintType)
