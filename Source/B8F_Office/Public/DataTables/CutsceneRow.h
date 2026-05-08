@@ -4,6 +4,7 @@
 
 #include "Engine/DataTable.h"
 #include "GameLogics/Types.h"
+#include "LevelSequence.h"
 #include "CutsceneRow.generated.h"
 
 USTRUCT(BlueprintType)
@@ -18,6 +19,6 @@ struct FCutsceneRow : public FTableRowBase
     ECutsceneType CutsceneType;
 
     UPROPERTY(EditAnywhere)
-    TObjectPtr<ULevelSequencePlayer> LevelSequencePlayer;
+    TObjectPtr<ULevelSequence> LevelSequence;
 
 };

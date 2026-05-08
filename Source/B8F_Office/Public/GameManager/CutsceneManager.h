@@ -35,4 +35,10 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UDataTable> CutsceneDataTable;
+
+	UPROPERTY()
+	TObjectPtr<ULevelSequencePlayer> LevelSequencePlayer;
+
+	UPROPERTY()
+	TObjectPtr<ALevelSequenceActor> LevelSequenceActor;
 };

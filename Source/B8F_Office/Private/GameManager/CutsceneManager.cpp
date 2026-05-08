@@ -27,13 +27,23 @@ void ACutsceneManager::PlayCutscene(FName RowName)
 	FCutsceneRow* Row = CutsceneDataTable->FindRow<FCutsceneRow>(RowName, TEXT(""));
 	if (Row)
 	{
+		FMovieSceneSequencePlaybackSettings Settings;
+		ALevelSequenceActor* TempActor = nullptr;
+		LevelSequencePlayer = ULevelSequencePlayer::CreateLevelSequencePlayer(
+			GetWorld(),
+			Row->LevelSequence,
+			Settings,
+			TempActor
+		);
+		LevelSequenceActor = TempActor;
+
 		ECutsceneType Type = Row->CutsceneType;
 		if (Type == ECutsceneType::ECT_Death)
 		{
 			OnPlayerDeath.Broadcast();
-			Row->LevelSequencePlayer->OnFinished.AddDynamic(this, &ACutsceneManager::OnDeathsceneFinished);
+			LevelSequencePlayer->OnFinished.AddDynamic(this, &ACutsceneManager::OnDeathsceneFinished);
 		}
-		Row->LevelSequencePlayer->Play();
+		LevelSequencePlayer->Play();
 	}
 
 }
