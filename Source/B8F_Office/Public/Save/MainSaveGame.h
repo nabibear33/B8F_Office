@@ -33,7 +33,7 @@ public:
 
 private:
 	UPROPERTY()
-	FName GameProgressRowName = FName(TEXT("NotStarted"));
+	FName GameProgressRowName = FName(TEXT("Room_Intro"));
 
 	UPROPERTY()
 	FMainStageStatus MainStageStatus;

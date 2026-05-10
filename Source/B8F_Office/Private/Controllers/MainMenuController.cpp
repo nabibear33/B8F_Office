@@ -6,6 +6,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameInstances/SaveSubsystem.h"
+#include "GameInstances/GameSubsystem.h"
 #include "Save/MainSaveGame.h"
 
 void AMainMenuController::BeginPlay()
@@ -15,6 +16,12 @@ void AMainMenuController::BeginPlay()
 	FInputModeUIOnly InputMode;
 	SetInputMode(InputMode);
 	SetShowMouseCursor(true);
+
+	UGameSubsystem* Subsystem = GetGameInstance()->GetSubsystem<UGameSubsystem>();
+	if (Subsystem)
+	{
+		OnGameProgressUpdated.AddDynamic(Subsystem, &UGameSubsystem::OnGameProgressUpdated);
+	}
 }
 
 EMainMenuStatus AMainMenuController::GetParentStatus(EMainMenuStatus Status)
@@ -46,12 +53,15 @@ void AMainMenuController::OnClickedNewGame()
 	SaveSubsystem->CreateNewSaveGame();
 	UMainSaveGame* SaveGame = SaveSubsystem->GetSaveGame();
 	SaveGame->FirstPlay();
-	UGameplayStatics::OpenLevel(this, NewGameLevelName);
+	OnGameProgressUpdated.Broadcast(FName(TEXT("Room_Intro")));
 }
 
 void AMainMenuController::OnClickedContinue()
 {
-	UGameplayStatics::OpenLevel(this, NewGameLevelName);
+	USaveSubsystem* SaveSubsystem = GetGameInstance()->GetSubsystem<USaveSubsystem>();
+	SaveSubsystem->CreateNewSaveGame();
+	UMainSaveGame* SaveGame = SaveSubsystem->GetSaveGame();
+	OnGameProgressUpdated.Broadcast(SaveGame->GetProgressName());
 }
 
 void AMainMenuController::OnClickedCollectionMode()

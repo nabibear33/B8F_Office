@@ -3,6 +3,7 @@
 
 #include "HUD/MainHUD.h"
 #include "Components/DialogueComponent.h"
+#include "Widgets/MonologueWidget.h"
 #include "Widgets/DialogueWidget.h"
 #include "Widgets/LeftTimeWidget.h"
 #include "GameInstances/EventBusSubsystem.h"
@@ -19,6 +20,16 @@ void AMainHUD::BeginPlay()
         {
             DialogueWidget->AddToViewport();
             DialogueWidget->SetVisibility(ESlateVisibility::Hidden);
+        }
+    }
+
+    if (MonologueWidgetClass)
+    {
+        MonologueWidget = CreateWidget<UMonologueWidget>(GetWorld(), MonologueWidgetClass);
+        if (MonologueWidget)
+        {
+            MonologueWidget->AddToViewport();
+            MonologueWidget->SetVisibility(ESlateVisibility::Hidden);
         }
     }
 
@@ -55,6 +66,18 @@ void AMainHUD::HideDialogueWidget()
 {
 	if (!DialogueWidget) return;
 	DialogueWidget->SetVisibility(ESlateVisibility::Hidden);
+}
+
+void AMainHUD::ShowMonologueWidget()
+{
+    if (!MonologueWidget) return;
+    MonologueWidget->SetVisibility(ESlateVisibility::Visible);
+}
+
+void AMainHUD::HideMonologueWidget()
+{
+    if (!MonologueWidget) return;
+    MonologueWidget->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void AMainHUD::ShowLeftTimeWidget()

@@ -12,7 +12,6 @@
 UDialogueComponent::UDialogueComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
-
 }
 
 
@@ -33,16 +32,24 @@ void UDialogueComponent::Initialize()
 
     if (!DialogueSpeakerMappingHelper)
     {
-        UE_LOG(LogTemp, Warning, TEXT("DialogueActorRegistry not found in level"));
+        UE_LOG(LogTemp, Warning, TEXT("[DialogueComponent] DialogueActorRegistry not found in level"));
     }
 }
 
 void UDialogueComponent::BeginPlay()
 {
+    UE_LOG(LogTemp, Warning, TEXT("[DialogueComponent] BeginPlay"));
+    Super::BeginPlay();
+
     AMainCharacterController* PC = Cast<AMainCharacterController>(GetOwner());
     if (PC)
     {
+        UE_LOG(LogTemp, Warning, TEXT("[DialogueComponent] PC Checked"));
         OnGamePhaseUpdated.AddDynamic(PC, &AMainCharacterController::OnGamePhaseUpdated);
+    }
+    else
+    {
+        UE_LOG(LogTemp, Warning, TEXT("[DialogueComponent] NO PC"));
     }
 }
 
@@ -58,7 +65,7 @@ void UDialogueComponent::StartDialogue(UDataTable* DialogueRows, FName ID)
     OnGamePhaseUpdated.Broadcast(EGamePhase::EGP_Dialogue);
 	SetDialogueDataTable(DialogueRows);
 	SetCurrentRowID(ID);
-    UE_LOG(LogTemp, Warning, TEXT("StartDialogue"));
+    UE_LOG(LogTemp, Warning, TEXT("[DialogueComponent] Start Dialogue"));
     AdvanceDialogue();
 }
 
@@ -69,6 +76,13 @@ void UDialogueComponent::AdvanceDialogue(FName ChoiceRowID)
 
     FName TargetRow = ChoiceRowID.IsNone() ? CurrentRowID : ChoiceRowID;
 
+    if (TargetRow == NAME_None)
+    {
+        CurrentRow.Reset();
+        EndDialogue();
+        return;
+    }
+
     FDialogueRow* Row = DialogueDataTable->FindRow<FDialogueRow>(TargetRow, TEXT(""));
 
     if (Row)
@@ -76,7 +90,7 @@ void UDialogueComponent::AdvanceDialogue(FName ChoiceRowID)
 		CurrentRow = *Row;
 
         // Play Anim Montage if it is valid
-        if (CurrentRow->AnimMontage)
+        if (CurrentRow->AnimMontage && DialogueSpeakerMappingHelper)
         {
             AActor* Found = DialogueSpeakerMappingHelper->GetActorFromName(CurrentRow->SpeakerID);
             if (Found)
@@ -85,7 +99,7 @@ void UDialogueComponent::AdvanceDialogue(FName ChoiceRowID)
                 if (Speaker)
                 {
                 
-                    UE_LOG(LogTemp, Warning, TEXT("Play Animation Montage."));
+                    UE_LOG(LogTemp, Warning, TEXT("[DialogueComponent] Play Animation Montage."));
                     Speaker->PlayAnimMontage(CurrentRow->AnimMontage);
                 }
             }
@@ -93,7 +107,6 @@ void UDialogueComponent::AdvanceDialogue(FName ChoiceRowID)
     }
     else
     {
-        UE_LOG(LogTemp, Warning, TEXT("Invalid Row. End Dialogue."));
         CurrentRow.Reset();
         EndDialogue();
         return;
@@ -132,7 +145,7 @@ bool UDialogueComponent::IsLastRow(FDialogueRow* Row)
 
 void UDialogueComponent::EndDialogue()
 {
-    UE_LOG(LogTemp, Warning, TEXT("EndDialogue"));
+    UE_LOG(LogTemp, Warning, TEXT("[DialogueComponent] End Dialogue"));
     OnDialogueEnded.Broadcast(LastRowName);
 
     SetDialogueDataTable(nullptr);

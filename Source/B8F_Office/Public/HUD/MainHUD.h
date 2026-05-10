@@ -8,6 +8,7 @@
 
 class UDialogueWidget;
 class ULeftTimeWidget;
+class UMonologueWidget;
 
 /**
  * 
@@ -20,6 +21,9 @@ class B8F_OFFICE_API AMainHUD : public AHUD
 public:
 	void ShowDialogueWidget();
 	void HideDialogueWidget();
+
+	void ShowMonologueWidget();
+	void HideMonologueWidget();
 
 	void ShowLeftTimeWidget();
 	void HideLeftTimeWidget();
@@ -34,6 +38,12 @@ private:
 	TObjectPtr<UDialogueWidget> DialogueWidget;
 
 	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UUserWidget> MonologueWidgetClass;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UMonologueWidget> MonologueWidget;
+
+	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UUserWidget> LeftTimeWidgetClass;
 
 	UPROPERTY(VisibleAnywhere)
@@ -45,4 +55,5 @@ private:
 
 public:
 	FORCEINLINE UDialogueWidget* GetDialogueWidget() { return DialogueWidget; }
+	FORCEINLINE UMonologueWidget* GetMonologueWidget() { return MonologueWidget; }
 };

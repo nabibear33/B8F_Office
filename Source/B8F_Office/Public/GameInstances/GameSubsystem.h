@@ -32,6 +32,10 @@ public:
 
 	void ExecuteCurrentProgress(FGameProgressRow* Row);
 
+	void ExecuteGamePhase(FGameProgressRow* Row);
+
+	void ExecuteLevel(FGameProgressRow* Row);
+
 	void UpdateManagers();
 
 	UPROPERTY(BlueprintReadOnly)

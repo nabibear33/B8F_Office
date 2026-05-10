@@ -14,6 +14,7 @@
 #include "Components/InteractComponent.h"
 #include "EnhancedInputComponent.h"
 #include "GameInstances/GameSubsystem.h"
+#include "Widgets/MonologueWidget.h"
 
 AMainCharacterController::AMainCharacterController()
 {
@@ -22,12 +23,12 @@ AMainCharacterController::AMainCharacterController()
 
 void AMainCharacterController::BeginPlay()
 {
+    Super::BeginPlay();
+
     APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
     FInputModeGameOnly InputMode;
     PlayerController->SetInputMode(InputMode);
     PlayerController->bShowMouseCursor = false;
-
-
 
     if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(this->GetLocalPlayer()))
     {
@@ -49,6 +50,7 @@ void AMainCharacterController::OnDialogueWidgetReady()
     if (DialogueComponent && HUD)
     {
         DialogueComponent->OnDialogueUpdated.AddDynamic(HUD->GetDialogueWidget(), &UDialogueWidget::OnDialogueUpdated);
+        DialogueComponent->OnDialogueUpdated.AddDynamic(HUD->GetMonologueWidget(), &UMonologueWidget::OnDialogueUpdated);
         DialogueComponent->OnCurrentHighlightedChoiceUpdated.AddDynamic(HUD->GetDialogueWidget()->GetChoiceList(), &UChoiceList::OnCurrentHighlightedChoiceUpdated);
         DialogueComponent->OnDialogueEnded.AddDynamic(this, &AMainCharacterController::EndDialogue);
     }
@@ -94,14 +96,25 @@ void AMainCharacterController::SetControlRotation(const FRotator& NewRotation)
     Super::SetControlRotation(NewRotation);
 }
 
-void AMainCharacterController::StartDialogue(UDataTable* DialogueDataTable, FName ID)
+void AMainCharacterController::StartDialogue(UDataTable* DialogueDataTable, FName ID, EDialogueMode Mode)
 {
     AMainHUD* HUD = Cast<AMainHUD>(GetHUD());
     if (HUD)
     {
-        HUD->ShowDialogueWidget();
+        switch (Mode)
+        {
+            case EDialogueMode::EDM_Dialogue:
+                HUD->ShowDialogueWidget();
+                break;
+            case EDialogueMode::EDM_Monologue:
+                HUD->ShowMonologueWidget();
+                break;
+            default:
+                return;
+        }
     }
 
+    DialogueMode = Mode;
     bOnDialogue = true;
     DialogueComponent->StartDialogue(DialogueDataTable, ID);
 }
@@ -109,9 +122,11 @@ void AMainCharacterController::StartDialogue(UDataTable* DialogueDataTable, FNam
 
 void AMainCharacterController::OnGamePhaseUpdated(EGamePhase Phase)
 {
+    UE_LOG(LogTemp, Warning, TEXT("[AMainCharacterController] Set IMC"));
     switch (Phase)
     {
         case EGamePhase::EGP_Dialogue:
+        case EGamePhase::EGP_Monologue:
             SetDialogueIMC();
             break;
         default:
@@ -143,8 +158,6 @@ void AMainCharacterController::SetDefaultIMC()
 
 void AMainCharacterController::EndDialogue(FName DialogueID)
 {
-    bOnDialogue = false;
-
     // disable temporaly (later fully migrate to HUD)
     //DialogueTarget->GetInteractComponent()->SetInteractEnabled();
     //DialogueTarget = nullptr;
@@ -152,7 +165,22 @@ void AMainCharacterController::EndDialogue(FName DialogueID)
     AMainHUD* HUD = Cast<AMainHUD>(GetHUD());
     if (HUD)
     {
-        HUD->HideDialogueWidget();
-		HUD->GetDialogueWidget()->ResetDialogueWidget();
+        switch (DialogueMode)
+        {
+            case EDialogueMode::EDM_Dialogue:
+                HUD->HideDialogueWidget();
+		        HUD->GetDialogueWidget()->ResetDialogueWidget();
+                break;
+            case EDialogueMode::EDM_Monologue:
+                HUD->HideMonologueWidget();
+		        HUD->GetMonologueWidget()->ResetMonologueWidget();
+                break;
+            default:
+                return;
+        }
     }
+    
+    bOnDialogue = false;
+    DialogueMode = EDialogueMode::EDM_NotOnDialogue;
+
 }

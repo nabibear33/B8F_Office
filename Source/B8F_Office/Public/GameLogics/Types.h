@@ -115,6 +115,7 @@ enum class EGamePhase : uint8
 	EGP_CutScene UMETA(DisplayName = "CutScene"),
 	EGP_PlayMedia UMETA(DisplayName = "Play Media"),
 	EGP_Dialogue UMETA(DisplayName = "Dialogue"),
+	EGP_Monologue UMETA(DisplayName = "Monologue"),
 };
 
 USTRUCT()
@@ -125,4 +126,12 @@ struct FMainStageStatus
 	int CurrentFloor;
 
 	TMap<EAnomalyType, EAnomalyStatus> AnomalyRecord;
+};
+
+UENUM(BlueprintType)
+enum class EDialogueMode : uint8
+{
+	EDM_NotOnDialogue UMETA(DisplayName = "Not On Dialogue"),
+	EDM_Dialogue UMETA(DisplayName = "Dialogue"),
+	EDM_Monologue UMETA(DisplayName = "Monologue"),
 };

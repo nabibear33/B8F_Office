@@ -53,7 +53,7 @@ void AMadeleine::Interact_Implementation()
 			return;
 		}
 
-		PC->StartDialogue(DialogueDataTable, FName(TEXT("Madeleine_WinGameAfter")));
+		PC->StartDialogue(DialogueDataTable, FName(TEXT("Madeleine_WinGameAfter")), EDialogueMode::EDM_Dialogue);
 	}
 }
 
@@ -192,7 +192,7 @@ void AMadeleine::StartDialogue(FName ID)
 			return;
 		}
 
-		PC->StartDialogue(DialogueDataTable, ID);
+		PC->StartDialogue(DialogueDataTable, ID, EDialogueMode::EDM_Dialogue);
 	}
 }
 

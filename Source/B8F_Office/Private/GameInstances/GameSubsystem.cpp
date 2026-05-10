@@ -30,7 +30,6 @@ void UGameSubsystem::OnGameProgressUpdated(FName Name)
 		{
 			CurrentProgressName = Name;
 			CurrentGamePhase = Row->GamePhase;
-			CurrentLevel = Row->LevelName;
 			ExecuteCurrentProgress(Row);
 		}
 	}
@@ -55,38 +54,54 @@ void UGameSubsystem::SaveCurrentProgress()
 
 void UGameSubsystem::ExecuteCurrentProgress(FGameProgressRow* Row)
 {
-	if (CurrentLevel != UGameplayStatics::GetCurrentLevelName(this, true))
-	{
-		UGameplayStatics::OpenLevel(this, CurrentLevel);
-	}
+	ExecuteLevel(Row);
 
-	switch (CurrentGamePhase)
+	FTimerHandle TempHandle;
+	GetWorld()->GetTimerManager().SetTimer(
+		TempHandle,
+		[this, Row]()
+		{
+			ExecuteGamePhase(Row);
+		},
+		0.2f,
+		false);
+
+}
+
+void UGameSubsystem::ExecuteGamePhase(FGameProgressRow* Row)
+{
+	switch (Row->GamePhase)
 	{
-		case EGamePhase::EGP_Dialogue:
-			if (PlayerController)
-			{
-				PlayerController->StartDialogue(Row->DialogueDataTable, Row->DialogueRowName);
-			}
-			break;
-		case EGamePhase::EGP_CutScene:
-			if (CutsceneManager)
-			{
-				CutsceneManager->PlayCutscene(Row->CutsceneName);
-			}
-			else
-			{
-				CutsceneManager = Cast<ACutsceneManager>(
-					UGameplayStatics::GetActorOfClass(this, ACutsceneManager::StaticClass()));
-				UE_LOG(LogTemp, Warning, TEXT("No Cutscene Manager"));
-				CutsceneManager->PlayCutscene(Row->CutsceneName);
-			}
-			break;
-		case EGamePhase::EGP_PlayMedia:
-			// Get Media manager and play media (later)
-			break;
-		case EGamePhase::EGP_Normal:
-			// Do Nothing
-			break;
+	case EGamePhase::EGP_Dialogue:
+		PlayerController = Cast<AMainCharacterController>(
+			UGameplayStatics::GetActorOfClass(this, AMainCharacterController::StaticClass()));
+		PlayerController->StartDialogue(Row->DialogueDataTable, Row->DialogueRowName, EDialogueMode::EDM_Dialogue);
+		break;
+	case EGamePhase::EGP_Monologue:
+		PlayerController = Cast<AMainCharacterController>(
+			UGameplayStatics::GetActorOfClass(this, AMainCharacterController::StaticClass()));
+		PlayerController->StartDialogue(Row->DialogueDataTable, Row->DialogueRowName, EDialogueMode::EDM_Monologue);
+		break;
+	case EGamePhase::EGP_CutScene:
+		CutsceneManager = Cast<ACutsceneManager>(
+			UGameplayStatics::GetActorOfClass(this, ACutsceneManager::StaticClass()));
+		CutsceneManager->PlayCutscene(Row->CutsceneName);
+		break;
+	case EGamePhase::EGP_PlayMedia:
+		// Get Media manager and play media (later)
+		break;
+	case EGamePhase::EGP_Normal:
+		// Do Nothing
+		break;
+	}
+}
+
+void UGameSubsystem::ExecuteLevel(FGameProgressRow* Row)
+{
+	if (Row->LevelName != UGameplayStatics::GetCurrentLevelName(this, true))
+	{
+		UGameplayStatics::OpenLevel(this, Row->LevelName);
+		CurrentLevel = Row->LevelName;
 	}
 }
 

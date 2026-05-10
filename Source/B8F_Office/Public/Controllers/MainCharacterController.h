@@ -27,7 +27,7 @@ public:
 
 	virtual void SetControlRotation(const FRotator& NewRotation) override;
 
-	void StartDialogue(UDataTable* DialogueRows, FName ID);
+	void StartDialogue(UDataTable* DialogueRows, FName ID, EDialogueMode Mode);
 
 	void SetDialogueIMC();
 
@@ -75,6 +75,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	bool bOnDialogue = false;
+
+	UPROPERTY(VisibleAnywhere)
+	EDialogueMode DialogueMode;
 
 public:
 	FORCEINLINE UDialogueComponent* GetDialogueComponent() const { return DialogueComponent; }

@@ -49,6 +49,8 @@ public:
 
 	FOnMainMenuStatusUpdated OnMainMenuStatusUpdated;
 
+	FOnGameProgressUpdated OnGameProgressUpdated;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -59,6 +61,6 @@ private:
 	EMainMenuStatus GetParentStatus(EMainMenuStatus Status);
 
 	UPROPERTY(EditAnywhere)
-	FName NewGameLevelName = FName(TEXT("MainStage"));
+	FName NewGameLevelName;
 
 };
