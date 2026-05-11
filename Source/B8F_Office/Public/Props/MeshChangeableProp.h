@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Props/BaseProp.h"
+#include "Props/AnomalyProp.h"
 #include "MeshChangeableProp.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class B8F_OFFICE_API AMeshChangeableProp : public ABaseProp
+class B8F_OFFICE_API AMeshChangeableProp : public AAnomalyProp
 {
 	GENERATED_BODY()
 

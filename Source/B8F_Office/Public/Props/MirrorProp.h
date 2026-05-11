@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Props/BaseProp.h"
+#include "Props/AnomalyProp.h"
 #include "MirrorProp.generated.h"
 
 class USceneCaptureComponent2D;
@@ -12,7 +12,7 @@ class USceneCaptureComponent2D;
  * 
  */
 UCLASS()
-class B8F_OFFICE_API AMirrorProp : public ABaseProp
+class B8F_OFFICE_API AMirrorProp : public AAnomalyProp
 {
 	GENERATED_BODY()
 

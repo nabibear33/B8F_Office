@@ -48,7 +48,7 @@ void ALightProp::BeginPlay()
 
 void ALightProp::OnStageStart(EAnomalyType AnomalyType)
 {
-	if (AnomalyType == CorrespondingAnomalyType)
+	if (AnomalyType == EAnomalyType::EAT_LightOff)
 	{
 		if (LinkedArea)
 		{

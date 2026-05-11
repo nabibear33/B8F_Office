@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Props/BaseProp.h"
+#include "Props/AnomalyProp.h"
 #include "LightProp.generated.h"
 
 class ULightComponent;
@@ -12,7 +12,7 @@ class ULightComponent;
  * 
  */
 UCLASS()
-class B8F_OFFICE_API ALightProp : public ABaseProp
+class B8F_OFFICE_API ALightProp : public AAnomalyProp
 {
 	GENERATED_BODY()
 	

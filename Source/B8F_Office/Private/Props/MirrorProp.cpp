@@ -71,17 +71,17 @@ void AMirrorProp::Tick(float Deltatime)
 	
 	/*
 
-	// À§Ä¡ È®ÀÎ
+	// ï¿½ï¿½Ä¡ È®ï¿½ï¿½
 	DrawDebugSphere(
 		GetWorld(),
 		SceneCapture->GetComponentLocation(),
-		20.f,          // ¹ÝÁö¸§
-		12,            // ¼¼±×¸ÕÆ®
+		20.f,          // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		12,            // ï¿½ï¿½ï¿½×¸ï¿½Æ®
 		FColor::Orange,
 		false, -1.f, 0, 1.f
 	);
 
-	// SceneCapture ¡æ MirrorPos ¹æÇâ È®ÀÎ
+	// SceneCapture ï¿½ï¿½ MirrorPos ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½
 	DrawDebugDirectionalArrow(
 		GetWorld(),
 		SceneCapture->GetComponentLocation(),
@@ -93,14 +93,14 @@ void AMirrorProp::Tick(float Deltatime)
 
 	DrawDebugDirectionalArrow(
 		GetWorld(),
-		MirrorPos,                    // ½ÃÀÛÁ¡
-		MirrorPos + ToCamera,         // ³¡Á¡
-		20.f,                         // È­»ìÇ¥ Å©±â
-		FColor::Green,                // »ö»ó
-		false,                        // Áö¼Ó ¿©ºÎ
-		-1.f,                         // Áö¼Ó ½Ã°£ (-1 = ÇÑ ÇÁ·¹ÀÓ)
+		MirrorPos,                    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		MirrorPos + ToCamera,         // ï¿½ï¿½ï¿½ï¿½
+		20.f,                         // È­ï¿½ï¿½Ç¥ Å©ï¿½ï¿½
+		FColor::Green,                // ï¿½ï¿½ï¿½ï¿½
+		false,                        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		-1.f,                         // ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ (-1 = ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
 		0,                            // depth priority
-		2.f                           // µÎ²²
+		2.f                           // ï¿½Î²ï¿½
 	);
 
 	DrawDebugDirectionalArrow(GetWorld(), MirrorPos, MirrorPos + Reflected, 20.f, FColor::Orange, false, -1.f, 0, 2.f);

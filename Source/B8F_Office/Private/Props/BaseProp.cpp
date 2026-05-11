@@ -1,8 +1,6 @@
 
 
 #include "Props/BaseProp.h"
-#include "GameManager/StageManager.h"
-#include "Kismet/GameplayStatics.h"
 #include "Components/InteractComponent.h"
 
 ABaseProp::ABaseProp()
@@ -22,20 +20,10 @@ UInteractComponent* ABaseProp::GetInteractComponent()
 void ABaseProp::BeginPlay()
 {
 	Super::BeginPlay();
-
-	AStageManager* StageManager = Cast<AStageManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AStageManager::StaticClass()));
-	if (StageManager)
-	{
-		StageManager->OnStageStart.AddDynamic(this, &ABaseProp::OnStageStart);
-	}
 }
 
-void ABaseProp::OnStageStart(EAnomalyType AnomalyType)
+void ABaseProp::AdvanceProgress(FName Name)
 {
-}
-
-void ABaseProp::SetNormal()
-{
-	InteractComponent->SetInteractDisabled();
+	OnGameProgressUpdated.Broadcast(Name);
 }
 

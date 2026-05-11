@@ -5,14 +5,16 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "GameLogics/Types.h"
+#include "GameLogics/Delegates.h"
 #include "Interfaces/Interactable.h"
+#include "Interfaces/Progressible.h"
 #include "BaseProp.generated.h"
 
 class ATriggerArea;
 class UInteractComponent;
 
 UCLASS()
-class B8F_OFFICE_API ABaseProp : public AActor, public IInteractable
+class B8F_OFFICE_API ABaseProp : public AActor, public IInteractable, public IProgressible
 {
 	GENERATED_BODY()
 	
@@ -21,28 +23,27 @@ public:
 
 	virtual UInteractComponent* GetInteractComponent() override;
 
+	FOnGameProgressUpdated OnGameProgressUpdated;
+
 protected:
 	virtual void BeginPlay() override;
 
-	UFUNCTION()
-	virtual void OnStageStart(EAnomalyType AnomalyType);
-
-	virtual void SetNormal();
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<ATriggerArea> LinkedArea;
 
-	UPROPERTY(EditAnywhere)
-	EAnomalyType CorrespondingAnomalyType;
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UInteractComponent> InteractComponent;
 private:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USceneComponent> RootSceneComponent;
 	
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(VisibleAnywhere)
 	bool bIsInInteractRange = false;
 
 	UPROPERTY(EditAnywhere)
-	TObjectPtr<UInteractComponent> InteractComponent;
+	FName LinkedProgressName;
 
+	virtual void AdvanceProgress(FName Name) override;
 };

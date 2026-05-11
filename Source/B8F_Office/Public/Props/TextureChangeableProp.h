@@ -3,11 +3,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Props/BaseProp.h"
+#include "Props/AnomalyProp.h"
 #include "TextureChangeableProp.generated.h"
 
 UCLASS()
-class B8F_OFFICE_API ATextureChangeableProp : public ABaseProp
+class B8F_OFFICE_API ATextureChangeableProp : public AAnomalyProp
 {
 	GENERATED_BODY()
 	

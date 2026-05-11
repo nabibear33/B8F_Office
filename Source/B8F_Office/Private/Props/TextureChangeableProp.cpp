@@ -26,7 +26,7 @@ void ATextureChangeableProp::OnStageStart(EAnomalyType AnomalyType)
 {
 	Super::OnStageStart(AnomalyType);
 
-	if (AnomalyType == CorrespondingAnomalyType)
+	if (ActivatingAnomalyList.Contains(AnomalyType))
 	{
 		ChangeImage(1);
 	}

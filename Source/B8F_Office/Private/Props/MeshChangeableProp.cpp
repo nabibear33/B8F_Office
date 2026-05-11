@@ -16,7 +16,7 @@ void AMeshChangeableProp::BeginPlay()
 
 void AMeshChangeableProp::OnStageStart(EAnomalyType AnomalyType)
 {
-	if(AnomalyType == CorrespondingAnomalyType)
+	if(ActivatingAnomalyList.Contains(AnomalyType))
 	{
 		SetAnomalyMesh();
 	}

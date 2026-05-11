@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Props/BaseProp.h"
+#include "Props/AnomalyProp.h"
 #include "SongPyeonSpawner.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class B8F_OFFICE_API ASongPyeonSpawner : public ABaseProp
+class B8F_OFFICE_API ASongPyeonSpawner : public AAnomalyProp
 {
 	GENERATED_BODY()
 	

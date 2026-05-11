@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Props/BaseProp.h"
+#include "Props/AnomalyProp.h"
 #include "AppearOnAnomalyProp.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class B8F_OFFICE_API AAppearOnAnomalyProp : public ABaseProp
+class B8F_OFFICE_API AAppearOnAnomalyProp : public AAnomalyProp
 {
 	GENERATED_BODY()
 	

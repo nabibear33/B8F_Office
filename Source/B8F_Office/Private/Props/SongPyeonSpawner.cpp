@@ -18,7 +18,7 @@ void ASongPyeonSpawner::OnStageStart(EAnomalyType AnomalyType)
 {
 	ClearSongPyeons();
 
-	if(AnomalyType == CorrespondingAnomalyType)
+	if(AnomalyType == EAnomalyType::EAT_SongPyeon)
 	{
 			LinkedArea->OnAreaTriggered.RemoveDynamic(this, &ASongPyeonSpawner::SpawnSongPyeon);
 			LinkedArea->OnAreaTriggered.AddDynamic(this, &ASongPyeonSpawner::SpawnSongPyeon);

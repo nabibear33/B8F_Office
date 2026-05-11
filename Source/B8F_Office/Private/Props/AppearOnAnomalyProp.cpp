@@ -20,7 +20,7 @@ void AAppearOnAnomalyProp::BeginPlay()
 
 void AAppearOnAnomalyProp::OnStageStart(EAnomalyType AnomalyType)
 {
-	if(AnomalyType == CorrespondingAnomalyType)
+	if(ActivatingAnomalyList.Contains(AnomalyType))
 	{
 		MeshComponent->SetVisibility(true);
 	}
