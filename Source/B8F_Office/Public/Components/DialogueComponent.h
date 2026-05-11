@@ -30,6 +30,9 @@ public:
 	FOnGamePhaseUpdated OnGamePhaseUpdated;
 	
 	UPROPERTY()
+	FOnGameProgressEnded OnGameProgressEnded;
+	
+	UPROPERTY()
 	FOnDialogueUpdated OnDialogueUpdated;
 
 	UPROPERTY()

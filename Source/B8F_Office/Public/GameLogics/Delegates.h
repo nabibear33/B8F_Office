@@ -39,6 +39,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnCollectionItemClicked, FText, 
 // Global Game State
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameProgressUpdated, FName, ProgressName);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGamePhaseUpdated, EGamePhase, GamePhase);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGameProgressEnded);
+
 
 
 UCLASS()

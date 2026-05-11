@@ -30,6 +30,10 @@ void UGameSubsystem::OnGameProgressUpdated(FName Name)
 		{
 			CurrentProgressName = Name;
 			CurrentGamePhase = Row->GamePhase;
+			if (Row->NextProgressID != NAME_None)
+			{
+				WaitingProgressQueue.Enqueue(Row->NextProgressID);
+			}
 			ExecuteCurrentProgress(Row);
 		}
 	}
@@ -38,6 +42,16 @@ void UGameSubsystem::OnGameProgressUpdated(FName Name)
 void UGameSubsystem::OnGamePhaseUpdated(EGamePhase Phase)
 {
 	CurrentGamePhase = Phase;
+}
+
+void UGameSubsystem::OnGameProgressEnded()
+{
+	if (!WaitingProgressQueue.IsEmpty())
+	{
+		FName NextProgress;
+		WaitingProgressQueue.Dequeue(NextProgress);
+		OnGameProgressUpdated(NextProgress);
+	}
 }
 
 void UGameSubsystem::SaveCurrentProgress()
@@ -65,7 +79,6 @@ void UGameSubsystem::ExecuteCurrentProgress(FGameProgressRow* Row)
 		},
 		0.2f,
 		false);
-
 }
 
 void UGameSubsystem::ExecuteGamePhase(FGameProgressRow* Row)

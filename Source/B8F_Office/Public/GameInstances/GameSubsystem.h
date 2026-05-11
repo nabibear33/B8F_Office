@@ -28,6 +28,9 @@ public:
 	UFUNCTION()
 	void OnGamePhaseUpdated(EGamePhase Phase);
 
+	UFUNCTION()
+	void OnGameProgressEnded();
+
 	void SaveCurrentProgress();
 
 	void ExecuteCurrentProgress(FGameProgressRow* Row);
@@ -56,6 +59,8 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<ACutsceneManager> CutsceneManager;
+
+	TQueue<FName> WaitingProgressQueue;
 
 public:
 	FORCEINLINE void SetCutsceneManager(ACutsceneManager* Manager) { CutsceneManager = Manager; }

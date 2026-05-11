@@ -22,6 +22,7 @@ void ACutsceneManager::BeginPlay()
 	{
 		Subsystem->SetCutsceneManager(this);
 		OnGamePhaseUpdated.AddDynamic(Subsystem, &UGameSubsystem::OnGamePhaseUpdated);
+		OnGameProgressEnded.AddDynamic(Subsystem, &UGameSubsystem::OnGameProgressEnded);
 	}
 }
 
@@ -34,6 +35,7 @@ void ACutsceneManager::OnCutsceneFinished()
 
 	CurrentPlayingRow = nullptr;
 	OnGamePhaseUpdated.Broadcast(EGamePhase::EGP_Normal);
+	OnGameProgressEnded.Broadcast();
 }
 
 void ACutsceneManager::PlayCutscene(FName RowName)

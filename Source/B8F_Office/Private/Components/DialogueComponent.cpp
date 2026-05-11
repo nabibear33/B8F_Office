@@ -8,6 +8,7 @@
 #include "Characters/InteractableCharacter.h"
 #include "Helper/DialogueSpeakerMappingHelper.h"
 #include "Kismet/GameplayStatics.h"
+#include "GameInstances/GameSubsystem.h"
 
 UDialogueComponent::UDialogueComponent()
 {
@@ -50,6 +51,13 @@ void UDialogueComponent::BeginPlay()
     else
     {
         UE_LOG(LogTemp, Warning, TEXT("[DialogueComponent] NO PC"));
+    }
+
+    UGameSubsystem* Subsystem = GetWorld()->GetGameInstance()->GetSubsystem<UGameSubsystem>();
+    if (Subsystem)
+    {
+        OnGamePhaseUpdated.AddDynamic(Subsystem, &UGameSubsystem::OnGamePhaseUpdated);
+        OnGameProgressEnded.AddDynamic(Subsystem, &UGameSubsystem::OnGameProgressEnded);
     }
 }
 
@@ -161,6 +169,7 @@ void UDialogueComponent::EndDialogue()
 	}
 
     OnGamePhaseUpdated.Broadcast(EGamePhase::EGP_Normal);
+    OnGameProgressEnded.Broadcast();
 }
 
 void UDialogueComponent::NavigateCurrentChoiceIdx(float Value)

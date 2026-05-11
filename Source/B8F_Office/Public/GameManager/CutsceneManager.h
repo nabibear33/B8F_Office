@@ -29,6 +29,8 @@ public:
 
 	FOnGamePhaseUpdated OnGamePhaseUpdated;
 
+	FOnGameProgressEnded OnGameProgressEnded;
+
 protected:
 	virtual void BeginPlay() override;
 
