@@ -39,7 +39,7 @@ void ABaseArea::OnBeginOverlap(class UPrimitiveComponent* OverlappedComp, class 
 	AMainCharacter* MainCharacter = Cast<AMainCharacter>(OtherActor);
 	if (!MainCharacter) return;
 
-	UE_LOG(LogTemp, Warning, TEXT("Area Triggered : %s"), *OverlappedComp->GetOwner()->GetActorLabel());
+	UE_LOG(LogTemp, Warning, TEXT("[Area] Area Triggered : %s"), *OverlappedComp->GetOwner()->GetActorLabel());
 
 	DisableArea();
 

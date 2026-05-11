@@ -59,6 +59,12 @@ void UDialogueComponent::BeginPlay()
         OnGamePhaseUpdated.AddDynamic(Subsystem, &UGameSubsystem::OnGamePhaseUpdated);
         OnGameProgressEnded.AddDynamic(Subsystem, &UGameSubsystem::OnGameProgressEnded);
     }
+
+    AMainHUD* HUD = Cast<AMainHUD>(PC->GetHUD());
+    if (HUD)
+    {
+        OnGamePhaseUpdated.AddDynamic(HUD, &AMainHUD::OnGamePhaseUpdated);
+    }
 }
 
 
@@ -185,7 +191,7 @@ void UDialogueComponent::NavigateCurrentChoiceIdx(float Value)
 void UDialogueComponent::OnSelectCurrentChoice()
 {
     if (!CurrentRow.IsSet() || !IsCurrentRowHasChoices()) return;
-	UE_LOG(LogTemp, Warning, TEXT("Select Choice: %d"), CurrentChoiceIdx);
+	UE_LOG(LogTemp, Warning, TEXT("[DialogueComponent] Select Choice Index: %d"), CurrentChoiceIdx);
     FName SelectedChoiceRowID = CurrentRow->Choices[CurrentChoiceIdx].NextRowID;
     
     if(CurrentRow->Choices[CurrentChoiceIdx].bTriggersDeathScene)

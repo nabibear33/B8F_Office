@@ -11,32 +11,26 @@ class USphereComponent;
 class UInteractWidget;
 class UWidgetComponent;
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class B8F_OFFICE_API UInteractComponent : public USceneComponent
 {
 	GENERATED_BODY()
 
-public:	
+public:
 	UInteractComponent();
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	UPROPERTY()
-	FOnInteractableEntered OnInteractableEntered;
+	FOnInteractableUpdated OnInteractableUpdated;
 
 	UPROPERTY()
 	FOnInteractableLeft OnInteractableLeft;
 
 	UFUNCTION()
 	virtual void OnBeginOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-	
+
 	UFUNCTION()
 	virtual void OnEndOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
-
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<UInteractWidget> InteractWidgetClass;
-
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UWidgetComponent> InteractWidgetComponent;
 
 	void SetInteractEnabled();
 
@@ -51,13 +45,12 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USphereComponent> InteractableArea;
 
-	UPROPERTY()
-	TObjectPtr<UInteractWidget> InteractWidget;
-
 	UPROPERTY(VisibleAnywhere)
 	bool bIsOwnerInteractable = false;
 
+	UPROPERTY(EditAnywhere)
+	FText InteractText = FText::FromString(TEXT("Interact"));
+
 public:
 	FORCEINLINE bool IsOwnerInteractable() { return bIsOwnerInteractable; }
-		
 };

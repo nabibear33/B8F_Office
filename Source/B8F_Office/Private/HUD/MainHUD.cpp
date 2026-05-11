@@ -8,6 +8,10 @@
 #include "Widgets/LeftTimeWidget.h"
 #include "GameInstances/EventBusSubsystem.h"
 #include "Controllers/MainCharacterController.h"
+#include "Widgets/InteractWidget.h"
+#include "Components/CanvasPanelSlot.h"
+#include "Kismet/GameplayStatics.h"
+
 
 void AMainHUD::BeginPlay()
 {
@@ -40,6 +44,16 @@ void AMainHUD::BeginPlay()
         {
             LeftTimeWidget->AddToViewport();
             LeftTimeWidget->SetVisibility(ESlateVisibility::Hidden);
+        }
+    }
+
+    if (InteractWidgetClass)
+    {
+        InteractWidget = CreateWidget<UInteractWidget>(GetWorld(), InteractWidgetClass);
+        if (InteractWidget)
+        {
+            InteractWidget->AddToViewport();
+            InteractWidget->SetVisibility(ESlateVisibility::Hidden);
         }
     }
 
@@ -90,4 +104,41 @@ void AMainHUD::HideLeftTimeWidget()
 {
     if (!LeftTimeWidget) return;
     LeftTimeWidget->SetVisibility(ESlateVisibility::Hidden);
+}
+
+void AMainHUD::ShowInteractWidget()
+{
+    if (!InteractWidget) return;
+    InteractWidget->SetVisibility(ESlateVisibility::Visible);
+}
+
+void AMainHUD::HideInteractWidget()
+{
+    if (!InteractWidget) return;
+    InteractWidget->SetVisibility(ESlateVisibility::Hidden);
+}
+
+void AMainHUD::OnInteractableUpdated(AActor* InteractableActor, FVector ActorLocation, FText InteractText)
+{
+    UE_LOG(LogTemp, Warning, TEXT("[Main HUD] Interactable : %s"), *InteractableActor->GetName());
+    InteractWidget->SetInteractContentText(InteractText);
+    ShowInteractWidget();
+}
+
+void AMainHUD::OnInteractableLeft(AActor* InteractableActor)
+{
+    InteractWidget->SetInteractContentText(FText::GetEmpty());
+    HideInteractWidget();
+}
+
+void AMainHUD::OnGamePhaseUpdated(EGamePhase Phase)
+{
+    switch (Phase)
+    {
+        case EGamePhase::EGP_Normal:
+            break;
+        default:
+            HideInteractWidget();
+            break;
+    }
 }

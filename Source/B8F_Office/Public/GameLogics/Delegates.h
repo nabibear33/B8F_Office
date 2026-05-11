@@ -22,8 +22,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLeftTimeUpdated, float, LeftTime)
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPhaseUpdated, ERedLightStageStatus, StageStatus);
 
 // Interact Component Logic
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInteractableLeft, AActor*, InteractableActor, AMainCharacter*, MainCharacter);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInteractableEntered, AActor*, InteractableActor, AMainCharacter*, MainCharacter);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractableLeft, AActor*, InteractableActor);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnInteractableUpdated, AActor*, InteractableActor, FVector, ActorLocation, FText, InteractText);
 
 // Stage Start Logic
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnStageStart, EAnomalyType, AnomalyType);

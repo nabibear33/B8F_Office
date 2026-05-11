@@ -44,10 +44,10 @@ void AStageManager::ResetStage()
 			IInteractable* Interactable = Cast<IInteractable>(Actor);
 			if (Interactable)
 			{
-				Interactable->GetInteractComponent()->OnInteractableEntered.RemoveDynamic(Player, &AMainCharacter::OnInteractableEntered);
-				Interactable->GetInteractComponent()->OnInteractableLeft.RemoveDynamic(Player, &AMainCharacter::OnInteractableLeft);
-				Interactable->GetInteractComponent()->OnInteractableEntered.AddDynamic(Player, &AMainCharacter::OnInteractableEntered);
-				Interactable->GetInteractComponent()->OnInteractableLeft.AddDynamic(Player, &AMainCharacter::OnInteractableLeft);
+				//Interactable->GetInteractComponent()->OnInteractableEntered.RemoveDynamic(Player, &AMainCharacter::OnInteractableEntered);
+				//Interactable->GetInteractComponent()->OnInteractableLeft.RemoveDynamic(Player, &AMainCharacter::OnInteractableLeft);
+				//Interactable->GetInteractComponent()->OnInteractableEntered.AddDynamic(Player, &AMainCharacter::OnInteractableEntered);
+				//Interactable->GetInteractComponent()->OnInteractableLeft.AddDynamic(Player, &AMainCharacter::OnInteractableLeft);
 			}
 		}
 	}

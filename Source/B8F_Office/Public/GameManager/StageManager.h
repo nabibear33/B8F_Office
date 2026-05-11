@@ -12,6 +12,7 @@
 class ANotKommy;
 class ATriggerArea;
 class IInteractable;
+class AMainCharacter;
 
 USTRUCT(BlueprintType)
 struct FInteractableList

@@ -28,10 +28,10 @@ public:
 	void OnRevive();
 
 	UFUNCTION()
-	void OnInteractableEntered(AActor* InteractableActor, AMainCharacter* MainCharacter);
+	void OnInteractableUpdated(AActor* InteractableActor, FVector ActorLocation, FText InteractText);
 
 	UFUNCTION()
-	void OnInteractableLeft(AActor* InteractableActor, AMainCharacter* MainCharacter);
+	void OnInteractableLeft(AActor* InteractableActor);
 
 	void ResetInteractableCount();
 

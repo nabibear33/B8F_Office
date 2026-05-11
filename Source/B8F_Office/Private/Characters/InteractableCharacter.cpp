@@ -31,8 +31,8 @@ void AInteractableCharacter::BeginPlay()
 
 	if (InteractComponent)
 	{
-		InteractComponent->OnInteractableEntered.AddDynamic(this, &AInteractableCharacter::OnInteractableEntered);
-		InteractComponent->OnInteractableLeft.AddDynamic(this, &AInteractableCharacter::OnInteractableLeft);
+		//InteractComponent->OnInteractableEntered.AddDynamic(this, &AInteractableCharacter::OnInteractableEntered);
+		//InteractComponent->OnInteractableLeft.AddDynamic(this, &AInteractableCharacter::OnInteractableLeft);
 	}
 }
 

@@ -23,9 +23,8 @@ void ARenewa::BeginPlay()
 
 void ARenewa::Interact_Implementation()
 {
-	if (!GetIsInteractable()) return;
-	UE_LOG(LogTemp, Warning, TEXT("Renewa Interaction"));
-
+	//if (!GetIsInteractable()) return;
+	UE_LOG(LogTemp, Warning, TEXT("[Renewa] Interaction"));
 	
 	AMainCharacterController* PC = Cast<AMainCharacterController>(GetWorld()->GetFirstPlayerController());
 	if (PC)

@@ -5,6 +5,8 @@
 #include "DataTables/CutsceneRow.h"
 #include "LevelSequencePlayer.h"
 #include "GameInstances/MainGameInstance.h"
+#include "Controllers/MainCharacterController.h"
+#include "HUD/MainHUD.h"
 #include "GameInstances/GameSubsystem.h"
 
 ACutsceneManager::ACutsceneManager()
@@ -23,6 +25,16 @@ void ACutsceneManager::BeginPlay()
 		Subsystem->SetCutsceneManager(this);
 		OnGamePhaseUpdated.AddDynamic(Subsystem, &UGameSubsystem::OnGamePhaseUpdated);
 		OnGameProgressEnded.AddDynamic(Subsystem, &UGameSubsystem::OnGameProgressEnded);
+	}
+
+	AMainCharacterController* PC = Cast<AMainCharacterController>(GetWorld()->GetFirstPlayerController());
+	if (PC)
+	{
+		AMainHUD* HUD = Cast<AMainHUD>(PC->GetHUD());
+		if (HUD)
+		{
+			OnGamePhaseUpdated.AddDynamic(HUD, &AMainHUD::OnGamePhaseUpdated);
+		}
 	}
 }
 

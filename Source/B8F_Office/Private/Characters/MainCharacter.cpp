@@ -90,10 +90,9 @@ void AMainCharacter::Look(const FInputActionValue& Value)
 
 void AMainCharacter::TryInteract()
 {
-	// UE_LOG(LogTemp, Warning, TEXT("Try Interact Function Executed"));
-
 	if (InteractableCount == 0) return;
 
+	UE_LOG(LogTemp, Warning, TEXT("[Player] Interact."));
 	CurrentInteractTarget->Interact_Implementation();
 }
 
@@ -115,7 +114,7 @@ void AMainCharacter::SprintStop()
 	}
 }
 
-void AMainCharacter::OnInteractableEntered(AActor* InteractableActor, AMainCharacter* MainCharacter)
+void AMainCharacter::OnInteractableUpdated(AActor* InteractableActor, FVector ActorLocation, FText InteractText)
 {
 	TScriptInterface<IInteractable> Interactable = InteractableActor;
 	if (Interactable)
@@ -125,7 +124,7 @@ void AMainCharacter::OnInteractableEntered(AActor* InteractableActor, AMainChara
 	}
 }
 
-void AMainCharacter::OnInteractableLeft(AActor* InteractableActor, AMainCharacter* MainCharacter)
+void AMainCharacter::OnInteractableLeft(AActor* InteractableActor)
 {
 	CurrentInteractTarget = nullptr;
 	InteractableCount--;
