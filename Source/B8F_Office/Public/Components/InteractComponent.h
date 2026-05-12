@@ -46,11 +46,11 @@ private:
 	TObjectPtr<USphereComponent> InteractableArea;
 
 	UPROPERTY(VisibleAnywhere)
-	bool bIsOwnerInteractable = false;
+	bool bCanOwnerInteract = false;
 
 	UPROPERTY(EditAnywhere)
 	FText InteractText = FText::FromString(TEXT("Interact"));
 
 public:
-	FORCEINLINE bool IsOwnerInteractable() { return bIsOwnerInteractable; }
+	FORCEINLINE bool CanOwnerInteract() { return bCanOwnerInteract; }
 };

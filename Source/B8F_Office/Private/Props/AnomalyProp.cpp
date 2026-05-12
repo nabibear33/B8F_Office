@@ -24,4 +24,6 @@ void AAnomalyProp::BeginPlay()
 	{
 		StageManager->OnStageStart.AddDynamic(this, &AAnomalyProp::OnStageStart);
 	}
+
+	InteractComponent->SetInteractDisabled();
 }

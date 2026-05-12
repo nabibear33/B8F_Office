@@ -34,6 +34,8 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UInteractComponent> InteractComponent;
+
+	virtual void Interact_Implementation() override;
 private:
 
 	UPROPERTY(VisibleAnywhere)

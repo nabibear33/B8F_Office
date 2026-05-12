@@ -17,12 +17,12 @@ void USaveSubsystem::SaveGame()
 {
 	if (!CurrentSaveGame)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("SaveGame: No CurrentSaveGame"));
+		UE_LOG(LogTemp, Warning, TEXT("[SaveSubsystem] SaveGame: No CurrentSaveGame"));
 		return;
 	}
 
 	bool bSuccess = UGameplayStatics::SaveGameToSlot(CurrentSaveGame, SaveSlotName, UserIndex);
-	UE_LOG(LogTemp, Warning, TEXT("SaveGame: %s"), bSuccess ? TEXT("Success") : TEXT("Failed"));
+	UE_LOG(LogTemp, Warning, TEXT("[SaveSubsystem] SaveGame: %s"), bSuccess ? TEXT("Success") : TEXT("Failed"));
 }
 
 void USaveSubsystem::LoadGame()
@@ -33,17 +33,17 @@ void USaveSubsystem::LoadGame()
 
 		if (!CurrentSaveGame)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("LoadGame: Casting Failed, Create New Save Game"));
+			UE_LOG(LogTemp, Warning, TEXT("[SaveSubsystem] LoadGame: Casting Failed, Create New Save Game"));
 			CreateNewSaveGame();
 		}
 		else
 		{
-			UE_LOG(LogTemp, Warning, TEXT("LoadGame: Success"));
+			UE_LOG(LogTemp, Warning, TEXT("[SaveSubsystem] LoadGame: Success"));
 		}
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("LoadGame: No Save File, Create New Save Game"));
+		UE_LOG(LogTemp, Warning, TEXT("[SaveSubsystem] LoadGame: No Save File, Create New Save Game"));
 		CreateNewSaveGame();
 	}
 }
@@ -53,7 +53,7 @@ void USaveSubsystem::CreateNewSaveGame()
 	CurrentSaveGame = Cast<UMainSaveGame>(
 		UGameplayStatics::CreateSaveGameObject(UMainSaveGame::StaticClass())
 	);
-
+	CurrentSaveGame->SetProgressName(FName(TEXT("Room_Intro")));
 	CurrentSaveGame->InitializeAnomalyRecord();
 	CurrentSaveGame->SetCurrentFloor(-8);
 

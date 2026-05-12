@@ -47,7 +47,6 @@ void ARenewa::Interact_Implementation()
 			bHasTalkedToPlayerOnCurrentStage = true;
 		}
 	}
-
 }
 
 void ARenewa::OnStageStart(EAnomalyType AnomalyType)

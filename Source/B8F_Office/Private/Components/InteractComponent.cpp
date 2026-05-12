@@ -18,14 +18,14 @@ UInteractComponent::UInteractComponent()
 
 void UInteractComponent::SetInteractEnabled()
 {
-	bIsOwnerInteractable = true;
+	bCanOwnerInteract = true;
 
 	InteractableArea->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 }
 
 void UInteractComponent::SetInteractDisabled()
 {
-	bIsOwnerInteractable = false;
+	bCanOwnerInteract = false;
 
 	InteractableArea->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
@@ -74,18 +74,18 @@ void UInteractComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 
 void UInteractComponent::OnBeginOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (!IsOwnerInteractable()) return;
+	if (!CanOwnerInteract()) return;
 	
 	AMainCharacter* Player = Cast<AMainCharacter>(OtherActor);
 	if (!Player) return;
-	UE_LOG(LogTemp, Warning, TEXT("[%s] Player detected: %s"), *GetOwner()->GetName(), *Player->GetName());
+	UE_LOG(LogTemp, Warning, TEXT("[Interactable Component] [%s] detected Player"), *GetOwner()->GetName());
 
 	OnInteractableUpdated.Broadcast(GetOwner(), InteractableArea->GetComponentLocation(), InteractText);
 }
 
 void UInteractComponent::OnEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	if (!IsOwnerInteractable()) return;
+	if (!CanOwnerInteract()) return;
 
 	AMainCharacter* Player = Cast<AMainCharacter>(OtherActor);
 	if (!Player) return;

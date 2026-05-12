@@ -28,6 +28,7 @@ void UGameSubsystem::OnGameProgressUpdated(FName Name)
 
 		if (Row)
 		{
+			UE_LOG(LogTemp, Warning, TEXT("[GameSubsystem] Update State to \"%s\""), *Name.ToString());
 			CurrentProgressName = Name;
 			CurrentGamePhase = Row->GamePhase;
 			if (Row->NextProgressID != NAME_None)
@@ -35,6 +36,11 @@ void UGameSubsystem::OnGameProgressUpdated(FName Name)
 				WaitingProgressQueue.Enqueue(Row->NextProgressID);
 			}
 			ExecuteCurrentProgress(Row);
+			SaveCurrentProgress();
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("[GameSubsystem] Row not found, which is named \"%s\""), *Name.ToString());
 		}
 	}
 }
@@ -46,6 +52,7 @@ void UGameSubsystem::OnGamePhaseUpdated(EGamePhase Phase)
 
 void UGameSubsystem::OnGameProgressEnded()
 {
+	// Triggered after finishing the dialogue or cutscene
 	if (!WaitingProgressQueue.IsEmpty())
 	{
 		FName NextProgress;
@@ -57,13 +64,16 @@ void UGameSubsystem::OnGameProgressEnded()
 void UGameSubsystem::SaveCurrentProgress()
 {
 	USaveSubsystem* Subsystem = GetGameInstance()->GetSubsystem<USaveSubsystem>();
-	UMainSaveGame* SaveGame = Subsystem->GetSaveGame();
-
-	if (SaveGame)
+	if (Subsystem)
 	{
-		SaveGame->SetProgressName(CurrentProgressName);
+		UMainSaveGame* SaveGame = Subsystem->GetSaveGame();
+		if (SaveGame)
+		{
+			SaveGame->SetProgressName(CurrentProgressName);
+		}
 		Subsystem->SaveGame();
 	}
+	
 }
 
 void UGameSubsystem::ExecuteCurrentProgress(FGameProgressRow* Row)
@@ -125,4 +135,3 @@ void UGameSubsystem::UpdateManagers()
 	
 	PlayerController = Cast<AMainCharacterController>(GetWorld()->GetFirstPlayerController());
 }
-

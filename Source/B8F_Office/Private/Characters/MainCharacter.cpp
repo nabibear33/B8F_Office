@@ -92,7 +92,7 @@ void AMainCharacter::TryInteract()
 {
 	if (InteractableCount == 0) return;
 
-	UE_LOG(LogTemp, Warning, TEXT("[Player] Interact."));
+	UE_LOG(LogTemp, Warning, TEXT("[Player] Interact"));
 	CurrentInteractTarget->Interact_Implementation();
 }
 

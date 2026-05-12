@@ -33,7 +33,7 @@ public:
 
 private:
 	UPROPERTY()
-	FName GameProgressRowName = FName(TEXT("Room_Intro"));
+	FName GameProgressRowName;
 
 	UPROPERTY()
 	FMainStageStatus MainStageStatus;

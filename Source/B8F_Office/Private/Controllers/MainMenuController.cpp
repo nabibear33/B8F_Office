@@ -59,7 +59,6 @@ void AMainMenuController::OnClickedNewGame()
 void AMainMenuController::OnClickedContinue()
 {
 	USaveSubsystem* SaveSubsystem = GetGameInstance()->GetSubsystem<USaveSubsystem>();
-	SaveSubsystem->CreateNewSaveGame();
 	UMainSaveGame* SaveGame = SaveSubsystem->GetSaveGame();
 	OnGameProgressUpdated.Broadcast(SaveGame->GetProgressName());
 }
