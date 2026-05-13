@@ -41,6 +41,9 @@ public:
 	UFUNCTION()
 	void OnGamePhaseUpdated(EGamePhase Phase);
 
+	UFUNCTION()
+	void OnCharacterStateUpdated(ECharacterState State);
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;

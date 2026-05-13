@@ -27,5 +27,6 @@ protected:
 
 private:
 
-
+public:
+	FORCEINLINE ECharacterState GetCharacterState() { return CharacterState; }
 };

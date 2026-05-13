@@ -41,6 +41,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameProgressUpdated, FName, Progr
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGamePhaseUpdated, EGamePhase, GamePhase);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGameProgressEnded);
 
+// Player State
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterStateUpdated, ECharacterState, State);
+
 
 
 UCLASS()

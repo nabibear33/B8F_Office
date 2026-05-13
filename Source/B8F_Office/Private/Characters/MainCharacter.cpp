@@ -1,17 +1,19 @@
 
 
 #include "Characters/MainCharacter.h"
-
 #include "EnhancedInputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Props/Seat.h"
+
 
 AMainCharacter::AMainCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
 	FirstPersonCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
+	//FirstPersonCamera->SetupAttachment(GetMesh(), FName("HeadSocket"));
 	FirstPersonCamera->SetupAttachment(GetCapsuleComponent());
 	FirstPersonCamera->SetRelativeLocation(CameraPosition);
 	FirstPersonCamera->bUsePawnControlRotation = true;
@@ -25,6 +27,13 @@ void AMainCharacter::BeginPlay()
 
 	InitialLocation = GetActorLocation();
 	InitialRotation = GetActorRotation();
+
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance)
+	{
+		AnimInstance->OnMontageStarted.AddDynamic(this, &AMainCharacter::OnMontageStarted);
+		AnimInstance->OnMontageEnded.AddDynamic(this, &AMainCharacter::OnMontageEnded);
+	}
 
 	check(GEngine != nullptr);
 
@@ -134,4 +143,77 @@ void AMainCharacter::ResetInteractableCount()
 {
 	CurrentInteractTarget = nullptr;
 	InteractableCount = 0;
+}
+
+void AMainCharacter::Sit(ASeat* Seat)
+{
+	Seat->DisableCollision();
+
+	FTransform Transform = Seat->GetSitPointTransform();
+	FVector Location = Transform.GetLocation();
+	FRotator Rotation = Transform.Rotator();
+	SetActorLocation(Location);
+
+	APlayerController* PC = Cast<APlayerController>(GetController());
+	if (PC)
+	{
+		PC->SetControlRotation(Rotation);
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("[Player] Play Sit Montage"));
+	PlayAnimMontage(SitMontage, 1.0f, FName("StandToSit"));
+	// ABP Blend Pose Timing issue -> lazy update
+	FTimerHandle TimerHandle;
+	GetWorldTimerManager().SetTimer(
+		TimerHandle,
+		[this]()
+		{
+			CharacterState = ECharacterState::ECS_Sit;	
+		}, 
+		0.5f, 
+		false
+	);
+}
+
+void AMainCharacter::Stand()
+{
+	UE_LOG(LogTemp, Warning, TEXT("[Player] Play Stand Montage"));
+	PlayAnimMontage(SitMontage, 1.0f, FName("SitToStand"));
+	FTimerHandle TimerHandle;
+	GetWorldTimerManager().SetTimer(
+		TimerHandle,
+		[this]()
+		{
+			CharacterState = ECharacterState::ECS_Idle;
+		},
+		0.5f,
+		false
+	);
+}
+
+
+void AMainCharacter::OnMontageStarted(UAnimMontage* AnimMontage)
+{
+	APlayerController* PC = Cast<APlayerController>(GetController());
+	if (PC)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("[Player] Disable input while playing anim montage"));
+		// PC->DisableInput(PC);
+		PC->SetIgnoreLookInput(true);
+		PC->SetIgnoreMoveInput(true);
+	}
+}
+
+void AMainCharacter::OnMontageEnded(UAnimMontage* AnimMontage, bool bInterrupted)
+{
+	APlayerController* PC = Cast<APlayerController>(GetController());
+	if (PC)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("[Player] Enable input after finishing anim montage"));
+		// Actually not fit for the original purpose, but it work well...
+		OnCharacterStateUpdated.Broadcast(CharacterState);
+		// PC->EnableInput(PC);
+		// PC->ResetIgnoreLookInput();
+		// PC->ResetIgnoreMoveInput();
+	}
 }

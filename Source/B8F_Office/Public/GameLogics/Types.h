@@ -55,7 +55,8 @@ enum class ECharacterState : uint8
 	ECS_Idle UMETA(Displayname = "Idle"),
 	ECS_Chasing UMETA(Displayname = "Chasing"),
 	ECS_Dialogue UMETA(Displayname = "Dialogue"),
-	ECS_Dying UMETA(Displayname = "Dying")
+	ECS_Dead UMETA(Displayname = "Dead"),
+	ECS_Sit UMETA(Displayname = "Sit"),
 };
 
 UENUM(BlueprintType)

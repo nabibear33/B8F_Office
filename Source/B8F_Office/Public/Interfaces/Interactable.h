@@ -9,7 +9,7 @@
 class UInteractComponent;
 
 // This class does not need to be modified.
-UINTERFACE(MinimalAPI)
+UINTERFACE(MinimalAPI, BluePrintable)
 class UInteractable : public UInterface
 {
 	GENERATED_BODY()
@@ -24,7 +24,7 @@ class B8F_OFFICE_API IInteractable
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Interact();
 
 	virtual FText GetInteractHintText() { return FText::GetEmpty(); }

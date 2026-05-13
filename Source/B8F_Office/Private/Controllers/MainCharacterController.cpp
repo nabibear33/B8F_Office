@@ -15,6 +15,7 @@
 #include "EnhancedInputComponent.h"
 #include "GameInstances/GameSubsystem.h"
 #include "Widgets/MonologueWidget.h"
+#include "Characters/MainCharacter.h"
 
 AMainCharacterController::AMainCharacterController()
 {
@@ -41,6 +42,12 @@ void AMainCharacterController::BeginPlay()
     if (Subsystem)
     {
         Subsystem->SetPlayerController(this);
+    }
+
+    AMainCharacter* MainPlayer = Cast<AMainCharacter>(GetPawn());
+    if (MainPlayer)
+    {
+        MainPlayer->OnCharacterStateUpdated.AddDynamic(this, &AMainCharacterController::OnCharacterStateUpdated);
     }
 }
 
@@ -131,6 +138,22 @@ void AMainCharacterController::OnGamePhaseUpdated(EGamePhase Phase)
             break;
         default:
             SetDefaultIMC();
+            break;
+    }
+}
+
+void AMainCharacterController::OnCharacterStateUpdated(ECharacterState State)
+{
+    switch (State)
+    {
+        case ECharacterState::ECS_Sit:
+        case ECharacterState::ECS_Dead:
+            SetIgnoreLookInput(true);
+            SetIgnoreMoveInput(true);
+            break;
+        default:
+            ResetIgnoreLookInput();
+            ResetIgnoreMoveInput();
             break;
     }
 }

@@ -35,13 +35,13 @@ void ABaseProp::Interact_Implementation()
 {
 	UE_LOG(LogTemp, Warning, TEXT("[Base Prop] Interact"));
 	AdvanceProgress(LinkedProgressName);
-	InteractComponent->SetInteractDisabled();
 
 	// later add logic for dialogue
 }
 
 void ABaseProp::AdvanceProgress(FName Name)
 {
+	if (Name == NAME_None) return;
 	OnGameProgressUpdated.Broadcast(Name);
 }
 

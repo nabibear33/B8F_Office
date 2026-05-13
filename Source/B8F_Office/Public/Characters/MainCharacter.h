@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
+#include "GameLogics/Delegates.h"
 #include "Characters/BaseCharacter.h"
 #include "MainCharacter.generated.h"
 
@@ -13,6 +14,7 @@ class UInputMappingContext;
 class UInputAction;
 class UInputComponent;
 class UCameraComponent;
+class ASeat;
 
 UCLASS()
 class B8F_OFFICE_API AMainCharacter : public ABaseCharacter
@@ -35,6 +37,19 @@ public:
 
 	void ResetInteractableCount();
 
+	UFUNCTION()
+	void Sit(ASeat* Seat);
+
+	UFUNCTION()
+	void Stand();
+
+	UFUNCTION()
+	void OnMontageStarted(UAnimMontage* AnimMontage);
+	
+	UFUNCTION()
+	void OnMontageEnded(UAnimMontage* AnimMontage, bool bInterrupted);
+
+	FOnCharacterStateUpdated OnCharacterStateUpdated;
 
 protected:
 	virtual void BeginPlay() override;
@@ -57,8 +72,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 	TObjectPtr<UCameraComponent> FirstPersonCamera;
 
-	UPROPERTY(BlueprintReadOnly)
-	bool bIsSprinting;
+
 
 private:
 	// Input Actions
@@ -90,4 +104,12 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	TScriptInterface<IInteractable> CurrentInteractTarget;
 
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UAnimMontage> SitMontage;
+
+	UPROPERTY()
+	bool bIsSprinting;
+
+public:
+	FORCEINLINE bool GetIsSprinting() { return bIsSprinting; }
 };
