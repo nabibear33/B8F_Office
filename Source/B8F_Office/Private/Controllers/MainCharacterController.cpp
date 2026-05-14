@@ -31,17 +31,19 @@ void AMainCharacterController::BeginPlay()
     PlayerController->SetInputMode(InputMode);
     PlayerController->bShowMouseCursor = false;
 
-    if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(this->GetLocalPlayer()))
+    if (UEnhancedInputLocalPlayerSubsystem* EnhancedInputSubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(this->GetLocalPlayer()))
     {
-        Subsystem->AddMappingContext(IMC_Default, 0);
+        EnhancedInputSubsystem->AddMappingContext(IMC_Default, 0);
+        EnhancedInputSubsystem->AddMappingContext(IMC_Pause, 1);
     }
 
     DialogueComponent->Initialize();
 
-    UGameSubsystem* Subsystem = GetGameInstance()->GetSubsystem<UGameSubsystem>();
-    if (Subsystem)
+    UGameSubsystem* GameSubsystem = GetGameInstance()->GetSubsystem<UGameSubsystem>();
+    if (GameSubsystem)
     {
-        Subsystem->SetPlayerController(this);
+        GameSubsystem->SetPlayerController(this);
+        OnGameProgressUpdated.AddDynamic(GameSubsystem, &UGameSubsystem::OnGameProgressUpdated);
     }
 
     AMainCharacter* MainPlayer = Cast<AMainCharacter>(GetPawn());
@@ -75,6 +77,8 @@ void AMainCharacterController::SetupInputComponent()
             &AMainCharacterController::OnNavigateChoice);
         EIC->BindAction(IA_SelectChoice, ETriggerEvent::Triggered, this,
             &AMainCharacterController::OnSelectChoice);
+        EIC->BindAction(IA_Pause, ETriggerEvent::Triggered, this,
+            &AMainCharacterController::OnPauseButtonClicked);
     }
 }
 
@@ -95,6 +99,21 @@ void AMainCharacterController::OnSelectChoice()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Select Choice"));
 	DialogueComponent->OnSelectCurrentChoice();
+}
+
+EPauseStatus AMainCharacterController::GetParentStatus(EPauseStatus Status)
+{
+    switch (Status)
+    {
+        case EPauseStatus::EPS_Setting:
+        case EPauseStatus::EPS_Collection:
+            return EPauseStatus::EPS_PausedMain;
+        case EPauseStatus::EPS_PausedMain:
+        case EPauseStatus::EPS_NotPaused:
+            return EPauseStatus::EPS_NotPaused;
+        default:
+            return EPauseStatus::EPS_PausedMain;
+    }
 }
 
 
@@ -148,14 +167,86 @@ void AMainCharacterController::OnCharacterStateUpdated(ECharacterState State)
     {
         case ECharacterState::ECS_Sit:
         case ECharacterState::ECS_Dead:
+            UE_LOG(LogTemp, Warning, TEXT("[MainCharacter Controller] Disable Player input"));
             SetIgnoreLookInput(true);
             SetIgnoreMoveInput(true);
             break;
         default:
+            UE_LOG(LogTemp, Warning, TEXT("[MainCharacter Controller] Enable Player input"));
             ResetIgnoreLookInput();
             ResetIgnoreMoveInput();
             break;
     }
+}
+
+void AMainCharacterController::OnResumeButtonClicked()
+{
+    Resume();
+}
+
+void AMainCharacterController::OnCollectionButtonClicked()
+{
+    CurrentPauseStatus = EPauseStatus::EPS_Collection;
+    OnPauseStatusUpdated.Broadcast(EPauseStatus::EPS_Collection);
+}
+
+void AMainCharacterController::OnSettingButtonClicked()
+{
+    CurrentPauseStatus = EPauseStatus::EPS_Setting;
+    OnPauseStatusUpdated.Broadcast(EPauseStatus::EPS_Setting);
+}
+
+void AMainCharacterController::OnMainMenuButtonClicked()
+{
+    UGameplayStatics::OpenLevel(this, FName(TEXT("MainMenu")));
+}
+
+void AMainCharacterController::OnPauseButtonClicked()
+{
+    switch (CurrentPauseStatus)
+    {
+        case EPauseStatus::EPS_NotPaused:
+            Pause();
+            break;
+        case EPauseStatus::EPS_PausedMain:
+            Resume();
+            break;
+        default:
+            CurrentPauseStatus = GetParentStatus(CurrentPauseStatus);
+            OnPauseStatusUpdated.Broadcast(CurrentPauseStatus);
+            break;
+    }
+   
+}
+
+void AMainCharacterController::Pause()
+{
+    CurrentPauseStatus = EPauseStatus::EPS_PausedMain;
+    UGameplayStatics::SetGamePaused(GetWorld(), true);
+
+    FInputModeGameAndUI InputMode;
+    SetInputMode(InputMode);
+    bShowMouseCursor = true;
+
+    OnPauseStatusUpdated.Broadcast(EPauseStatus::EPS_PausedMain);
+}
+
+void AMainCharacterController::Resume()
+{
+    CurrentPauseStatus = EPauseStatus::EPS_NotPaused;
+    UGameplayStatics::SetGamePaused(GetWorld(), false);
+
+    FInputModeGameOnly InputMode;
+    SetInputMode(InputMode);
+    bShowMouseCursor = false;
+
+    OnPauseStatusUpdated.Broadcast(EPauseStatus::EPS_NotPaused);
+}
+
+void AMainCharacterController::OnClickedBack()
+{
+    CurrentPauseStatus = GetParentStatus(CurrentPauseStatus);
+    OnPauseStatusUpdated.Broadcast(CurrentPauseStatus);
 }
 
 

@@ -42,12 +42,3 @@ void UMainMenu::OnQuitButtonClicked()
 {
     UKismetSystemLibrary::QuitGame(this, nullptr, EQuitPreference::Quit, false);
 }
-
-void UMainMenu::OnCollectionButtonClicked()
-{
-
-}
-
-void UMainMenu::OnSettingButtonClicked()
-{
-}

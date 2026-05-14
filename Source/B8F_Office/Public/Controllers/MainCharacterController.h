@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "InputActionValue.h"
 #include "GameLogics/Types.h"
+#include "GameLogics/Delegates.h"
 #include "MainCharacterController.generated.h"
 
 class UDialogueComponent;
@@ -44,6 +45,28 @@ public:
 	UFUNCTION()
 	void OnCharacterStateUpdated(ECharacterState State);
 
+	UFUNCTION()
+	void OnResumeButtonClicked();
+
+	UFUNCTION()
+	void OnCollectionButtonClicked();
+
+	UFUNCTION()
+	void OnSettingButtonClicked();
+
+	UFUNCTION()
+	void OnMainMenuButtonClicked();
+
+	UFUNCTION()
+	void OnPauseButtonClicked();
+
+	UFUNCTION()
+	void OnClickedBack();
+	
+	FOnPauseStatusUpdated OnPauseStatusUpdated;
+
+	FOnGameProgressUpdated OnGameProgressUpdated;
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
@@ -53,6 +76,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	TObjectPtr<UInputMappingContext> IMC_Dialogue;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	TObjectPtr<UInputMappingContext> IMC_Pause;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	TObjectPtr<UInputAction> IA_AdvanceDialogue;
@@ -62,6 +88,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	TObjectPtr<UInputAction> IA_SelectChoice;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	TObjectPtr<UInputAction> IA_Pause;
 
 private:
 	UPROPERTY(EditAnywhere)
@@ -82,6 +111,17 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	EDialogueMode DialogueMode;
 
+	UPROPERTY(VisibleAnywhere)
+	bool bIsGamePaused;
+
+	UPROPERTY(VisibleAnywhere)
+	EPauseStatus CurrentPauseStatus;
+
+	EPauseStatus GetParentStatus(EPauseStatus Status);
+
+	void Pause();
+
+	void Resume();
 public:
 	FORCEINLINE UDialogueComponent* GetDialogueComponent() const { return DialogueComponent; }
 };

@@ -44,7 +44,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGameProgressEnded);
 // Player State
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterStateUpdated, ECharacterState, State);
 
-
+// Pause
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPauseStatusUpdated, EPauseStatus, Status);
 
 UCLASS()
 class UDelegates : public UObject

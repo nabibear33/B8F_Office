@@ -162,8 +162,10 @@ void AMainCharacter::Sit(ASeat* Seat)
 
 	UE_LOG(LogTemp, Warning, TEXT("[Player] Play Sit Montage"));
 	PlayAnimMontage(SitMontage, 1.0f, FName("StandToSit"));
+	CharacterState = ECharacterState::ECS_Sit;
+	OnCharacterStateUpdated.Broadcast(CharacterState);
 	// ABP Blend Pose Timing issue -> lazy update
-	FTimerHandle TimerHandle;
+	/*FTimerHandle TimerHandle;
 	GetWorldTimerManager().SetTimer(
 		TimerHandle,
 		[this]()
@@ -172,14 +174,16 @@ void AMainCharacter::Sit(ASeat* Seat)
 		}, 
 		0.5f, 
 		false
-	);
+	);*/
 }
 
 void AMainCharacter::Stand()
 {
 	UE_LOG(LogTemp, Warning, TEXT("[Player] Play Stand Montage"));
 	PlayAnimMontage(SitMontage, 1.0f, FName("SitToStand"));
-	FTimerHandle TimerHandle;
+	CharacterState = ECharacterState::ECS_Idle;
+	OnCharacterStateUpdated.Broadcast(CharacterState);
+	/*FTimerHandle TimerHandle;
 	GetWorldTimerManager().SetTimer(
 		TimerHandle,
 		[this]()
@@ -188,7 +192,7 @@ void AMainCharacter::Stand()
 		},
 		0.5f,
 		false
-	);
+	);*/
 }
 
 
@@ -197,10 +201,10 @@ void AMainCharacter::OnMontageStarted(UAnimMontage* AnimMontage)
 	APlayerController* PC = Cast<APlayerController>(GetController());
 	if (PC)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("[Player] Disable input while playing anim montage"));
+		// UE_LOG(LogTemp, Warning, TEXT("[Player] Disable input while playing anim montage"));
 		// PC->DisableInput(PC);
-		PC->SetIgnoreLookInput(true);
-		PC->SetIgnoreMoveInput(true);
+		// PC->SetIgnoreLookInput(true);
+		// PC->SetIgnoreMoveInput(true);
 	}
 }
 
@@ -209,9 +213,9 @@ void AMainCharacter::OnMontageEnded(UAnimMontage* AnimMontage, bool bInterrupted
 	APlayerController* PC = Cast<APlayerController>(GetController());
 	if (PC)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("[Player] Enable input after finishing anim montage"));
+		// UE_LOG(LogTemp, Warning, TEXT("[Player] Enable input after finishing anim montage"));
 		// Actually not fit for the original purpose, but it work well...
-		OnCharacterStateUpdated.Broadcast(CharacterState);
+		// OnCharacterStateUpdated.Broadcast(CharacterState);
 		// PC->EnableInput(PC);
 		// PC->ResetIgnoreLookInput();
 		// PC->ResetIgnoreMoveInput();

@@ -4,26 +4,26 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "MainMenu.generated.h"
+#include "PauseWidget.generated.h"
 
 class UButton;
-class UMainSaveGame;
-class USaveSubsystem;
 
 /**
  * 
  */
 UCLASS()
-class B8F_OFFICE_API UMainMenu : public UUserWidget
+class B8F_OFFICE_API UPauseWidget : public UUserWidget
 {
 	GENERATED_BODY()
 	
 public:
+
+protected:
 	virtual void NativeConstruct() override;
 
 private:
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UButton> StartGameButton;
+	TObjectPtr<UButton> ResumeButton;
 
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UButton> CollectionButton;
@@ -32,18 +32,6 @@ private:
 	TObjectPtr<UButton> SettingButton;
 
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UButton> QuitButton;
-
-	UFUNCTION()
-	void OnNewGameButtonClicked();
-
-	UFUNCTION()
-	void OnContinueButtonClicked();
-
-	UFUNCTION()
-	void OnQuitButtonClicked();
-
-	TObjectPtr<USaveSubsystem> SaveSubsystem;
-
-	TObjectPtr<UMainSaveGame> SaveGame;
+	TObjectPtr<UButton> MainMenuButton;
+	
 };

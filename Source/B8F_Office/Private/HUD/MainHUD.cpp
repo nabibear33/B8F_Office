@@ -11,50 +11,28 @@
 #include "Widgets/InteractWidget.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Kismet/GameplayStatics.h"
+#include "Widgets/PauseWidget.h"
+#include "Widgets/MainMenu/CollectedAnomalyList.h"
+#include "Widgets/OptionWidget.h"
+#include "Widgets/MainMenu/BackWidget.h"
 
 
 void AMainHUD::BeginPlay()
 {
     Super::BeginPlay();
 
-    if (DialogueWidgetClass)
+    AMainCharacterController* PC = Cast<AMainCharacterController>(GetOwningPlayerController());
+    if (PC)
     {
-        DialogueWidget = CreateWidget<UDialogueWidget>(GetWorld(), DialogueWidgetClass);
-        if (DialogueWidget)
-        {
-            DialogueWidget->AddToViewport();
-            DialogueWidget->SetVisibility(ESlateVisibility::Hidden);
-        }
-    }
-
-    if (MonologueWidgetClass)
-    {
-        MonologueWidget = CreateWidget<UMonologueWidget>(GetWorld(), MonologueWidgetClass);
-        if (MonologueWidget)
-        {
-            MonologueWidget->AddToViewport();
-            MonologueWidget->SetVisibility(ESlateVisibility::Hidden);
-        }
-    }
-
-    if (LeftTimeWidgetClass)
-    {
-        LeftTimeWidget = CreateWidget<ULeftTimeWidget>(GetWorld(), LeftTimeWidgetClass);
-        if (LeftTimeWidget)
-        {
-            LeftTimeWidget->AddToViewport();
-            LeftTimeWidget->SetVisibility(ESlateVisibility::Hidden);
-        }
-    }
-
-    if (InteractWidgetClass)
-    {
-        InteractWidget = CreateWidget<UInteractWidget>(GetWorld(), InteractWidgetClass);
-        if (InteractWidget)
-        {
-            InteractWidget->AddToViewport();
-            InteractWidget->SetVisibility(ESlateVisibility::Hidden);
-        }
+        PC->OnPauseStatusUpdated.AddDynamic(this, &AMainHUD::OnPauseStatusUpdated);
+        DialogueWidget = CreateWidgetFromWidgetClass<UDialogueWidget>(PC, DialogueWidgetClass);
+        MonologueWidget = CreateWidgetFromWidgetClass<UMonologueWidget>(PC, MonologueWidgetClass);
+        LeftTimeWidget = CreateWidgetFromWidgetClass<ULeftTimeWidget>(PC, LeftTimeWidgetClass);
+        InteractWidget = CreateWidgetFromWidgetClass<UInteractWidget>(PC, InteractWidgetClass);
+        PauseWidget = CreateWidgetFromWidgetClass<UPauseWidget>(PC, PauseWidgetClass);
+        CollectionWidget = CreateWidgetFromWidgetClass<UCollectedAnomalyList>(PC, CollectionWidgetClass);
+        SettingWidget = CreateWidgetFromWidgetClass<UOptionWidget>(PC, SettingWidgetClass);
+        BackWidget = CreateWidgetFromWidgetClass<UBackWidget>(PC, BackWidgetClass);
     }
 
     UEventBusSubsystem* Subsystem = GetGameInstance()->GetSubsystem<UEventBusSubsystem>();
@@ -68,6 +46,11 @@ void AMainHUD::BeginPlay()
     {
         Controller->OnDialogueWidgetReady();
 	}
+}
+
+void AMainHUD::DisableAllWidgets()
+{
+
 }
 
 void AMainHUD::ShowDialogueWidget()
@@ -125,6 +108,18 @@ void AMainHUD::OnInteractableUpdated(AActor* InteractableActor, FVector ActorLoc
     ShowInteractWidget();
 }
 
+void AMainHUD::SetWidgetVisibility(UUserWidget* Widget, bool Enabled)
+{
+    if (Enabled)
+    {
+        Widget->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+    }
+    else
+    {
+        Widget->SetVisibility(ESlateVisibility::Hidden);
+    }
+}
+
 void AMainHUD::OnInteractableLeft(AActor* InteractableActor)
 {
     InteractWidget->SetInteractContentText(FText::GetEmpty());
@@ -139,6 +134,39 @@ void AMainHUD::OnGamePhaseUpdated(EGamePhase Phase)
             break;
         default:
             HideInteractWidget();
+            break;
+    }
+}
+
+void AMainHUD::OnPauseStatusUpdated(EPauseStatus Status)
+{
+    SetWidgetVisibility(PauseWidget, false);
+    SetWidgetVisibility(CollectionWidget, false);
+    SetWidgetVisibility(SettingWidget, false);
+    SetWidgetVisibility(BackWidget, false);
+
+    switch (Status)
+    {
+        case EPauseStatus::EPS_PausedMain:
+            SetWidgetVisibility(PauseWidget, true);
+            break;
+        case EPauseStatus::EPS_Collection:
+            SetWidgetVisibility(CollectionWidget, true);
+            break;
+        case EPauseStatus::EPS_Setting:
+            SetWidgetVisibility(SettingWidget, true);
+            break;
+        default:
+            break;
+    }
+
+    switch (Status)
+    {
+        case EPauseStatus::EPS_PausedMain:
+        case EPauseStatus::EPS_NotPaused:
+            break;
+        default:
+            SetWidgetVisibility(BackWidget, true);
             break;
     }
 }

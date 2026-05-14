@@ -11,6 +11,8 @@ class UCollectedAnomalyList;
 class UStartGameWidget;
 class UBackWidget;
 class UCollectedAnomalyDetail;
+class AMainMenuController;
+class UOptionWidget;
 
 /**
  * 
@@ -21,11 +23,7 @@ class B8F_OFFICE_API AMainMenuHUD : public AHUD
 	GENERATED_BODY()
 	
 public:
-	void EnableMainMenuWidget(bool Enabled);
-	void EnableCollectionWidget(bool Enabled);
-	void EnableCollectionDetailWidget(bool Enabled);
-	void EnableStartGameWidget(bool Enabled);
-	void EnableBackWidget(bool Enabled);
+	void SetWidgetVisibility(UUserWidget* Widget, bool Enabled);
 
 	void DisableAllWidgets();
 
@@ -70,5 +68,23 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UBackWidget> BackWidget;
 
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UUserWidget> OptionWidgetClass;
 
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UOptionWidget> OptionWidget;
+
+	template<typename T>
+	T* CreateWidgetFromWidgetClass(AMainMenuController* PC, TSubclassOf<UUserWidget> WidgetClass)
+	{
+		if (!WidgetClass) return nullptr;
+
+		T* Widget = CreateWidget<T>(PC, WidgetClass);
+		if (Widget)
+		{
+			Widget->AddToViewport();
+			Widget->SetVisibility(ESlateVisibility::Hidden);
+		}
+		return Widget;
+	}
 };

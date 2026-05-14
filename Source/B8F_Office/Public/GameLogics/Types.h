@@ -119,6 +119,15 @@ enum class EGamePhase : uint8
 	EGP_Monologue UMETA(DisplayName = "Monologue"),
 };
 
+UENUM(BlueprintType)
+enum class EPauseStatus : uint8
+{
+	EPS_NotPaused UMETA(DisplayName = "Not Paused"),
+	EPS_PausedMain UMETA(DisplayName = "Paused Main"),
+	EPS_Collection UMETA(DisplayName = "Collection"),
+	EPS_Setting UMETA(DisplayName = "Setting"),
+};
+
 USTRUCT()
 struct FMainStageStatus
 {

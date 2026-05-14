@@ -4,6 +4,7 @@
 #include "Widgets/MainMenu/BackWidget.h"
 #include "Components/Button.h"
 #include "Controllers/MainMenuController.h"
+#include "Controllers/MainCharacterController.h"
 
 void UBackWidget::NativeConstruct()
 {
@@ -13,5 +14,11 @@ void UBackWidget::NativeConstruct()
     if (PC)
     {
         BackButton->OnClicked.AddDynamic(PC, &AMainMenuController::OnClickedBack);
+    }
+
+    AMainCharacterController* PC_ = Cast<AMainCharacterController>(GetOwningPlayer());
+    if (PC_)
+    {
+        BackButton->OnClicked.AddDynamic(PC_, &AMainCharacterController::OnClickedBack);
     }
 }
