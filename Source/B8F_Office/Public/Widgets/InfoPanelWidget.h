@@ -22,7 +22,7 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UAnomalyStatusEntry> EntryWidget;
 
-	void PopulateFromMap(const TMap<EAnomalyType, EAnomalyStatus>& AnomalyRecord);
+	void PopulateFromRecord(const TArray<FAnomalyEntry>& AnomalyRecord);
 
 private:
 	virtual void NativeConstruct() override;

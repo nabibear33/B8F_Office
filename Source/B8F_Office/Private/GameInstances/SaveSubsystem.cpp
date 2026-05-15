@@ -23,6 +23,10 @@ void USaveSubsystem::SaveGame()
 
 	bool bSuccess = UGameplayStatics::SaveGameToSlot(CurrentSaveGame, SaveSlotName, UserIndex);
 	UE_LOG(LogTemp, Warning, TEXT("[SaveSubsystem] SaveGame: %s"), bSuccess ? TEXT("Success") : TEXT("Failed"));
+	if (bSuccess)
+	{
+		CurrentSaveGame->PrintSaveData();
+	}
 }
 
 void USaveSubsystem::LoadGame()
@@ -39,6 +43,7 @@ void USaveSubsystem::LoadGame()
 		else
 		{
 			UE_LOG(LogTemp, Warning, TEXT("[SaveSubsystem] LoadGame: Success"));
+			CurrentSaveGame->PrintSaveData();
 		}
 	}
 	else
@@ -54,8 +59,8 @@ void USaveSubsystem::CreateNewSaveGame()
 		UGameplayStatics::CreateSaveGameObject(UMainSaveGame::StaticClass())
 	);
 	CurrentSaveGame->SetProgressName(FName(TEXT("Room_Intro")));
-	CurrentSaveGame->InitializeAnomalyRecord();
-	CurrentSaveGame->SetCurrentFloor(-8);
+	CurrentSaveGame->SetAllAnomalyUnSeen();
+	CurrentSaveGame->SetMainStageFloor(-8);
 
 	SaveGame();
 }

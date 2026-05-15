@@ -17,7 +17,7 @@ struct FGameProgressRow : public FTableRowBase
 	FName ProgressSubName;
 
 	UPROPERTY(EditAnywhere)
-	EGamePhase GamePhase;
+	EGamePhase GamePhase = EGamePhase::EGP_Normal;
 
 	UPROPERTY(EditAnywhere)
 	FName LevelName;

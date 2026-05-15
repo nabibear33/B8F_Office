@@ -13,10 +13,10 @@ struct FCutsceneRow : public FTableRowBase
     GENERATED_BODY()
 
     UPROPERTY(EditAnywhere)
-    ECutsceneName CutsceneName;
+    ECutsceneName CutsceneName = ECutsceneName::ECN_None;
 
     UPROPERTY(EditAnywhere)
-    ECutsceneType CutsceneType;
+    ECutsceneType CutsceneType = ECutsceneType::ECT_Normal;
 
     UPROPERTY(EditAnywhere)
     TObjectPtr<ULevelSequence> LevelSequence;

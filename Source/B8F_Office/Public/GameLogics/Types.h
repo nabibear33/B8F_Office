@@ -128,20 +128,22 @@ enum class EPauseStatus : uint8
 	EPS_Setting UMETA(DisplayName = "Setting"),
 };
 
-USTRUCT()
-struct FMainStageStatus
-{
-	GENERATED_BODY()
-
-	int CurrentFloor;
-
-	TMap<EAnomalyType, EAnomalyStatus> AnomalyRecord;
-};
-
 UENUM(BlueprintType)
 enum class EDialogueMode : uint8
 {
 	EDM_NotOnDialogue UMETA(DisplayName = "Not On Dialogue"),
 	EDM_Dialogue UMETA(DisplayName = "Dialogue"),
 	EDM_Monologue UMETA(DisplayName = "Monologue"),
+};
+
+USTRUCT()
+struct FAnomalyEntry
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	EAnomalyType Type = EAnomalyType::EAT_None;
+
+	UPROPERTY()
+	EAnomalyStatus Status = EAnomalyStatus::EAS_NotSeen;
 };

@@ -15,12 +15,14 @@ void UCollectedAnomalyList::NativeConstruct()
 
     USaveSubsystem* SaveSubsystem = GetGameInstance()->GetSubsystem<USaveSubsystem>();
     UMainSaveGame* SaveGame = SaveSubsystem->GetSaveGame();
-    const TMap<EAnomalyType, EAnomalyStatus>& AnomalyRecord = SaveGame->GetAnomalyRecord();
+    const TArray<FAnomalyEntry>& AnomalyRecord = SaveGame->GetAnomalyRecord();
     
+    UE_LOG(LogTemp, Warning, TEXT("[Collected Anomaly List] Start Creating Collection Entity"));
+
     for (auto& Pair : AnomalyRecord)
     {
-        EAnomalyType Type = Pair.Key;
-        EAnomalyStatus Status = Pair.Value;
+        EAnomalyType Type = Pair.Type;
+        EAnomalyStatus Status = Pair.Status;
 
         if (Type == EAnomalyType::EAT_None || Type == EAnomalyType::EAT_MAX) continue;
 
@@ -31,7 +33,7 @@ void UCollectedAnomalyList::NativeConstruct()
         FAnomalyRow* Row = AnomalyDataTable->FindRow<FAnomalyRow>(RowName, TEXT(""));
         if (Row)
         {
-            UE_LOG(LogTemp, Log, TEXT("[CollectedAnomaly] Row found: %s"), *Row->AnomalyName.ToString());
+            // UE_LOG(LogTemp, Warning, TEXT("[Collected Anomaly List] Row found: %s"), *Row->AnomalyName.ToString());
             if (Status == EAnomalyStatus::EAS_Found)
             {
                 Item->SetAnomalyName(Row->AnomalyName);
@@ -49,7 +51,6 @@ void UCollectedAnomalyList::NativeConstruct()
         {
             UE_LOG(LogTemp, Warning, TEXT("[CollectedAnomaly] No DataTable row found for RowName: %s"), *RowName.ToString());
         }
-
         AnomalyItemWrapper->AddChild(Item);
     }
 }

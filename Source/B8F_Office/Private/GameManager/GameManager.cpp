@@ -134,14 +134,14 @@ void AGameManager::HandlePlayerChoice(ATeleportArea* AreaPlayerEntered)
 	if (IsCorrect(StageState, AreaPlayerEntered))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Correct Answer"));
-		NextFloor = SaveGame->GetCurrentFloor() + 1;
+		NextFloor = SaveGame->GetMainStageFloor() + 1;
 	}
 	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Wrong Answer"));
 		NextFloor = -8;
 	}
-	SaveGame->SetCurrentFloor(NextFloor);
+	SaveGame->SetMainStageFloor(NextFloor);
 
 	EAnomalyType AnomalyType = GetStageManager()->GetAnomalyType();
 	EAnomalyStatus AnomalyStatus = GetStageManager()->GetAnomalyStatus();
@@ -195,7 +195,7 @@ void AGameManager::UpdateInfoPanel(int32 Floor, EAnomalyType AnomalyType, EAnoma
 
 void AGameManager::OnPlayerRevive()
 {
-	SaveGame->SetCurrentFloor(-8);
+	SaveGame->SetMainStageFloor(-8);
 	EAnomalyType AnomalyType = GetStageManager()->GetAnomalyType();
 	EAnomalyStatus AnomalyStatus = GetStageManager()->GetAnomalyStatus();
 	SaveGame->SetAnomalyRecord(AnomalyType, AnomalyStatus);

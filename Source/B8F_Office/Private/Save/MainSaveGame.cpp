@@ -4,32 +4,43 @@
 #include "Save/MainSaveGame.h"
 #include "GameLogics/Types.h"
 
-void UMainSaveGame::InitializeAnomalyRecord()
+void UMainSaveGame::SetAllAnomalyUnSeen()
 {
-	MainStageStatus.AnomalyRecord.Empty();
+	AnomalyRecord.Empty();
 
-	const UEnum* EnumPtr = StaticEnum<EAnomalyType>();
-	if (!EnumPtr) return;
-
-	for (int32 i = 0; i < EnumPtr->NumEnums() - 1; i++)
+	for (uint8 i = 1; i < (uint8)EAnomalyType::EAT_MAX; i++)
 	{
-		EAnomalyType Type = static_cast<EAnomalyType>(EnumPtr->GetValueByIndex(i));
-		MainStageStatus.AnomalyRecord.Add(Type, EAnomalyStatus::EAS_NotSeen);
-		UE_LOG(LogTemp, Warning, TEXT("[%d] Added: %s"), i, *UEnum::GetValueAsString(Type));
+		AnomalyRecord.Add(FAnomalyEntry{ (EAnomalyType)i, EAnomalyStatus::EAS_NotSeen });
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("AnomalyRecord Total: %d"), MainStageStatus.AnomalyRecord.Num());
+	UE_LOG(LogTemp, Warning, TEXT("AnomalyRecord Total: %d"), AnomalyRecord.Num());
 }
 
 void UMainSaveGame::SetAnomalyRecord(EAnomalyType Type, EAnomalyStatus Status)
 {
-	if (!MainStageStatus.AnomalyRecord.Contains(Type))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("SetAnomalyRecord: Non-existing AnomalyType. Add New AnomalyType"));
-		MainStageStatus.AnomalyRecord.Add(Type, Status);
-		return;
-	}
+	// Save only when higher status came in. (Not Seen < Seen But Not Found < Fully Solved)
+	int32 Index = (int32)(uint8)Type - 1;
+	FAnomalyEntry& Entry = AnomalyRecord[Index];
+	Entry.Status = FMath::Max(Entry.Status, Status);
+}
 
-	// Save only when higher status came in.
-	MainStageStatus.AnomalyRecord[Type] = (MainStageStatus.AnomalyRecord[Type] < Status) ? Status : MainStageStatus.AnomalyRecord[Type];
+void UMainSaveGame::PrintSaveData() const
+{
+	UE_LOG(LogTemp, Warning, TEXT("========== [SaveGame Data] =========="));
+	UE_LOG(LogTemp, Warning, TEXT("GameProgressRowName : %s"), *GameProgressRowName.ToString());
+	UE_LOG(LogTemp, Warning, TEXT("bHasClearedNormalStage : %s"), bHasClearedNormalStage ? TEXT("true") : TEXT("false"));
+	UE_LOG(LogTemp, Warning, TEXT("bHasCollectedAll       : %s"), bHasCollectedAll ? TEXT("true") : TEXT("false"));
+	UE_LOG(LogTemp, Warning, TEXT("bHasPlayedBefore       : %s"), bHasPlayedBefore ? TEXT("true") : TEXT("false"));
+
+	// MainStageStatus
+	UE_LOG(LogTemp, Warning, TEXT("--- MainStageStatus ---"));
+	UE_LOG(LogTemp, Warning, TEXT("CurrentFloor : %d"), MainStageFloor);  // 필드명은 실제 구조체에 맞게 수정
+	// AnomalyMap 등 TMap이 있다면:
+	for (const FAnomalyEntry& Entry : AnomalyRecord)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("  Anomaly [%s] = %s"),
+			*StaticEnum<EAnomalyType>()->GetNameStringByValue((int64)Entry.Type),
+			*StaticEnum<EAnomalyStatus>()->GetNameStringByValue((int64)Entry.Status));
+	}
+	UE_LOG(LogTemp, Warning, TEXT("====================================="));
 }

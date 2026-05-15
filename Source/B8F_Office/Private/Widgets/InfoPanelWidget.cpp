@@ -9,32 +9,21 @@
 #include "Save/MainSaveGame.h"
 #include "Widgets/AnomalyStatusEntry.h"
 
-void UInfoPanelWidget::PopulateFromMap(const TMap<EAnomalyType, EAnomalyStatus>& AnomalyRecord)
+void UInfoPanelWidget::PopulateFromRecord(const TArray<FAnomalyEntry>& AnomalyRecord)
 {
-	// UE_LOG(LogTemp, Warning, TEXT("PopulateFromMap called, Record count: %d"), AnomalyRecord.Num());
-
 	EntryContainer->ClearChildren();
-
-	for (const auto& [Type, Status] : AnomalyRecord)
+	for (const FAnomalyEntry& Entry : AnomalyRecord)
 	{
-		/*
-		UE_LOG(LogTemp, Warning, TEXT("Type: %s, Status: %s"),
-			*UEnum::GetValueAsString(Type),
-			*UEnum::GetValueAsString(Status));
-		*/
-
-		UAnomalyStatusEntry* Entry = CreateWidget<UAnomalyStatusEntry>(this, EntryWidget);
-		if (!Entry)
+		if (Entry.Type == EAnomalyType::EAT_None || Entry.Type == EAnomalyType::EAT_MAX) continue;
+		UAnomalyStatusEntry* Widget = CreateWidget<UAnomalyStatusEntry>(this, EntryWidget);
+		if (!Widget)
 		{
-			UE_LOG(LogTemp, Error, TEXT("CreateWidget failed for Type: %s"), *UEnum::GetValueAsString(Type));
+			UE_LOG(LogTemp, Error, TEXT("CreateWidget failed for Type: %s"), *UEnum::GetValueAsString(Entry.Type));
 			continue;
 		}
-
-		Entry->UpdateEntry(Type, Status);
-		EntryContainer->AddChild(Entry);
+		Widget->UpdateEntry(Entry.Type, Entry.Status);
+		EntryContainer->AddChild(Widget);
 	}
-
-	// UE_LOG(LogTemp, Warning, TEXT("PopulateFromMap done, Container children: %d"), EntryContainer->GetChildrenCount());
 }
 
 void UInfoPanelWidget::NativeConstruct()
@@ -47,7 +36,7 @@ void UInfoPanelWidget::NativeConstruct()
 		GameManager->OnInfoPanelUpdated.AddDynamic(this, &UInfoPanelWidget::OnInfoPanelUpdated);
 	}
 
-	DrawCurrentFloor(GetGameInstance()->GetSubsystem<USaveSubsystem>()->GetSaveGame()->GetCurrentFloor());
+	DrawCurrentFloor(GetGameInstance()->GetSubsystem<USaveSubsystem>()->GetSaveGame()->GetMainStageFloor());
 	DrawAnomalyRecord();
 }
 
@@ -56,7 +45,7 @@ void UInfoPanelWidget::DrawAnomalyRecord()
 	USaveSubsystem* SaveSubsystem = GetGameInstance()->GetSubsystem<USaveSubsystem>();
 	if (SaveSubsystem && SaveSubsystem->GetSaveGame())
 	{
-		PopulateFromMap(SaveSubsystem->GetSaveGame()->GetAnomalyRecord());
+		PopulateFromRecord(SaveSubsystem->GetSaveGame()->GetAnomalyRecord());
 	}
 }
 
